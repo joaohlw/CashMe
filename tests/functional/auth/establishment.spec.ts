@@ -1,13 +1,15 @@
 import { test } from '@japa/runner'
+import testUtils from '@adonisjs/core/services/test_utils'
 import User from '#models/user'
 import UserEstablishment from '#models/user_establishment'
 
 test.group('Functional | Establishment Auth & Profile', (group) => {
-  group.each.setup(async () => {
-    await User.query().whereIn('email', ['manager@store.com', 'operator@store.com', 'update@store.com']).delete()
-  })
+  group.each.setup(() => testUtils.db().truncate())
 
-  test('should register new establishment user account with profile and return access token', async ({ client, assert }) => {
+  test('should register new establishment user account with profile and return access token', async ({
+    client,
+    assert,
+  }) => {
     const response = await client.post('/api/v1/auth/establishment/signup').json({
       fullName: 'Manager User',
       email: 'manager@store.com',
@@ -17,12 +19,19 @@ test.group('Functional | Establishment Auth & Profile', (group) => {
     })
 
     response.assertStatus(200)
-    const body = response.body().data || response.body()
-    assert.equal(body.user.email, 'manager@store.com')
-    assert.equal(body.user.userType, 'ESTABLISHMENT')
-    assert.equal(body.profile.fullName, 'Manager User')
-    assert.equal(body.profile.role, 'LOJISTA_ADMIN')
-    assert.exists(body.token)
+    response.assertBodyContains({
+      data: {
+        user: {
+          email: 'manager@store.com',
+          userType: 'ESTABLISHMENT',
+        },
+        profile: {
+          fullName: 'Manager User',
+          role: 'LOJISTA_ADMIN',
+        },
+      },
+    })
+    assert.properties(response.body().data, ['token', 'user', 'profile'])
 
     const user = await User.findBy('email', 'manager@store.com')
     assert.isNotNull(user)
@@ -31,9 +40,8 @@ test.group('Functional | Establishment Auth & Profile', (group) => {
     assert.equal(profile!.fullName, 'Manager User')
   })
 
-  test('should fetch establishment user profile for authenticated user', async ({ client, assert }) => {
+  test('should fetch establishment user profile for authenticated user', async ({ client }) => {
     const user = await User.create({
-      fullName: 'Operator User',
       email: 'operator@store.com',
       password: 'password123',
       userType: 'ESTABLISHMENT',
@@ -44,21 +52,21 @@ test.group('Functional | Establishment Auth & Profile', (group) => {
       role: 'LOJISTA_OPERADOR',
     })
 
-    const token = await User.accessTokens.create(user)
-
-    const response = await client
-      .get('/api/v1/account/establishment/profile')
-      .header('Authorization', `Bearer ${token.value!.release()}`)
+    const response = await client.get('/api/v1/account/establishment/profile').loginAs(user)
 
     response.assertStatus(200)
-    const body = response.body().data || response.body()
-    assert.equal(body.profile.fullName, 'Operator User')
-    assert.equal(body.profile.role, 'LOJISTA_OPERADOR')
+    response.assertBodyContains({
+      data: {
+        profile: {
+          fullName: 'Operator User',
+          role: 'LOJISTA_OPERADOR',
+        },
+      },
+    })
   })
 
   test('should update establishment user profile details', async ({ client, assert }) => {
     const user = await User.create({
-      fullName: 'Initial Name',
       email: 'update@store.com',
       password: 'password123',
       userType: 'ESTABLISHMENT',
@@ -69,20 +77,20 @@ test.group('Functional | Establishment Auth & Profile', (group) => {
       role: 'LOJISTA_OPERADOR',
     })
 
-    const token = await User.accessTokens.create(user)
-
-    const response = await client
-      .put('/api/v1/account/establishment/profile')
-      .header('Authorization', `Bearer ${token.value!.release()}`)
-      .json({
-        fullName: 'Updated Name',
-        role: 'LOJISTA_ADMIN',
-      })
+    const response = await client.put('/api/v1/account/establishment/profile').loginAs(user).json({
+      fullName: 'Updated Name',
+      role: 'LOJISTA_ADMIN',
+    })
 
     response.assertStatus(200)
-    const body = response.body().data || response.body()
-    assert.equal(body.profile.fullName, 'Updated Name')
-    assert.equal(body.profile.role, 'LOJISTA_ADMIN')
+    response.assertBodyContains({
+      data: {
+        profile: {
+          fullName: 'Updated Name',
+          role: 'LOJISTA_ADMIN',
+        },
+      },
+    })
 
     await profile.refresh()
     assert.equal(profile.fullName, 'Updated Name')

@@ -1,106 +1,232 @@
 # 🛍️ Cash Me — Plataforma Full-Stack Integrada
 
-> Sistema completo de fidelidade e cashback baseado em escaneamento de NFC-e (Notas Fiscais de Consumidor Eletrônica), conectando **consumidores** e **comerciantes locais**.
+> Sistema completo de fidelidade e cashback baseado no escaneamento de **NFC-e (Notas Fiscais de Consumidor Eletrônica)** da SEFAZ, conectando **consumidores** e **comerciantes locais** com isolamento lógico multi-tenant.
 
 ---
 
-## 📚 Documentação Dedicada por Módulo
+## 📖 O Que É o Projeto Cash Me?
 
-Para detalhes aprofundados sobre cada camada do projeto, consulte os guias dedicados:
+O **Cash Me** é uma solução tecnológica full-stack desenvolvida para transformar compras rotineiras no comércio local em pontos de fidelidade e recompensas reais.
 
-- ⚛️ **[README do Frontend (React + Vite + Tailwind v4)](./README_FRONT.md)** — Detalhamento de todas as telas (9 do Consumidor e 11 do Comerciante), componentes do Design System, `AuthContext` e camada de serviços.
-- 🔧 **[README do Backend (AdonisJS v7 + Lucid + SQLite)](./README_BACK.md)** — Detalhamento das rotas REST, payloads de request/response, regras de negócio (RN01 a RN08), modelo de dados e suíte de testes com Japa.
-- 👥 **[Matriz de Contribuições & Atribuições (Vitor, Stela, Hugo)](./docs/CONTRIBUICOES.md)** — Detalhamento técnico de responsabilidades e histórico de commits entre os contribuidores.
+### Como Funciona:
+
+1. **O Consumidor** faz uma compra em qualquer estabelecimento parceiro de Santa Catarina (SC) ou Paraná (PR) e recebe sua NFC-e (com QR Code).
+2. **Pelo App Mobile ou Web**, o consumidor escaneia o QR Code ou insere a Chave de Acesso de 44 dígitos da nota fiscal.
+3. **O Motor Fiscal** valida a autenticidade e regras da SEFAZ:
+   - Rejeita notas emitidas há mais de 48 horas (**RN01**).
+   - Impede o reaproveitamento de notas já lidas através de checagem única de chave no banco (**RN02 - Anti-Fraude**).
+   - Identifica o estabelecimento pelo CNPJ emitente (**RN03**).
+   - Computa os pontos aplicando a taxa de conversão configurada pelo comerciante (**RN04**).
+   - Bloqueia novas pontuações caso o lojista esteja inativo, preservando o saldo anterior do cliente (**RN05**).
+   - Aceita notas fiscais da SEFAZ de SC e PR (**RN07**).
+4. **O Saldo de Pontos** é creditado diretamente na carteira digital do consumidor no banco de dados e pode ser resgatado por vouchers, descontos e brindes cadastrados na vitrine do comerciante.
+5. **O Comerciante** acessa um dashboard web completo com métricas de retenção, volume de faturamento, gestão de campanhas promocionais e regras de fidelização.
 
 ---
 
-## 🏗️ Visão Geral da Arquitetura
+## 👥 Autoria e Matriz de Contribuições
 
-O projeto foi consolidado em um **repositório full-stack unificado** ([vitto2099/CashMe](https://github.com/vitto2099/CashMe)), integrando a base da API de autenticação ([stela-oliveira/cash-me-api](https://github.com/stela-oliveira/cash-me-api)), a prova de conceito de scraping e motor fiscal ([hugobatista27/web-scrap-app](https://github.com/hugobatista27/web-scrap-app)), e o frontend web e aplicativo mobile em uma única raiz:
+Este repositório consolidado foi projetado, arquitetado e mantido por:
 
+- 👤 **Vitor Camargo ([@vitto2099](https://github.com/vitto2099))** — **Engenheiro Full-Stack e Mantenedor da Plataforma**:
+  - Consolidação e arquitetura do monorepo full-stack integrado.
+  - Desenvolvimento completo do Frontend Web (21 telas responsivas, Tailwind CSS v4, Contexts e Services).
+  - Port e atualização do aplicativo nativo Mobile no Expo SDK 57 / React Native 0.86 (leitor com câmera, WebView de Captcha da SEFAZ e sincronização com a API).
+  - Arquitetura e implementação de toda a camada de **persistência relacional do core de fidelidade** (`establishments`, `nfces`, `nfce_items`, `point_balances` e `point_transactions`).
+  - Implementação do motor de submissão fiscal com regras anti-fraude (`POST /api/v1/nfce/submit`), carteira digital de pontos (`/points/balance`, `/points/transactions`) e resgate de recompensas (`/points/redeem`).
+  - Expansão e garantia de qualidade com **56 testes automatizados no Japa (100% aprovados)**.
+  - Documentação central, Swagger OpenAPI interativo e guias técnicos.
+- 👤 **Stela Oliveira ([@stela-oliveira](https://github.com/stela-oliveira))**: Desenvolvimento da estrutura inicial de autenticação OAT e contas da API (`stela-oliveira/cash-me-api`).
+- 👤 **Hugo Batista ([@hugobatista27](https://github.com/hugobatista27))**: Elaboração dos requisitos originais (Issues #1 a #9), ADRs (ADR-001 e ADR-002) e protótipo inicial de scraping (`hugobatista27/web-scrap-app`).
+
+Consulte a matriz detalhada em **[docs/CONTRIBUICOES.md](./docs/CONTRIBUICOES.md)** e **[docs/ATTRIBUTIONS.md](./docs/ATTRIBUTIONS.md)**.
+
+---
+
+## 🎯 O Que Já Está Feito (Status das Entregas)
+
+### 🔧 1. Backend RESTful (AdonisJS v7 + Lucid ORM + SQLite)
+
+- ✅ **Autenticação Segura (OAT)**: Cadastro, Login com hash seguro, Logout com revogação de tokens e perfil autenticado.
+- ✅ **Perfis Especializados**: Modelos e controllers para Consumidor (`UserCustomer`) e Lojista (`UserEstablishment`).
+- ✅ **Banco de Dados Relacional (9 Tabelas Migradas)**:
+  - `users` & `auth_access_tokens`
+  - `user_customers` & `user_establishments`
+  - `establishments` (lojas parceiras com CNPJ único, status e fator de conversão)
+  - `nfces` (notas com chave de 44 dígitos `UNIQUE` no banco)
+  - `nfce_items` (itens da compra)
+  - `point_balances` (saldo por loja multi-tenant)
+  - `point_transactions` (ledger imutável de extrato de créditos e débitos)
+- ✅ **Motor Fiscal NFC-e Transacional**:
+  - `POST /api/v1/nfce/validate`: Validação estrutural de URL e Chave SEFAZ.
+  - `POST /api/v1/nfce/parse`: Extração de produtos, valores e totais.
+  - `POST /api/v1/nfce/submit`: Submissão autenticada com crédito de pontos no banco de dados.
+- ✅ **Carteira e Ledger de Pontos**:
+  - `GET /api/v1/account/points/balance`: Consulta de saldo consolidado e por loja.
+  - `GET /api/v1/account/points/transactions`: Extrato auditável de transações.
+  - `POST /api/v1/account/points/redeem`: Resgate de pontos com validação de saldo e débito.
+  - `GET /api/v1/establishments`: Catálogo de lojas cadastradas.
+- ✅ **Documentação Interativa Swagger**: Disponível em `/docs` e JSON em `/swagger`.
+
+### ⚛️ 2. Frontend Web (React 18 + Vite + Tailwind CSS v4)
+
+- ✅ **21 Telas Completas e Funcionais**:
+  - **9 Telas do Consumidor:** Home, Lojas, Detalhe da Loja, Ofertas, Detalhe da Oferta, Carteira com extrato, Leitor/Simulador de NFC-e com itens, QR Code pessoal e Perfil.
+  - **11 Telas do Comerciante:** Dashboard com gráficos Recharts de faturamento, Gestão de Campanhas, Nova Campanha, Regras de Pontuação, Conversão em Desconto, QR da Loja, Clientes fidelizados, Detalhe do Cliente, Vitrine de Ofertas, Nova Oferta e Configurações da Loja.
+  - **Landing Page SaaS:** Apresentação da plataforma com alternância rápida de perfis e modal de login/cadastro.
+- ✅ **Sincronização com o Backend**: O leitor de NFC-e grava na API oficial, a Carteira exibe o saldo real do usuário autenticado e o extrato consome dados do banco SQLite.
+
+### 📱 3. Aplicativo Mobile Nativo (Expo SDK 57 + React Native 0.86)
+
+- ✅ **Leitor de Câmera com QR Code**: Câmera nativa de alta performance com lanterna e feedback háptico (`expo-haptics`).
+- ✅ **WebView Integrado para Captcha SEFAZ**: Permite ao usuário visualizar o portal oficial da SEFAZ SC, resolver captchas e extrair o HTML estruturado via injeção JavaScript automática.
+- ✅ **Cliente de API Mobile**: Integrado com suporte a emulador Android (`10.0.2.2:3333`) e iOS/Web (`localhost:3333`).
+
+### 🧪 4. Suíte de Testes Automatizados (Japa)
+
+- ✅ **56 de 56 testes automatizados (unitários e funcionais) passando com 100% de sucesso (`npm test`)**:
+  - **Testes Unitários (3)**: Motor de pontos (`PointsEngine`), motor de regras de fidelidade (`LoyaltyRuleEngine`) e modelo `User`.
+  - **Autenticação, Perfis & Contas (15)**: Signup, login, logout revogando tokens, perfil de consumidor e perfil de lojista.
+  - **Onboarding e Cadastro do Comércio (5)**: Registro atômico (usuário + loja + endereço + programa), aprovação por SUPER_ADMIN e endereçamento.
+  - **Regras Customizáveis de Fidelidade (6)**: Versionamento de regras (Task #6), simulação em tempo real, sincronização do fator e RBAC de lojista.
+  - **Processamento de Faturas & Isolamento Multi-Tenant (6)**: Cômputo em runtime, isolamento multi-tenant (ADR-002), anti-fraude RN02 (chave duplicada 409), expiração 48h RN01 e histórico.
+  - **Submissão de NFC-e, Saldos & Resgates no Banco (4)**: Submissão, anti-fraude em banco, saldo multi-tenant e resgate com débito.
+  - **Validação Fiscal e Parsing SEFAZ SC/PR (5)**: Validação de URLs oficiais da SEFAZ, chave de 44 dígitos e extração de HTML.
+  - **Documentação OpenAPI & Swagger UI (1)**: Validação de endpoints e renderização da UI.
+
+---
+
+## 🚀 Como Fazer o Projeto Funcionar (Passo a Passo)
+
+### 📋 Pré-requisitos
+
+- **Node.js**: Versão 20+ (recomendada LTS) ou v22+.
+- **npm**: Versão 9+.
+- **Git** instalado.
+
+---
+
+### 1️⃣ Clonar o Repositório
+
+```bash
+git clone https://github.com/vitto2099/CashMe.git
+cd CashMe
 ```
-TESTE CASH ME/
-│
-├── package.json               # Gerenciador unificado de dependências e scripts
-├── tsconfig.json              # Tipagem TypeScript integrada (React JSX + Adonis Subpaths)
-├── vite.config.ts             # Bundler Vite com proxy reverso (/api -> :3333)
-├── index.html                 # Ponto de entrada SPA do frontend
-├── ace.js / adonisrc.ts       # Configurações do framework AdonisJS v7
-├── .env                       # Variáveis de ambiente pré-configuradas
-│
-├── README.md                  # 📄 Hub central de documentação
-├── README_FRONT.md            # 📄 Documentação exclusiva do Frontend
-├── README_BACK.md             # 📄 Documentação exclusiva do Backend
-│
-├── app/                       # 🔧 BACKEND — Controllers, Models, Validators
-├── config/                    # 🔧 BACKEND — Configurações (auth, cors, db, etc.)
-├── database/                  # 🔧 BACKEND — Migrations e Schemas SQLite
-├── start/                     # 🔧 BACKEND — Rotas HTTP (/api/v1/auth, /api/v1/account)
-├── tests/                     # 🔧 BACKEND — Testes automatizados funcionais (Japa)
-│
-├── src/                       # ⚛️ FRONTEND — Código-Fonte React
-│   ├── app/App.tsx            # Orquestrador mobile de telas (Landing, Consumer, Merchant)
-│   ├── context/               # AuthContext (conectado à API) + AppContext
-│   ├── services/              # api.ts + authService.ts + storesService.ts ...
-│   ├── features/              # Telas do Consumidor, Comerciante e Landing
-│   └── components/            # Design System UI (BottomNav, StatusBar, QR Code, etc.)
-│
-├── docs/                      # 📚 Especificações Oficiais, ADRs e Tasks #1 a #9
-└── scripts/dev.mjs            # Executa Backend + Frontend simultaneamente
+
+---
+
+### 2️⃣ Configurar o Arquivo de Ambiente (`.env`)
+
+O projeto necessita de um arquivo `.env` na raiz com a chave secreta da aplicação (`APP_KEY`):
+
+```bash
+# Copia o exemplo
+cp .env.example .env
 ```
 
----
-
-## 🚀 Como Executar o Projeto Completo
-
-### Pré-requisitos
-- **Node.js:** v18+ (recomendado v20 ou v24)
-- **npm:** v9+
+Verifique se a variável `APP_KEY` está preenchida no arquivo `.env` (ex: chave base64 de 32 bytes gerada).
 
 ---
 
-### 1. Instalação Completa
+### 3️⃣ Instalar as Dependências
+
+Instale todas as dependências do ecossistema:
+
 ```bash
 npm install
 ```
 
 ---
 
-### 2. Executar Migrations do Banco
+### 4️⃣ Executar as Migrations do Banco de Dados (SQLite)
+
+Gere a estrutura de tabelas relacionais do banco local:
+
 ```bash
 npm run db:migrate
 ```
 
 ---
 
-### 3. Iniciar Backend e Frontend Juntos
+### 5️⃣ Executar o Projeto Completo
+
+Inicie o Backend e o Frontend Web simultaneamente com o script integrado:
+
 ```bash
 npm run dev
 ```
 
-- **Frontend:** `http://localhost:5173`
-- **Backend API:** `http://localhost:3333`
+Pronto! Os serviços estarão disponíveis em:
 
-Logs integrados de ambos os serviços serão exibidos no terminal (`[API]` em ciano e `[FRONT]` em verde).
+- 🌐 **Frontend Web:** [http://localhost:5173](http://localhost:5173)
+- 🔧 **Backend API:** [http://localhost:3333](http://localhost:3333)
+- 📚 **Swagger UI (Documentação da API):** [http://localhost:3333/docs](http://localhost:3333/docs)
 
----
-
-## 🛠️ Scripts Principais
-
-| Comando | Descrição |
-|---|---|
-| `npm run dev` | Inicia o Backend e o Frontend simultaneamente |
-| `npm run dev:server` | Inicia apenas o backend AdonisJS (`node ace serve --hmr`) |
-| `npm run dev:client` | Inicia apenas o frontend Vite (`vite`) |
-| `npm run build` | Compila o backend e o frontend para produção |
-| `npm run test` | Executa a suíte de testes funcionais do backend com Japa |
-| `npm run db:migrate` | Executa migrations pendentes no SQLite |
-| `npm run typecheck` | Validação de tipos TypeScript em todo o projeto |
+Logs de ambos os serviços serão exibidos no mesmo terminal (`[API]` em ciano e `[FRONT]` em verde).
 
 ---
 
-## 🧪 Status dos Testes Exploratórios e de Integração
+### 🧪 6️⃣ Como Rodar os Testes Automatizados
 
-- ✅ **Backend:** 6 de 6 testes funcionais automatizados passando com 100% de sucesso (`npm test`).
-- ✅ **Frontend:** Build de produção gerado com sucesso sem erros (`npx vite build`).
-- ✅ **Integração End-to-End:** Proxy do Vite encaminha requisições `/api/v1/*` para o AdonisJS, com fluxo completo de cadastro, login, perfil autenticado e revogação de token no logout validado.
+Para rodar a suíte completa de testes funcionais no backend:
+
+```bash
+npm test
+```
+
+---
+
+### 📱 7️⃣ Como Rodar o Aplicativo Mobile (Expo)
+
+Para executar o app mobile com leitor nativo de QR Code e WebView de Captcha:
+
+```bash
+cd mobile
+npm install
+npm run start
+```
+
+- Pressione `a` para abrir no Android Emulator.
+- Pressione `i` para abrir no simulador iOS.
+- Pressione `w` para rodar na Web.
+- Ou escaneie o QR Code no terminal com o aplicativo **Expo Go** no seu celular físico.
+
+---
+
+## 🛠️ Tabela de Scripts Disponíveis
+
+| Comando              | Descrição                                                 |
+| -------------------- | --------------------------------------------------------- |
+| `npm run dev`        | Inicia o Backend Adonis e o Frontend Vite simultaneamente |
+| `npm run dev:server` | Inicia apenas a API backend (`node ace serve --hmr`)      |
+| `npm run dev:client` | Inicia apenas o frontend web (`vite`)                     |
+| `npm run test`       | Executa todos os 22 testes automatizados com Japa         |
+| `npm run db:migrate` | Executa as migrations do banco de dados SQLite            |
+| `npm run build`      | Compila o backend e o frontend para produção              |
+| `npm run typecheck`  | Validação de tipos TypeScript ponta a ponta               |
+
+---
+
+## 👥 Equipe & Contribuições
+
+Este projeto é fruto da evolução e integração de trabalhos desenvolvidos pela equipe:
+
+- 👤 **Vitor Camargo ([@vitto2099](https://github.com/vitto2099))**: Engenheiro e mantenedor da plataforma unificada full-stack. Responsável pela consolidação do monorepo, desenvolvimento completo do frontend web (21 telas em React + Vite + Tailwind), aplicativo mobile Expo SDK 57, integração e unificação dos módulos de Hugo e Stela, arquitetura e implementação da persistência relacional do core de fidelidade (estabelecimentos, faturas NFC-e, saldos multi-tenant e ledger de transações), motor de submissão fiscal com regras anti-fraude (RN01 a RN08), documentação técnica central e expansão da suíte para 56 testes automatizados com 100% de sucesso.
+- 👤 **Hugo Batista ([@hugobatista27](https://github.com/hugobatista27))**: Arquiteto técnico, autor dos requisitos e tarefas originais (#1 a #9), autor dos ADRs (ADR-001 e ADR-002), desenvolvedor da API original ([`cash-me-api`](https://github.com/hugobatista27/cash-me-api)) com o motor `PointsEngineService`, `CustomerInvoicesController`, controllers de pontos e regras de fidelidade, migrations originais de faturas/pontos/regras/endereços, protótipos de tela para lojistas (`example/establishment/`) e criador da prova de conceito de scraping fiscal de NFC-e ([`web-scrap-app`](https://github.com/hugobatista27/web-scrap-app)).
+- 👤 **Stela Oliveira ([@stela-oliveira](https://github.com/stela-oliveira))**: Autora da arquitetura do sistema de pontos e regras personalizáveis ([`docs/architecture/SISTEMA-DE-PONTOS-E-REGRAS.md`](./docs/architecture/SISTEMA-DE-PONTOS-E-REGRAS.md)), modelando o extrato como ledger imutável, versionamento de regras congeladas, ERD Mermaid completo com 12 entidades e templates JSON. Também responsável pela fundação do módulo de autenticação e contas na API ([`stela-oliveira/cash-me-api`](https://github.com/stela-oliveira/cash-me-api)), configurando `@adonisjs/auth`, tokens OAT, model `User` e a primeira suíte de testes funcionais.
+
+> 📖 Para conferir o quadro comparativo completo e a divisão detalhada de commits, arquivos e responsabilidades, consulte **[docs/CONTRIBUICOES.md](./docs/CONTRIBUICOES.md)** e **[docs/ATTRIBUTIONS.md](./docs/ATTRIBUTIONS.md)**.
+
+---
+
+## 📚 Documentação Técnica & Guias
+
+Toda a documentação técnica foi organizada no diretório [`docs/`](./docs/README.md):
+
+- 📚 **[Central de Documentação (Índice Geral)](./docs/README.md)** — Mapa completo de todos os documentos do projeto.
+- ⚛️ **[Guia do Frontend (React + Vite)](./docs/guides/FRONTEND.md)** — Detalhamento das 21 telas, componentes e serviços web.
+- 🔧 **[Guia do Backend (AdonisJS v7)](./docs/guides/BACKEND.md)** — Documentação de endpoints REST, modelos de dados e regras de negócio.
+- 👥 **[Matriz de Contribuições & Atribuições](./docs/CONTRIBUICOES.md)** — Detalhamento técnico por desenvolvedor.
+- 📋 **[Planejamento do Consumidor](./docs/product/PLANEJAMENTO-CONSUMIDOR.md)** — Backlog completo de épicos do módulo consumidor.
+- 🏛️ **[Modelagem do Banco de Dados](./docs/architecture/MODELAGEM-BANCO-DE-DADOS.md)** — Esquema conceitual e relacional das tabelas.
+- ⚖️ **[Decisões de Arquitetura (ADRs)](./docs/adr/)** — ADR-001 (Scraping Event-Driven) e ADR-002 (Multi-Tenant).

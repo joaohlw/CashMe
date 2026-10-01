@@ -1,11 +1,11 @@
-import type { ComponentType } from "react";
-import { T1, T2 } from "@/constants/theme";
+import type { ComponentType } from 'react'
+import { T1, T2 } from '@/constants/theme'
 
 export interface LinhaInformacaoProps {
-  Icon: ComponentType<{ size?: number; color?: string; strokeWidth?: number }>;
-  titulo: string;
-  valor: string;
-  corIcone: string;
+  Icon: ComponentType<{ size?: number; color?: string; strokeWidth?: number }>
+  titulo: string
+  valor: string
+  corIcone: string
 }
 
 /**
@@ -20,7 +20,7 @@ export function LinhaInformacao({ Icon, titulo, valor, corIcone }: LinhaInformac
         <p className="text-xs text-gray-500 m-0">{valor}</p>
       </div>
     </div>
-  );
+  )
 }
 
 // Alias para compatibilidade
@@ -30,8 +30,8 @@ export const Row = ({
   val,
   color,
 }: {
-  Icon: ComponentType<{ size?: number; color?: string; strokeWidth?: number }>;
-  title: string;
-  val: string;
-  color: string;
-}) => <LinhaInformacao Icon={Icon} titulo={title} valor={val} corIcone={color} />;
+  Icon: ComponentType<{ size?: number; color?: string; strokeWidth?: number }>
+  title: string
+  val: string
+  color: string
+}) => <LinhaInformacao Icon={Icon} titulo={title} valor={val} corIcone={color} />

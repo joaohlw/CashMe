@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   StyleSheet,
   View,
@@ -7,48 +7,48 @@ import {
   ScrollView,
   Dimensions,
   Alert,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { CameraView, useCameraPermissions, BarcodeScanningResult } from 'expo-camera';
-import * as Haptics from 'expo-haptics';
-import * as Clipboard from 'expo-clipboard';
-import { router } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
-import { isValidSefazUrl } from '@/utils/nfce-parser';
+} from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { CameraView, useCameraPermissions, BarcodeScanningResult } from 'expo-camera'
+import * as Haptics from 'expo-haptics'
+import * as Clipboard from 'expo-clipboard'
+import { router } from 'expo-router'
+import { Ionicons } from '@expo/vector-icons'
+import { isValidSefazUrl } from '@/utils/nfce-parser'
 
-const { width } = Dimensions.get('window');
-const SCAN_FRAME_SIZE = Math.min(width * 0.68, 260);
+const { width } = Dimensions.get('window')
+const SCAN_FRAME_SIZE = Math.min(width * 0.68, 260)
 
 interface ScanHistoryItem {
-  data: string;
-  isSefaz: boolean;
-  uf?: string;
-  timestamp: Date;
+  data: string
+  isSefaz: boolean
+  uf?: string
+  timestamp: Date
 }
 
 export default function QrScannerTabScreen() {
-  const [permission, requestPermission] = useCameraPermissions();
-  const [scannedData, setScannedData] = useState<string | null>(null);
-  const [isSefazValid, setIsSefazValid] = useState<boolean>(false);
-  const [sefazWarning, setSefazWarning] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
-  const [torch, setTorch] = useState(false);
-  const [facing, setFacing] = useState<'back' | 'front'>('back');
-  const [history, setHistory] = useState<ScanHistoryItem[]>([]);
+  const [permission, requestPermission] = useCameraPermissions()
+  const [scannedData, setScannedData] = useState<string | null>(null)
+  const [isSefazValid, setIsSefazValid] = useState<boolean>(false)
+  const [sefazWarning, setSefazWarning] = useState<string | null>(null)
+  const [copied, setCopied] = useState(false)
+  const [torch, setTorch] = useState(false)
+  const [facing, setFacing] = useState<'back' | 'front'>('back')
+  const [history, setHistory] = useState<ScanHistoryItem[]>([])
 
   const handleBarcodeScanned = async ({ data }: BarcodeScanningResult) => {
-    if (scannedData || !data) return;
+    if (scannedData || !data) return
 
     try {
-      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
     } catch {
       // ignore
     }
 
-    const validation = isValidSefazUrl(data);
-    setScannedData(data);
-    setIsSefazValid(validation.isValid && validation.isAllowed);
-    setSefazWarning(validation.reason ?? null);
+    const validation = isValidSefazUrl(data)
+    setScannedData(data)
+    setIsSefazValid(validation.isValid && validation.isAllowed)
+    setSefazWarning(validation.reason ?? null)
 
     setHistory((prev) => [
       {
@@ -58,36 +58,36 @@ export default function QrScannerTabScreen() {
         timestamp: new Date(),
       },
       ...prev.slice(0, 9),
-    ]);
-  };
+    ])
+  }
 
   const handleCopy = async () => {
-    if (!scannedData) return;
+    if (!scannedData) return
     try {
-      await Clipboard.setStringAsync(scannedData);
-      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      await Clipboard.setStringAsync(scannedData)
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
     } catch {
-      Alert.alert('Copiado', scannedData);
+      Alert.alert('Copiado', scannedData)
     }
-  };
+  }
 
   const handleSendToScraper = () => {
-    if (!scannedData) return;
+    if (!scannedData) return
     router.push({
       pathname: '/',
       params: { url: scannedData },
-    });
-    setScannedData(null);
-  };
+    })
+    setScannedData(null)
+  }
 
   const handleResetScan = () => {
-    setScannedData(null);
-    setIsSefazValid(false);
-    setSefazWarning(null);
-    setCopied(false);
-  };
+    setScannedData(null)
+    setIsSefazValid(false)
+    setSefazWarning(null)
+    setCopied(false)
+  }
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
@@ -143,7 +143,8 @@ export default function QrScannerTabScreen() {
               <View style={styles.cameraControls}>
                 <TouchableOpacity
                   style={[styles.floatingBtn, torch && styles.floatingBtnActive]}
-                  onPress={() => setTorch((t) => !t)}>
+                  onPress={() => setTorch((t) => !t)}
+                >
                   <Ionicons
                     name={torch ? 'flash' : 'flash-off'}
                     size={20}
@@ -153,7 +154,8 @@ export default function QrScannerTabScreen() {
 
                 <TouchableOpacity
                   style={styles.floatingBtn}
-                  onPress={() => setFacing((f) => (f === 'back' ? 'front' : 'back'))}>
+                  onPress={() => setFacing((f) => (f === 'back' ? 'front' : 'back'))}
+                >
                   <Ionicons name="camera-reverse-outline" size={20} color="#FFFFFF" />
                 </TouchableOpacity>
               </View>
@@ -184,7 +186,8 @@ export default function QrScannerTabScreen() {
             <View style={styles.resultActions}>
               <TouchableOpacity
                 style={[styles.actionPrimaryBtn, !isSefazValid && styles.actionSecondaryBtn]}
-                onPress={handleSendToScraper}>
+                onPress={handleSendToScraper}
+              >
                 <Ionicons name="sparkles" size={16} color="#FFFFFF" />
                 <Text style={styles.actionPrimaryBtnText}>Processar no Cash Me</Text>
               </TouchableOpacity>
@@ -209,7 +212,8 @@ export default function QrScannerTabScreen() {
           <View style={styles.hintCard}>
             <Ionicons name="shield-checkmark-outline" size={20} color="#008D4C" />
             <Text style={styles.hintText}>
-              Aponte para o QR Code de notas do Paraná (PR) ou Santa Catarina (SC) para validação instantânea.
+              Aponte para o QR Code de notas do Paraná (PR) ou Santa Catarina (SC) para validação
+              instantânea.
             </Text>
           </View>
         )}
@@ -223,8 +227,9 @@ export default function QrScannerTabScreen() {
                 key={idx}
                 style={styles.historyItem}
                 onPress={() => {
-                  router.push({ pathname: '/', params: { url: item.data } });
-                }}>
+                  router.push({ pathname: '/', params: { url: item.data } })
+                }}
+              >
                 <Ionicons
                   name={item.isSefaz ? 'receipt' : 'link'}
                   size={18}
@@ -236,7 +241,10 @@ export default function QrScannerTabScreen() {
                   </Text>
                   <Text style={styles.historyMeta}>
                     {item.uf ? `SEFAZ ${item.uf} • ` : ''}
-                    {item.timestamp.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                    {item.timestamp.toLocaleTimeString('pt-BR', {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
                   </Text>
                 </View>
                 <Ionicons name="chevron-forward" size={16} color="#D1D5DB" />
@@ -246,7 +254,7 @@ export default function QrScannerTabScreen() {
         )}
       </ScrollView>
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -509,4 +517,4 @@ const styles = StyleSheet.create({
     color: '#9CA3AF',
     marginTop: 2,
   },
-});
+})

@@ -19,7 +19,7 @@ export default class User extends compose(UserSchema, withAuthFinder(hash)) {
   declare customerProfile: HasOne<typeof UserCustomer>
 
   get initials() {
-    const name = this.fullName || (this.customerProfile ? this.customerProfile.fullName : null)
+    const name = this.customerProfile ? this.customerProfile.fullName : null
     const [first, last] = name ? name.split(' ') : this.email.split('@')
     if (first && last) {
       return `${first.charAt(0)}${last.charAt(0)}`.toUpperCase()

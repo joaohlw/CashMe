@@ -17,7 +17,6 @@ export default class UserCustomersController {
     const payload = await request.validateUsing(signupCustomerValidator)
 
     const user = await User.create({
-      fullName: payload.fullName,
       email: payload.email,
       password: payload.password,
       userType: 'CUSTOMER',

@@ -1,25 +1,19 @@
-﻿import {
-  Star,
-  QrCode,
-  ArrowUpRight,
-  ChevronRight,
-  Percent,
-} from "lucide-react";
-import { G, GD, GOLD } from "@/constants/theme";
-import { offers, categories, stores } from "@/data/mocks";
-import { useApp } from "@/context/AppContext";
-import type { ConsumerScreen } from "@/types/navigation";
+﻿import { Star, QrCode, ArrowUpRight, ChevronRight, Percent } from 'lucide-react'
+import { G, GD, GOLD } from '@/constants/theme'
+import { offers, categories, stores } from '@/data/mocks'
+import { useApp } from '@/context/AppContext'
+import type { ConsumerScreen } from '@/types/navigation'
 
 interface HomeScreenProps {
-  go: (s: ConsumerScreen) => void;
+  go: (s: ConsumerScreen) => void
 }
 
 export function HomeScreen({ go }: HomeScreenProps) {
-  const { userName, userPoints } = useApp();
-  const estimatedCashback = (userPoints * 0.02).toLocaleString("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  });
+  const { userName, userPoints } = useApp()
+  const estimatedCashback = (userPoints * 0.02).toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  })
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -42,7 +36,7 @@ export function HomeScreen({ go }: HomeScreenProps) {
         </div>
 
         <button
-          onClick={() => go("qr-code")}
+          onClick={() => go('qr-code')}
           className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow-xs transition-all cursor-pointer hover:scale-[1.02] self-start sm:self-auto"
         >
           <QrCode size={15} />
@@ -69,7 +63,7 @@ export function HomeScreen({ go }: HomeScreenProps) {
             </div>
             <div className="flex items-baseline gap-1.5">
               <span className="text-3xl sm:text-4xl font-black tracking-tight leading-none">
-                {userPoints.toLocaleString("pt-BR")}
+                {userPoints.toLocaleString('pt-BR')}
               </span>
               <span className="text-sm font-semibold text-emerald-200">pts</span>
             </div>
@@ -80,7 +74,7 @@ export function HomeScreen({ go }: HomeScreenProps) {
 
           <div className="mt-4 pt-3 border-t border-white/20 flex items-center justify-between">
             <button
-              onClick={() => go("wallet")}
+              onClick={() => go('wallet')}
               className="text-xs font-semibold text-white flex items-center gap-1 hover:underline cursor-pointer"
             >
               Ver Extrato <ArrowUpRight size={13} />
@@ -106,7 +100,7 @@ export function HomeScreen({ go }: HomeScreenProps) {
           </div>
 
           <button
-            onClick={() => go("qr-code")}
+            onClick={() => go('qr-code')}
             className="mt-4 w-full py-2 px-3 bg-gray-50 hover:bg-emerald-50 hover:text-emerald-800 text-gray-600 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer border border-gray-100"
           >
             <span>Inserir Chave de 44 Dígitos</span>
@@ -127,12 +121,13 @@ export function HomeScreen({ go }: HomeScreenProps) {
             </div>
             <h3 className="text-sm font-bold text-gray-900 mb-0.5">Cupons disponíveis!</h3>
             <p className="text-xs text-gray-400 leading-relaxed">
-              Com seu saldo de {userPoints} pts, você já pode resgatar ofertas na Padaria e Farmácia.
+              Com seu saldo de {userPoints} pts, você já pode resgatar ofertas na Padaria e
+              Farmácia.
             </p>
           </div>
 
           <button
-            onClick={() => go("offers")}
+            onClick={() => go('offers')}
             className="mt-4 w-full py-2 px-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer border border-emerald-100"
           >
             <span>Ver Vitrine de Recompensas</span>
@@ -146,10 +141,12 @@ export function HomeScreen({ go }: HomeScreenProps) {
         <div className="flex items-center justify-between mb-4">
           <div>
             <h2 className="text-base font-bold text-gray-900">Categorias</h2>
-            <p className="text-[11px] text-gray-400">Explore parceiros por segmento no comércio local</p>
+            <p className="text-[11px] text-gray-400">
+              Explore parceiros por segmento no comércio local
+            </p>
           </div>
           <button
-            onClick={() => go("categories")}
+            onClick={() => go('categories')}
             className="text-xs font-semibold text-emerald-700 hover:underline flex items-center gap-0.5 cursor-pointer"
           >
             Ver Todas <ChevronRight size={13} />
@@ -160,7 +157,7 @@ export function HomeScreen({ go }: HomeScreenProps) {
           {categories.map((cat) => (
             <button
               key={cat.name}
-              onClick={() => go("stores")}
+              onClick={() => go('stores')}
               className="group flex flex-col items-center p-3 rounded-xl border border-gray-100 hover:border-emerald-300 hover:shadow-xs transition-all cursor-pointer bg-gray-50/40 hover:bg-white"
             >
               <div
@@ -180,10 +177,12 @@ export function HomeScreen({ go }: HomeScreenProps) {
         <div className="flex items-center justify-between mb-4">
           <div>
             <h2 className="text-base font-bold text-gray-900">Cupons em Destaque</h2>
-            <p className="text-[11px] text-gray-400">Troque seus pontos acumulados por vantagens na hora</p>
+            <p className="text-[11px] text-gray-400">
+              Troque seus pontos acumulados por vantagens na hora
+            </p>
           </div>
           <button
-            onClick={() => go("offers")}
+            onClick={() => go('offers')}
             className="text-xs font-semibold text-emerald-700 hover:underline flex items-center gap-0.5 cursor-pointer"
           >
             Ver Todos <ChevronRight size={13} />
@@ -194,7 +193,7 @@ export function HomeScreen({ go }: HomeScreenProps) {
           {offers.map((o) => (
             <div
               key={o.id}
-              onClick={() => go("offer-detail")}
+              onClick={() => go('offer-detail')}
               className="group rounded-xl border border-gray-200/70 overflow-hidden hover:shadow-md hover:border-emerald-300 transition-all cursor-pointer flex flex-col bg-white"
             >
               <div className="h-36 relative overflow-hidden bg-gray-100">
@@ -210,9 +209,7 @@ export function HomeScreen({ go }: HomeScreenProps) {
                   </span>
                 </div>
                 <div className="absolute bottom-2.5 left-2.5 right-2.5 text-white">
-                  <p className="text-base font-black leading-tight drop-shadow-xs">
-                    {o.discount}
-                  </p>
+                  <p className="text-base font-black leading-tight drop-shadow-xs">{o.discount}</p>
                 </div>
               </div>
 
@@ -240,10 +237,12 @@ export function HomeScreen({ go }: HomeScreenProps) {
         <div className="flex items-center justify-between mb-4">
           <div>
             <h2 className="text-base font-bold text-gray-900">Lojas Parceiras</h2>
-            <p className="text-[11px] text-gray-400">Onde suas notas fiscais geram pontos garantidos</p>
+            <p className="text-[11px] text-gray-400">
+              Onde suas notas fiscais geram pontos garantidos
+            </p>
           </div>
           <button
-            onClick={() => go("stores")}
+            onClick={() => go('stores')}
             className="text-xs font-semibold text-emerald-700 hover:underline flex items-center gap-0.5 cursor-pointer"
           >
             Ver Todas <ChevronRight size={13} />
@@ -254,7 +253,7 @@ export function HomeScreen({ go }: HomeScreenProps) {
           {stores.map((s) => (
             <div
               key={s.id}
-              onClick={() => go("store-detail")}
+              onClick={() => go('store-detail')}
               className="p-4 rounded-xl border border-gray-200/70 hover:border-emerald-300 hover:shadow-xs transition-all cursor-pointer flex flex-col justify-between bg-white group"
             >
               <div>
@@ -274,9 +273,7 @@ export function HomeScreen({ go }: HomeScreenProps) {
                 </h3>
                 <p className="text-[11px] text-gray-400 mt-0.5">{s.loc}</p>
                 <div className="mt-2.5 p-1.5 bg-emerald-50/70 rounded-lg border border-emerald-100/70">
-                  <p className="text-[10px] font-bold text-emerald-800">
-                    {s.rule}
-                  </p>
+                  <p className="text-[10px] font-bold text-emerald-800">{s.rule}</p>
                 </div>
               </div>
 
@@ -289,5 +286,5 @@ export function HomeScreen({ go }: HomeScreenProps) {
         </div>
       </section>
     </div>
-  );
+  )
 }

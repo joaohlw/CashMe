@@ -1,33 +1,35 @@
-﻿import { useState } from "react";
-import { ShoppingBag, Star, User, Store, LogOut, LogIn, ChevronDown } from "lucide-react";
-import { G, GD, GOLD } from "@/constants/theme";
-import type { AppMode } from "@/types/navigation";
-import { useAuth } from "@/context/AuthContext";
-import { useApp } from "@/context/AppContext";
-import { AuthModal } from "./AuthModal";
+﻿import { useState } from 'react'
+import { ShoppingBag, Star, User, Store, LogOut, LogIn, ChevronDown } from 'lucide-react'
+import { G, GD, GOLD } from '@/constants/theme'
+import type { AppMode } from '@/types/navigation'
+import { useAuth } from '@/context/AuthContext'
+import { useApp } from '@/context/AppContext'
+import { AuthModal } from './AuthModal'
 
 interface WebNavbarProps {
-  mode: AppMode;
-  onSelectMode: (mode: AppMode) => void;
+  mode: AppMode
+  onSelectMode: (mode: AppMode) => void
 }
 
 export function WebNavbar({ mode, onSelectMode }: WebNavbarProps) {
-  const { user, isAuthenticated, logout } = useAuth();
-  const { userPoints, merchantStoreName } = useApp();
-  const [isAuthOpen, setIsAuthOpen] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, isAuthenticated, logout } = useAuth()
+  const { userPoints, merchantStoreName } = useApp()
+  const [isAuthOpen, setIsAuthOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
-  const displayName = user?.fullName || "Leandro Bona";
-  const displayEmail = user?.email || "leandro.bona@email.com";
-  const displayInitials = user?.initials || displayName.slice(0, 2).toUpperCase();
+  const displayName = user?.fullName || 'Leandro Bona'
+  const displayEmail = user?.email || 'leandro.bona@email.com'
+  const displayInitials = user?.initials || displayName.slice(0, 2).toUpperCase()
 
   return (
     <>
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-gray-200/60 shadow-xs transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between gap-4">
-          
           {/* Logo & Brand */}
-          <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => onSelectMode("landing")}>
+          <div
+            className="flex items-center gap-2.5 cursor-pointer"
+            onClick={() => onSelectMode('landing')}
+          >
             <div
               className="w-8 h-8 rounded-lg flex items-center justify-center shadow-xs"
               style={{ background: `linear-gradient(135deg, ${G}, ${GD})` }}
@@ -47,22 +49,22 @@ export function WebNavbar({ mode, onSelectMode }: WebNavbarProps) {
           {/* Center: Mode Switcher (Compact & Subtle) */}
           <div className="hidden md:flex items-center bg-gray-100/90 p-0.5 rounded-full border border-gray-200/70">
             <button
-              onClick={() => onSelectMode("consumer")}
+              onClick={() => onSelectMode('consumer')}
               className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer ${
-                mode === "consumer"
-                  ? "bg-white text-emerald-700 shadow-xs"
-                  : "text-gray-500 hover:text-gray-800"
+                mode === 'consumer'
+                  ? 'bg-white text-emerald-700 shadow-xs'
+                  : 'text-gray-500 hover:text-gray-800'
               }`}
             >
               <User size={13} />
               Consumidor
             </button>
             <button
-              onClick={() => onSelectMode("merchant")}
+              onClick={() => onSelectMode('merchant')}
               className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer ${
-                mode === "merchant"
-                  ? "bg-purple-800 text-white shadow-xs"
-                  : "text-gray-500 hover:text-gray-800"
+                mode === 'merchant'
+                  ? 'bg-purple-800 text-white shadow-xs'
+                  : 'text-gray-500 hover:text-gray-800'
               }`}
             >
               <Store size={13} />
@@ -73,15 +75,15 @@ export function WebNavbar({ mode, onSelectMode }: WebNavbarProps) {
           {/* Right Actions */}
           <div className="flex items-center gap-2.5">
             {/* Consumer Points Pill */}
-            {mode === "consumer" && (
+            {mode === 'consumer' && (
               <div className="flex items-center gap-1.5 bg-emerald-50 border border-emerald-200/60 px-2.5 py-1 rounded-full text-xs font-bold text-emerald-800">
                 <Star size={12} color={GOLD} fill={GOLD} />
-                <span>{userPoints.toLocaleString("pt-BR")} pts</span>
+                <span>{userPoints.toLocaleString('pt-BR')} pts</span>
               </div>
             )}
 
             {/* Merchant Store Badge */}
-            {mode === "merchant" && (
+            {mode === 'merchant' && (
               <div className="hidden sm:flex items-center gap-1.5 bg-purple-50 border border-purple-200/60 px-2.5 py-1 rounded-full text-xs font-bold text-purple-900">
                 <Store size={12} className="text-purple-700" />
                 <span className="truncate max-w-[120px]">{merchantStoreName}</span>
@@ -99,7 +101,7 @@ export function WebNavbar({ mode, onSelectMode }: WebNavbarProps) {
                     {displayInitials}
                   </div>
                   <span className="hidden lg:inline-block text-xs font-semibold text-gray-800 max-w-[100px] truncate">
-                    {displayName.split(" ")[0]}
+                    {displayName.split(' ')[0]}
                   </span>
                   <ChevronDown size={12} className="text-gray-400" />
                 </button>
@@ -113,8 +115,8 @@ export function WebNavbar({ mode, onSelectMode }: WebNavbarProps) {
                     </div>
                     <button
                       onClick={() => {
-                        onSelectMode("consumer");
-                        setIsMenuOpen(false);
+                        onSelectMode('consumer')
+                        setIsMenuOpen(false)
                       }}
                       className="w-full px-3.5 py-1.5 text-left text-xs text-gray-700 hover:bg-gray-50 flex items-center gap-2 cursor-pointer"
                     >
@@ -123,8 +125,8 @@ export function WebNavbar({ mode, onSelectMode }: WebNavbarProps) {
                     </button>
                     <button
                       onClick={() => {
-                        onSelectMode("merchant");
-                        setIsMenuOpen(false);
+                        onSelectMode('merchant')
+                        setIsMenuOpen(false)
                       }}
                       className="w-full px-3.5 py-1.5 text-left text-xs text-gray-700 hover:bg-gray-50 flex items-center gap-2 cursor-pointer"
                     >
@@ -134,8 +136,8 @@ export function WebNavbar({ mode, onSelectMode }: WebNavbarProps) {
                     <div className="my-1 border-t border-gray-100" />
                     <button
                       onClick={() => {
-                        logout();
-                        setIsMenuOpen(false);
+                        logout()
+                        setIsMenuOpen(false)
                       }}
                       className="w-full px-3.5 py-1.5 text-left text-xs text-red-600 hover:bg-red-50 flex items-center gap-2 font-semibold cursor-pointer"
                     >
@@ -160,17 +162,17 @@ export function WebNavbar({ mode, onSelectMode }: WebNavbarProps) {
         {/* Mobile Switcher Bar */}
         <div className="flex md:hidden border-t border-gray-100 px-4 py-1.5 bg-gray-50/80 justify-around text-xs">
           <button
-            onClick={() => onSelectMode("consumer")}
+            onClick={() => onSelectMode('consumer')}
             className={`flex items-center gap-1 font-semibold px-3 py-1 rounded-full ${
-              mode === "consumer" ? "bg-emerald-600 text-white" : "text-gray-600"
+              mode === 'consumer' ? 'bg-emerald-600 text-white' : 'text-gray-600'
             }`}
           >
             <User size={12} /> Consumidor
           </button>
           <button
-            onClick={() => onSelectMode("merchant")}
+            onClick={() => onSelectMode('merchant')}
             className={`flex items-center gap-1 font-semibold px-3 py-1 rounded-full ${
-              mode === "merchant" ? "bg-purple-800 text-white" : "text-gray-600"
+              mode === 'merchant' ? 'bg-purple-800 text-white' : 'text-gray-600'
             }`}
           >
             <Store size={12} /> Comerciante
@@ -180,5 +182,5 @@ export function WebNavbar({ mode, onSelectMode }: WebNavbarProps) {
 
       <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
     </>
-  );
+  )
 }

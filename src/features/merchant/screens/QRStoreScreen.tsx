@@ -1,15 +1,24 @@
-﻿import { Download, Printer, Share2, RefreshCw, QrCode, Store, Sparkles, CheckCircle2 } from "lucide-react";
-import { P, PD } from "@/constants/theme";
-import { QRCodeSVG } from "@/components/common";
-import { useApp } from "@/context/AppContext";
-import { toast } from "sonner";
+﻿import {
+  Download,
+  Printer,
+  Share2,
+  RefreshCw,
+  QrCode,
+  Store,
+  Sparkles,
+  CheckCircle2,
+} from 'lucide-react'
+import { P, PD } from '@/constants/theme'
+import { QRCodeSVG } from '@/components/common'
+import { useApp } from '@/context/AppContext'
+import { toast } from 'sonner'
 
 export function QRStoreScreen() {
-  const { merchantStoreName } = useApp();
+  const { merchantStoreName } = useApp()
 
   const handleAction = (label: string) => {
-    toast.success(`Ação executada: ${label}`);
-  };
+    toast.success(`Ação executada: ${label}`)
+  }
 
   return (
     <div className="space-y-8 animate-fade-in">
@@ -23,12 +32,13 @@ export function QRStoreScreen() {
             QR Code Oficial do Estabelecimento
           </h1>
           <p className="text-sm text-gray-500 mt-0.5">
-            Imprima ou exiba este QR Code no caixa para que os clientes pontuem mesmo quando não levarem o cupom impresso.
+            Imprima ou exiba este QR Code no caixa para que os clientes pontuem mesmo quando não
+            levarem o cupom impresso.
           </p>
         </div>
 
         <button
-          onClick={() => handleAction("Imprimir Display de Mesa")}
+          onClick={() => handleAction('Imprimir Display de Mesa')}
           className="flex items-center gap-2 bg-purple-800 hover:bg-purple-900 text-white text-xs sm:text-sm font-bold px-5 py-3 rounded-xl shadow-md shadow-purple-800/20 transition-all cursor-pointer"
         >
           <Printer size={18} />
@@ -68,7 +78,7 @@ export function QRStoreScreen() {
 
             <div className="space-y-3">
               <button
-                onClick={() => handleAction("Download PNG em Alta Resolução")}
+                onClick={() => handleAction('Download PNG em Alta Resolução')}
                 className="w-full p-3.5 rounded-2xl border border-gray-200 hover:border-purple-300 hover:bg-purple-50/40 transition-all flex items-center gap-3 cursor-pointer text-left"
               >
                 <div className="w-10 h-10 rounded-xl bg-purple-100 text-purple-800 flex items-center justify-center">
@@ -76,12 +86,14 @@ export function QRStoreScreen() {
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-gray-900">Baixar Imagem PNG</h4>
-                  <p className="text-[11px] text-gray-500">Alta resolução para adesivos e displays</p>
+                  <p className="text-[11px] text-gray-500">
+                    Alta resolução para adesivos e displays
+                  </p>
                 </div>
               </button>
 
               <button
-                onClick={() => handleAction("Download PDF Pronto para Impressão")}
+                onClick={() => handleAction('Download PDF Pronto para Impressão')}
                 className="w-full p-3.5 rounded-2xl border border-gray-200 hover:border-purple-300 hover:bg-purple-50/40 transition-all flex items-center gap-3 cursor-pointer text-left"
               >
                 <div className="w-10 h-10 rounded-xl bg-purple-100 text-purple-800 flex items-center justify-center">
@@ -94,7 +106,7 @@ export function QRStoreScreen() {
               </button>
 
               <button
-                onClick={() => handleAction("Link Copiado para Área de Transferência")}
+                onClick={() => handleAction('Link Copiado para Área de Transferência')}
                 className="w-full p-3.5 rounded-2xl border border-gray-200 hover:border-purple-300 hover:bg-purple-50/40 transition-all flex items-center gap-3 cursor-pointer text-left"
               >
                 <div className="w-10 h-10 rounded-xl bg-purple-100 text-purple-800 flex items-center justify-center">
@@ -114,11 +126,15 @@ export function QRStoreScreen() {
               <span>Dica de Fidelização no Caixa</span>
             </h4>
             <p className="text-xs text-purple-950 leading-relaxed">
-              Oriente os atendentes a dizerem: <em>"Quer acumular pontos nesta compra? Aponte a câmera para o QR Code no balcão ou escaneie o rodapé da nota fiscal!"</em>
+              Oriente os atendentes a dizerem:{' '}
+              <em>
+                "Quer acumular pontos nesta compra? Aponte a câmera para o QR Code no balcão ou
+                escaneie o rodapé da nota fiscal!"
+              </em>
             </p>
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }

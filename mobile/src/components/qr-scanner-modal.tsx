@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   Modal,
   StyleSheet,
@@ -7,62 +7,58 @@ import {
   TouchableOpacity,
   Dimensions,
   ActivityIndicator,
-} from 'react-native';
-import { CameraView, useCameraPermissions, BarcodeScanningResult } from 'expo-camera';
-import * as Haptics from 'expo-haptics';
-import * as Clipboard from 'expo-clipboard';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
+} from 'react-native'
+import { CameraView, useCameraPermissions, BarcodeScanningResult } from 'expo-camera'
+import * as Haptics from 'expo-haptics'
+import * as Clipboard from 'expo-clipboard'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { Ionicons } from '@expo/vector-icons'
 
 interface QrScannerModalProps {
-  visible: boolean;
-  onClose: () => void;
-  onScan: (url: string) => void;
+  visible: boolean
+  onClose: () => void
+  onScan: (url: string) => void
 }
 
-const { width } = Dimensions.get('window');
-const SCAN_FRAME_SIZE = Math.min(width * 0.72, 280);
+const { width } = Dimensions.get('window')
+const SCAN_FRAME_SIZE = Math.min(width * 0.72, 280)
 
 export function QrScannerModal({ visible, onClose, onScan }: QrScannerModalProps) {
-  const [permission, requestPermission] = useCameraPermissions();
-  const [scanned, setScanned] = useState(false);
-  const [torch, setTorch] = useState(false);
-  const [facing, setFacing] = useState<'back' | 'front'>('back');
+  const [permission, requestPermission] = useCameraPermissions()
+  const [scanned, setScanned] = useState(false)
+  const [torch, setTorch] = useState(false)
+  const [facing, setFacing] = useState<'back' | 'front'>('back')
 
   const handleBarcodeScanned = async ({ data }: BarcodeScanningResult) => {
-    if (scanned || !data) return;
-    setScanned(true);
+    if (scanned || !data) return
+    setScanned(true)
 
     try {
-      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
     } catch {
       // Falha silenciosa se haptics não for suportado
     }
 
     try {
-      await Clipboard.setStringAsync(data);
+      await Clipboard.setStringAsync(data)
     } catch {
       // Falha silenciosa no clipboard
     }
 
-    onScan(data);
+    onScan(data)
     setTimeout(() => {
-      setScanned(false);
-      onClose();
-    }, 300);
-  };
+      setScanned(false)
+      onClose()
+    }, 300)
+  }
 
   const handleClose = () => {
-    setScanned(false);
-    onClose();
-  };
+    setScanned(false)
+    onClose()
+  }
 
   return (
-    <Modal
-      animationType="slide"
-      transparent={false}
-      visible={visible}
-      onRequestClose={handleClose}>
+    <Modal animationType="slide" transparent={false} visible={visible} onRequestClose={handleClose}>
       <SafeAreaView style={styles.container}>
         {!permission ? (
           <View style={styles.permissionContainer}>
@@ -74,7 +70,8 @@ export function QrScannerModal({ visible, onClose, onScan }: QrScannerModalProps
             <Ionicons name="camera-outline" size={64} color="#008D4C" />
             <Text style={styles.permissionTitle}>Permissão da Câmera Necessária</Text>
             <Text style={styles.permissionDescription}>
-              Precisamos de acesso à câmera do celular para escanear os QR Codes das NFC-e e acumular seus pontos no Cash Me.
+              Precisamos de acesso à câmera do celular para escanear os QR Codes das NFC-e e
+              acumular seus pontos no Cash Me.
             </Text>
             <TouchableOpacity style={styles.primaryBtn} onPress={requestPermission}>
               <Text style={styles.primaryBtnText}>Conceder Permissão</Text>
@@ -108,7 +105,8 @@ export function QrScannerModal({ visible, onClose, onScan }: QrScannerModalProps
                 <View style={styles.headerRightActions}>
                   <TouchableOpacity
                     style={[styles.iconBtn, torch && styles.iconBtnActive]}
-                    onPress={() => setTorch((t) => !t)}>
+                    onPress={() => setTorch((t) => !t)}
+                  >
                     <Ionicons
                       name={torch ? 'flash' : 'flash-off'}
                       size={22}
@@ -118,7 +116,8 @@ export function QrScannerModal({ visible, onClose, onScan }: QrScannerModalProps
 
                   <TouchableOpacity
                     style={[styles.iconBtn, { marginLeft: 10 }]}
-                    onPress={() => setFacing((f) => (f === 'back' ? 'front' : 'back'))}>
+                    onPress={() => setFacing((f) => (f === 'back' ? 'front' : 'back'))}
+                  >
                     <Ionicons name="camera-reverse-outline" size={22} color="#FFFFFF" />
                   </TouchableOpacity>
                 </View>
@@ -157,7 +156,7 @@ export function QrScannerModal({ visible, onClose, onScan }: QrScannerModalProps
         )}
       </SafeAreaView>
     </Modal>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -328,4 +327,4 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '700',
   },
-});
+})

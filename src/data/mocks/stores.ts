@@ -1,9 +1,54 @@
-import type { Store } from "@/types/consumer";
+import type { Store } from '@/types/consumer'
 
 export const stores: Store[] = [
-  { id: 1, name: "Padaria Real", cat: "Padaria", loc: "Centro", rule: "Acumule 1 ponto a cada R$ 1,00", pts: 850, color: "#92400E", bg: "#FEF3C7" },
-  { id: 2, name: "Mercado Bom Preço", cat: "Supermercado", loc: "Centro", rule: "Acumule 1 ponto a cada R$ 2,00", pts: 250, color: "#166534", bg: "#DCFCE7" },
-  { id: 3, name: "Farmácia Saúde", cat: "Farmácia", loc: "Centro", rule: "Acumule 2 pontos a cada R$ 1,00", pts: 100, color: "#1E40AF", bg: "#DBEAFE" },
-  { id: 4, name: "Boutique Estilo", cat: "Moda", loc: "Centro", rule: "Acumule 1 ponto a cada R$ 1,00", pts: 50, color: "#6B21A8", bg: "#F3E8FF" },
-  { id: 5, name: "Pet Shop Amigo", cat: "Pet Shop", loc: "Centro", rule: "Acumule 1 ponto a cada R$ 2,00", pts: 0, color: "#9A3412", bg: "#FFEDD5" },
-];
+  {
+    id: 1,
+    name: 'Padaria Real',
+    cat: 'Padaria',
+    loc: 'Centro',
+    rule: 'Acumule 1 ponto a cada R$ 1,00',
+    pts: 850,
+    color: '#92400E',
+    bg: '#FEF3C7',
+  },
+  {
+    id: 2,
+    name: 'Mercado Bom Preço',
+    cat: 'Supermercado',
+    loc: 'Centro',
+    rule: 'Acumule 1 ponto a cada R$ 2,00',
+    pts: 250,
+    color: '#166534',
+    bg: '#DCFCE7',
+  },
+  {
+    id: 3,
+    name: 'Farmácia Saúde',
+    cat: 'Farmácia',
+    loc: 'Centro',
+    rule: 'Acumule 2 pontos a cada R$ 1,00',
+    pts: 100,
+    color: '#1E40AF',
+    bg: '#DBEAFE',
+  },
+  {
+    id: 4,
+    name: 'Boutique Estilo',
+    cat: 'Moda',
+    loc: 'Centro',
+    rule: 'Acumule 1 ponto a cada R$ 1,00',
+    pts: 50,
+    color: '#6B21A8',
+    bg: '#F3E8FF',
+  },
+  {
+    id: 5,
+    name: 'Pet Shop Amigo',
+    cat: 'Pet Shop',
+    loc: 'Centro',
+    rule: 'Acumule 1 ponto a cada R$ 2,00',
+    pts: 0,
+    color: '#9A3412',
+    bg: '#FFEDD5',
+  },
+]

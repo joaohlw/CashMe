@@ -1,26 +1,26 @@
-﻿import { useState } from "react";
-import { Search, MapPin, Star, ArrowRight, Store as StoreIconLucide } from "lucide-react";
-import { stores } from "@/data/mocks";
-import type { ConsumerScreen } from "@/types/navigation";
+﻿import { useState } from 'react'
+import { Search, MapPin, Star, ArrowRight, Store as StoreIconLucide } from 'lucide-react'
+import { stores } from '@/data/mocks'
+import type { ConsumerScreen } from '@/types/navigation'
 
 interface StoresScreenProps {
-  back: () => void;
-  go: (s: ConsumerScreen) => void;
+  back: () => void
+  go: (s: ConsumerScreen) => void
 }
 
 export function StoresScreen({ back, go }: StoresScreenProps) {
-  const [filter, setFilter] = useState("Todas");
-  const [search, setSearch] = useState("");
-  const categories = ["Todas", "Padaria", "Farmácia", "Moda", "Pet Shop", "Mercado"];
+  const [filter, setFilter] = useState('Todas')
+  const [search, setSearch] = useState('')
+  const categories = ['Todas', 'Padaria', 'Farmácia', 'Moda', 'Pet Shop', 'Mercado']
 
   const filteredStores = stores.filter((s) => {
-    const matchCat = filter === "Todas" || s.cat.toLowerCase().includes(filter.toLowerCase());
+    const matchCat = filter === 'Todas' || s.cat.toLowerCase().includes(filter.toLowerCase())
     const matchSearch =
       s.name.toLowerCase().includes(search.toLowerCase()) ||
       s.cat.toLowerCase().includes(search.toLowerCase()) ||
-      s.loc.toLowerCase().includes(search.toLowerCase());
-    return matchCat && matchSearch;
-  });
+      s.loc.toLowerCase().includes(search.toLowerCase())
+    return matchCat && matchSearch
+  })
 
   return (
     <div className="space-y-8 animate-fade-in">
@@ -64,8 +64,8 @@ export function StoresScreen({ back, go }: StoresScreenProps) {
               onClick={() => setFilter(cat)}
               className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
                 filter === cat
-                  ? "bg-emerald-600 text-white shadow-xs"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-900"
+                  ? 'bg-emerald-600 text-white shadow-xs'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-900'
               }`}
             >
               {cat}
@@ -79,7 +79,7 @@ export function StoresScreen({ back, go }: StoresScreenProps) {
         {filteredStores.map((s) => (
           <div
             key={s.id}
-            onClick={() => go("store-detail")}
+            onClick={() => go('store-detail')}
             className="group bg-white rounded-3xl border border-gray-200/80 p-6 hover:border-emerald-400 hover:shadow-xl transition-all cursor-pointer flex flex-col justify-between"
           >
             <div>
@@ -98,7 +98,7 @@ export function StoresScreen({ back, go }: StoresScreenProps) {
               <h3 className="text-lg font-bold text-gray-900 group-hover:text-emerald-700 transition-colors">
                 {s.name}
               </h3>
-              
+
               <div className="flex items-center gap-1.5 text-xs text-gray-400 mt-1">
                 <MapPin size={14} className="text-gray-400" />
                 <span>{s.loc}</span>
@@ -108,9 +108,7 @@ export function StoresScreen({ back, go }: StoresScreenProps) {
                 <span className="text-[10px] uppercase font-bold text-emerald-600 tracking-wider block">
                   Regra de Pontuação (RN04)
                 </span>
-                <p className="text-xs font-bold text-emerald-900 mt-0.5">
-                  {s.rule}
-                </p>
+                <p className="text-xs font-bold text-emerald-900 mt-0.5">{s.rule}</p>
               </div>
             </div>
 
@@ -128,5 +126,5 @@ export function StoresScreen({ back, go }: StoresScreenProps) {
         ))}
       </div>
     </div>
-  );
+  )
 }

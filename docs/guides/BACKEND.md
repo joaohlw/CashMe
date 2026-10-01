@@ -1,4 +1,4 @@
-﻿# 🔧 Cash Me — Backend (API REST AdonisJS v7 + TypeScript)
+# 🔧 Cash Me — Backend (API REST AdonisJS v7 + TypeScript)
 
 > API RESTful robusta, desenvolvida em **AdonisJS v7** com **Lucid ORM**, banco de dados **SQLite** e validação com **VineJS**, projetada para atender ao ecossistema de fidelidade e processamento de notas fiscais (NFC-e).
 
@@ -6,15 +6,15 @@
 
 ## 🛠️ Stack Tecnológica
 
-| Tecnologia | Versão | Função |
-|---|---|---|
-| **AdonisJS** | v7.4 | Framework MVC Node.js moderno e opinativo |
-| **TypeScript** | ~6.0 | Tipagem estática ponta a ponta |
-| **Lucid ORM** | v22.4 | Mapeador objeto-relacional e gerenciador de migrations |
-| **SQLite / better-sqlite3** | v13.0 | Banco de dados local embutido de alta velocidade |
-| **VineJS** | v4.4 | Validador de esquemas de entrada de dados ultra-rápido |
-| **@adonisjs/auth** | v10.1 | Autenticação baseada em Access Tokens (Bearer Token / OAT) |
-| **Japa** | v5.3 | Framework oficial de testes automatizados |
+| Tecnologia                  | Versão | Função                                                     |
+| --------------------------- | ------ | ---------------------------------------------------------- |
+| **AdonisJS**                | v7.4   | Framework MVC Node.js moderno e opinativo                  |
+| **TypeScript**              | ~6.0   | Tipagem estática ponta a ponta                             |
+| **Lucid ORM**               | v22.4  | Mapeador objeto-relacional e gerenciador de migrations     |
+| **SQLite / better-sqlite3** | v13.0  | Banco de dados local embutido de alta velocidade           |
+| **VineJS**                  | v4.4   | Validador de esquemas de entrada de dados ultra-rápido     |
+| **@adonisjs/auth**          | v10.1  | Autenticação baseada em Access Tokens (Bearer Token / OAT) |
+| **Japa**                    | v5.3   | Framework oficial de testes automatizados                  |
 
 ---
 
@@ -65,9 +65,11 @@ cash-me/
 Base URL: `http://localhost:3333/api/v1`
 
 ### 1. Cadastro de Usuário (`POST /auth/signup`)
+
 Cria um novo usuário na base de dados e gera imediatamente um token de acesso.
 
 - **Corpo da Requisição (JSON):**
+
 ```json
 {
   "fullName": "João Silva",
@@ -78,6 +80,7 @@ Cria um novo usuário na base de dados e gera imediatamente um token de acesso.
 ```
 
 - **Resposta de Sucesso (`200 OK`):**
+
 ```json
 {
   "data": {
@@ -97,9 +100,11 @@ Cria um novo usuário na base de dados e gera imediatamente um token de acesso.
 ---
 
 ### 2. Login (`POST /auth/login`)
+
 Valida as credenciais do usuário com hash seguro (Argon2/Scrypt) e emite um novo token.
 
 - **Corpo da Requisição (JSON):**
+
 ```json
 {
   "email": "joao.silva@exemplo.com",
@@ -108,6 +113,7 @@ Valida as credenciais do usuário com hash seguro (Argon2/Scrypt) e emite um nov
 ```
 
 - **Resposta de Sucesso (`200 OK`):**
+
 ```json
 {
   "data": {
@@ -125,10 +131,12 @@ Valida as credenciais do usuário com hash seguro (Argon2/Scrypt) e emite um nov
 ---
 
 ### 3. Perfil do Usuário (`GET /account/profile`)
+
 Rota autenticada que retorna os dados do usuário dono do token.
 
 - **Headers:** `Authorization: Bearer <token>`
 - **Resposta de Sucesso (`200 OK`):**
+
 ```json
 {
   "data": {
@@ -145,13 +153,152 @@ Rota autenticada que retorna os dados do usuário dono do token.
 ---
 
 ### 4. Logout (`POST /account/logout`)
+
 Invalida e revoga o token de acesso na tabela `auth_access_tokens`.
 
 - **Headers:** `Authorization: Bearer <token>`
 - **Resposta de Sucesso (`200 OK`):**
+
 ```json
 {
   "message": "Logged out successfully"
+}
+```
+
+---
+
+### 5. Submissão e Crédito de NFC-e (`POST /nfce/submit`)
+
+Rota autenticada que valida, processa e credita pontos de uma NFC-e na carteira do consumidor (**RN01 a RN07**).
+
+- **Headers:** `Authorization: Bearer <token>`
+- **Corpo da Requisição (JSON):**
+
+```json
+{
+  "accessKey": "42260912345678000199650010000554431000998811",
+  "url": "https://sat.sef.sc.gov.br/nfce/consulta?p=...",
+  "factor": 1.0
+}
+```
+
+- **Resposta de Sucesso (`201 Created`):**
+
+```json
+{
+  "data": {
+    "nfce": {
+      "id": 1,
+      "chaveAcesso": "42260912345678000199650010000554431000998811",
+      "uf": "SC",
+      "valorTotal": 50,
+      "pontosGerados": 50,
+      "dataEmissao": "2026-10-01T22:00:00.000Z"
+    },
+    "establishment": {
+      "id": 1,
+      "razaoSocial": "Padaria Bella Vista Ltda",
+      "nomeFantasia": "Padaria Bella Vista",
+      "cnpj": "12345678000199",
+      "fatorConversao": 1
+    },
+    "saldo": {
+      "anterior": 0,
+      "atual": 50,
+      "totalAcumulado": 50
+    },
+    "transaction": {
+      "id": 1,
+      "tipo": "CREDITO",
+      "pontos": 50,
+      "descricao": "Crédito NFC-e: Padaria Bella Vista",
+      "createdAt": "2026-10-01T22:00:00.000Z"
+    }
+  },
+  "message": "NFC-e processada e pontos creditados com sucesso!"
+}
+```
+
+---
+
+### 6. Consulta de Saldo de Pontos (`GET /account/points/balance`)
+
+Retorna o saldo consolidado do consumidor e o desdobramento por loja parceira.
+
+- **Headers:** `Authorization: Bearer <token>`
+- **Resposta de Sucesso (`200 OK`):**
+
+```json
+{
+  "data": {
+    "totalBalance": 150,
+    "totalAccumulated": 200,
+    "byEstablishment": [
+      {
+        "establishmentId": 1,
+        "establishmentName": "Padaria Bella Vista",
+        "saldoAtual": 150,
+        "totalAcumulado": 200
+      }
+    ]
+  }
+}
+```
+
+---
+
+### 7. Extrato de Transações (`GET /account/points/transactions`)
+
+Retorna o histórico de créditos e resgates do consumidor.
+
+- **Headers:** `Authorization: Bearer <token>`
+- **Resposta de Sucesso (`200 OK`):**
+
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "tipo": "CREDITO",
+      "pontos": 50,
+      "descricao": "Crédito NFC-e: Padaria Bella Vista",
+      "valorCompra": 50,
+      "fatorConversao": 1,
+      "establishment": { "id": 1, "nome": "Padaria Bella Vista" },
+      "createdAt": "2026-10-01T22:00:00.000Z"
+    }
+  ]
+}
+```
+
+---
+
+### 8. Resgate de Pontos (`POST /account/points/redeem`)
+
+Realiza o resgate de pontos para troca por voucher ou recompensa.
+
+- **Headers:** `Authorization: Bearer <token>`
+- **Corpo da Requisição (JSON):**
+
+```json
+{
+  "establishmentId": 1,
+  "pontos": 50,
+  "descricao": "Resgate de Voucher Desconto R$ 5,00"
+}
+```
+
+- **Resposta de Sucesso (`200 OK`):**
+
+```json
+{
+  "data": {
+    "novoSaldo": 100,
+    "pontosResgatados": 50,
+    "establishment": "Padaria Bella Vista",
+    "transactionId": 2
+  },
+  "message": "Resgate efetuado com sucesso!"
 }
 ```
 
@@ -162,7 +309,7 @@ Invalida e revoga o token de acesso na tabela `auth_access_tokens`.
 O backend foi arquitetado com base nas especificações oficiais documentadas em `docs/`:
 
 1. **RN01 (Tempo de Emissão de 48h):** Notas fiscais com emissão superior a 48h no momento do escaneamento são rejeitadas.
-2. **RN02 (Unicidade Anti-Fraude):** A chave de acesso de 44 dígitos da NFC-e é única em toda a plataforma.
+2. **RN02 (Unicidade Anti-Fraude):** A chave de acesso de 44 dígitos da NFC-e é única em toda a plataforma (`UNIQUE` no banco).
 3. **RN03 (Match de CNPJ):** Destinação de pontos feita pelo cruzamento automático do CNPJ Emitente com o cadastro do Lojista.
 4. **RN04 (Cômputo Customizável):** O Fator de Conversão é configurável por estabelecimento (ex: R$ 1,00 = 1 Ponto).
 5. **RN05 (Proteção ao Consumidor):** Inadimplência do lojista bloqueia novos pontos, mas mantém intocado o saldo histórico do cliente.
@@ -174,23 +321,31 @@ O backend foi arquitetado com base nas especificações oficiais documentadas em
 
 ## 🧪 Testes Automatizados com Japa
 
-A suíte de testes funcionais cobre cadastro, validação de regras de senha, login com hash, consulta protegida com Bearer token e revogação no logout:
+A suíte cobre autenticação, perfis de consumidor e lojista, motor de pontuação relacional em banco, validação anti-fraude, saldos, resgates e validações fiscais de SC e PR:
 
 ```bash
 npm test
 ```
 
 Saída:
-```text
-functional / Auth API — Testes Exploratórios (tests\functional\auth.spec.ts)
-  √ deve cadastrar um novo usuário com sucesso (116ms)
-  √ deve rejeitar cadastro com senhas não coincidentes (8ms)
-  √ deve realizar login com credenciais válidas e retornar token (71ms)
-  √ deve rejeitar login com senha incorreta (61ms)
-  √ deve consultar o perfil autenticado via Bearer Token (50ms)
-  √ deve realizar logout revogando o token (58ms)
 
- PASSED: 6 testes passando (100% de sucesso)
+```text
+functional / Auth API — Testes Exploratórios (tests/functional/auth.spec.ts)
+  ✔ 7 testes passando
+
+functional / Functional | Customer Auth & Profile (tests/functional/customer.spec.ts)
+  ✔ 3 testes passando
+
+functional / Functional | Establishment Auth & Profile (tests/functional/establishment.spec.ts)
+  ✔ 3 testes passando
+
+functional / NFC-e Submission & Multi-Tenant Loyalty Ledger API (tests/functional/nfce_submit.spec.ts)
+  ✔ 4 testes passando
+
+functional / NFC-e Validation & Parsing API (tests/functional/nfce.spec.ts)
+  ✔ 5 testes passando
+
+ PASSED: 22 testes passando (100% de sucesso)
 ```
 
 ---
@@ -198,18 +353,24 @@ functional / Auth API — Testes Exploratórios (tests\functional\auth.spec.ts)
 ## 🚀 Como Executar o Backend
 
 ### Modo Integrado (Recomendado)
+
 Para rodar junto com o frontend:
+
 ```bash
 npm run dev
 ```
 
 ### Apenas o Backend
+
 ```bash
 npm run dev:server
 ```
+
 Servidor disponível em: **http://localhost:3333**
+Documentação Swagger UI: **http://localhost:3333/docs**
 
 ### Executar Migrations
+
 ```bash
 npm run db:migrate
 ```

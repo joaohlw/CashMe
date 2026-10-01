@@ -1,2 +1,2 @@
-export * from "./MerchantApp";
-export * from "./screens";
+export * from './MerchantApp'
+export * from './screens'

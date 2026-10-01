@@ -1,18 +1,16 @@
-﻿import { useState } from "react";
-import { Search, Users, ShieldCheck, ChevronRight, ArrowUpRight } from "lucide-react";
-import { customers } from "@/data/mocks";
-import type { MerchantScreen } from "@/types/navigation";
+﻿import { useState } from 'react'
+import { Search, Users, ShieldCheck, ChevronRight, ArrowUpRight } from 'lucide-react'
+import { customers } from '@/data/mocks'
+import type { MerchantScreen } from '@/types/navigation'
 
 interface CustomersScreenProps {
-  go: (s: MerchantScreen) => void;
+  go: (s: MerchantScreen) => void
 }
 
 export function CustomersScreen({ go }: CustomersScreenProps) {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('')
 
-  const filtered = customers.filter((c) =>
-    c.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const filtered = customers.filter((c) => c.name.toLowerCase().includes(search.toLowerCase()))
 
   return (
     <div className="space-y-8 animate-fade-in">
@@ -68,7 +66,7 @@ export function CustomersScreen({ go }: CustomersScreenProps) {
               {filtered.map((c) => (
                 <tr
                   key={c.id}
-                  onClick={() => go("customer-detail")}
+                  onClick={() => go('customer-detail')}
                   className="hover:bg-purple-50/40 transition-colors cursor-pointer group"
                 >
                   <td className="py-4">
@@ -89,11 +87,11 @@ export function CustomersScreen({ go }: CustomersScreenProps) {
                     <span
                       className={`px-3 py-1 rounded-full text-[11px] font-bold ${
                         c.active
-                          ? "bg-emerald-100 text-emerald-800 border border-emerald-200"
-                          : "bg-gray-100 text-gray-500"
+                          ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                          : 'bg-gray-100 text-gray-500'
                       }`}
                     >
-                      {c.active ? "Ativo" : "Inativo"}
+                      {c.active ? 'Ativo' : 'Inativo'}
                     </span>
                   </td>
 
@@ -117,5 +115,5 @@ export function CustomersScreen({ go }: CustomersScreenProps) {
         </div>
       </div>
     </div>
-  );
+  )
 }

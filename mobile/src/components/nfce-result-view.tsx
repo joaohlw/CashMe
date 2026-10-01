@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   StyleSheet,
   View,
@@ -7,68 +7,80 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
-} from 'react-native';
-import * as Clipboard from 'expo-clipboard';
-import * as Haptics from 'expo-haptics';
-import { Ionicons } from '@expo/vector-icons';
-import { NfceData, formatCurrency } from '@/utils/nfce-parser';
-import { mobileApi } from '@/services/api';
+} from 'react-native'
+import * as Clipboard from 'expo-clipboard'
+import * as Haptics from 'expo-haptics'
+import { Ionicons } from '@expo/vector-icons'
+import { NfceData, formatCurrency } from '@/utils/nfce-parser'
+import { mobileApi } from '@/services/api'
 
 interface NfceResultViewProps {
-  data: NfceData;
-  onReset: () => void;
+  data: NfceData
+  onReset: () => void
 }
 
 export function NfceResultView({ data, onReset }: NfceResultViewProps) {
-  const [copiedKey, setCopiedKey] = useState(false);
-  const [syncing, setSyncing] = useState(false);
-  const [syncSuccess, setSyncSuccess] = useState(false);
+  const [copiedKey, setCopiedKey] = useState(false)
+  const [syncing, setSyncing] = useState(false)
+  const [syncSuccess, setSyncSuccess] = useState(false)
 
   const handleCopyKey = async () => {
     try {
-      await Clipboard.setStringAsync(data.info.chaveAcesso);
-      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      setCopiedKey(true);
-      setTimeout(() => setCopiedKey(false), 2000);
+      await Clipboard.setStringAsync(data.info.chaveAcesso)
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+      setCopiedKey(true)
+      setTimeout(() => setCopiedKey(false), 2000)
     } catch {
-      Alert.alert('Chave copiada!', data.info.chaveAcesso);
+      Alert.alert('Chave copiada!', data.info.chaveAcesso)
     }
-  };
+  }
 
   const handleSyncWithApi = async () => {
-    setSyncing(true);
+    setSyncing(true)
     try {
-      const response = await mobileApi.validateNfce({
+      // Tenta submeter na API oficial de cômputo
+      const response = await mobileApi.submitNfce({
         accessKey: data.info.chaveAcesso,
         url: data.url,
-      });
+      })
 
-      if (response?.data?.isEligible) {
-        setSyncSuccess(true);
+      if (response?.data?.nfce || response?.data?.isEligible) {
+        setSyncSuccess(true)
         try {
-          await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+          await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
         } catch {
           // ignore
         }
         Alert.alert(
           'Sucesso no Cash Me! 🎉',
-          `NFC-e validada com sucesso na API!\n+${data.pontosCalculados} pontos creditados na sua conta.`
-        );
+          `NFC-e processada e registrada com sucesso no banco de dados!\n+${data.pontosCalculados} pontos creditados.`
+        )
       } else {
-        Alert.alert(
-          'Aviso da API',
-          response?.message || 'NFC-e processada localmente com sucesso.'
-        );
+        // Se a rota requerer auth ou retornar aviso
+        const valRes = await mobileApi.validateNfce({
+          accessKey: data.info.chaveAcesso,
+          url: data.url,
+        })
+
+        if (valRes?.data?.isEligible) {
+          setSyncSuccess(true)
+          Alert.alert(
+            'NFC-e Validada na API! 🎉',
+            `Chave válida na SEFAZ ${valRes.data.uf}.\nElegível para pontuação (+${data.pontosCalculados} pts).`
+          )
+        } else {
+          Alert.alert('Aviso da API', valRes?.message || response?.message || 'NFC-e processada.')
+        }
       }
     } catch (err: any) {
       Alert.alert(
         'Aviso de Conexão',
         'Não foi possível conectar ao servidor local AdonisJS (:3333). Os dados foram validados no dispositivo.'
-      );
+      )
     } finally {
-      setSyncing(false);
+      setSyncing(false)
     }
-  };
+  }
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
@@ -115,7 +127,8 @@ export function NfceResultView({ data, onReset }: NfceResultViewProps) {
 
         <TouchableOpacity
           style={[styles.copyBtn, copiedKey && styles.copyBtnSuccess]}
-          onPress={handleCopyKey}>
+          onPress={handleCopyKey}
+        >
           <Ionicons
             name={copiedKey ? 'checkmark' : 'copy-outline'}
             size={16}
@@ -161,7 +174,8 @@ export function NfceResultView({ data, onReset }: NfceResultViewProps) {
           {data.itens.map((item, idx) => (
             <View
               key={idx}
-              style={[styles.itemRow, idx === data.itens.length - 1 && styles.itemRowLast]}>
+              style={[styles.itemRow, idx === data.itens.length - 1 && styles.itemRowLast]}
+            >
               <View style={styles.itemInfo}>
                 <Text style={styles.itemDesc} numberOfLines={2}>
                   {item.descricao}
@@ -181,7 +195,8 @@ export function NfceResultView({ data, onReset }: NfceResultViewProps) {
         <TouchableOpacity
           style={[styles.syncBtn, syncSuccess && styles.syncBtnSuccess]}
           disabled={syncing}
-          onPress={handleSyncWithApi}>
+          onPress={handleSyncWithApi}
+        >
           {syncing ? (
             <ActivityIndicator size="small" color="#FFFFFF" />
           ) : (
@@ -204,7 +219,7 @@ export function NfceResultView({ data, onReset }: NfceResultViewProps) {
         </TouchableOpacity>
       </View>
     </ScrollView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -437,4 +452,4 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '700',
   },
-});
+})

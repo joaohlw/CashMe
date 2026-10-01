@@ -1,2 +1,2 @@
-export * from "./ConsumerApp";
-export * from "./screens";
+export * from './ConsumerApp'
+export * from './screens'

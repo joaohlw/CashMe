@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+﻿import { useState } from 'react'
 import {
   User,
   Store,
@@ -8,25 +8,25 @@ import {
   Sparkles,
   ArrowRight,
   Coins,
-} from "lucide-react";
-import { G, GD, P, PD } from "@/constants/theme";
-import type { AppMode } from "@/types/navigation";
-import { useAuth } from "@/context/AuthContext";
-import { AuthModal } from "@/components/layout/AuthModal";
+} from 'lucide-react'
+import { G, GD, P, PD } from '@/constants/theme'
+import type { AppMode } from '@/types/navigation'
+import { useAuth } from '@/context/AuthContext'
+import { AuthModal } from '@/components/layout/AuthModal'
 
 interface LandingScreenProps {
-  onSelect: (m: AppMode) => void;
+  onSelect: (m: AppMode) => void
 }
 
 export function LandingScreen({ onSelect }: LandingScreenProps) {
-  const { user, isAuthenticated, logout } = useAuth();
-  const [isAuthOpen, setIsAuthOpen] = useState(false);
-  const [authMode, setAuthMode] = useState<"login" | "signup">("login");
+  const { user, isAuthenticated, logout } = useAuth()
+  const [isAuthOpen, setIsAuthOpen] = useState(false)
+  const [authMode, setAuthMode] = useState<'login' | 'signup'>('login')
 
-  const openAuth = (mode: "login" | "signup") => {
-    setAuthMode(mode);
-    setIsAuthOpen(true);
-  };
+  const openAuth = (mode: 'login' | 'signup') => {
+    setAuthMode(mode)
+    setIsAuthOpen(true)
+  }
 
   return (
     <div className="w-full bg-gradient-to-b from-emerald-50/40 via-white to-gray-50 flex flex-col flex-1">
@@ -42,20 +42,21 @@ export function LandingScreen({ onSelect }: LandingScreenProps) {
         </div>
 
         <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight leading-tight mb-3">
-          O cashback que valoriza o{" "}
+          O cashback que valoriza o{' '}
           <span className="bg-gradient-to-r from-emerald-600 to-emerald-800 bg-clip-text text-transparent">
             comércio local
           </span>
         </h1>
 
         <p className="text-sm sm:text-base text-gray-500 leading-relaxed mb-8 max-w-xl mx-auto">
-          Escaneie o QR Code das suas notas fiscais de compras diárias, acumule pontos automáticos e resgate recompensas nas lojas parceiras.
+          Escaneie o QR Code das suas notas fiscais de compras diárias, acumule pontos automáticos e
+          resgate recompensas nas lojas parceiras.
         </p>
 
         {/* Selection Cards (Compact & Beautiful) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-lg mx-auto mb-8">
           <button
-            onClick={() => onSelect("consumer")}
+            onClick={() => onSelect('consumer')}
             className="p-4 rounded-2xl text-white shadow-md shadow-emerald-700/15 hover:shadow-lg transition-all hover:-translate-y-0.5 cursor-pointer text-left flex items-center justify-between group"
             style={{ background: `linear-gradient(135deg, ${G}, ${GD})` }}
           >
@@ -68,11 +69,14 @@ export function LandingScreen({ onSelect }: LandingScreenProps) {
                 <p className="text-[11px] text-emerald-100 mt-0.5">Acumule e resgate pontos</p>
               </div>
             </div>
-            <ArrowRight size={16} className="text-white/80 group-hover:translate-x-1 transition-transform" />
+            <ArrowRight
+              size={16}
+              className="text-white/80 group-hover:translate-x-1 transition-transform"
+            />
           </button>
 
           <button
-            onClick={() => onSelect("merchant")}
+            onClick={() => onSelect('merchant')}
             className="p-4 rounded-2xl text-white shadow-md shadow-purple-700/15 hover:shadow-lg transition-all hover:-translate-y-0.5 cursor-pointer text-left flex items-center justify-between group"
             style={{ background: `linear-gradient(135deg, ${P}, ${PD})` }}
           >
@@ -85,7 +89,10 @@ export function LandingScreen({ onSelect }: LandingScreenProps) {
                 <p className="text-[11px] text-purple-100 mt-0.5">Gerencie vendas e fidelidade</p>
               </div>
             </div>
-            <ArrowRight size={16} className="text-white/80 group-hover:translate-x-1 transition-transform" />
+            <ArrowRight
+              size={16}
+              className="text-white/80 group-hover:translate-x-1 transition-transform"
+            />
           </button>
         </div>
 
@@ -94,7 +101,8 @@ export function LandingScreen({ onSelect }: LandingScreenProps) {
           <div className="inline-flex items-center gap-3 px-4 py-2 bg-white rounded-full border border-gray-200 shadow-2xs">
             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <span className="text-xs text-gray-600">
-              Conectado como <strong className="text-gray-900">{user.fullName || user.email}</strong>
+              Conectado como{' '}
+              <strong className="text-gray-900">{user.fullName || user.email}</strong>
             </span>
             <button
               onClick={() => logout()}
@@ -107,14 +115,14 @@ export function LandingScreen({ onSelect }: LandingScreenProps) {
           <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
             <span>Já tem conta?</span>
             <button
-              onClick={() => openAuth("login")}
+              onClick={() => openAuth('login')}
               className="text-emerald-700 font-bold hover:underline cursor-pointer"
             >
               Entrar
             </button>
             <span>•</span>
             <button
-              onClick={() => openAuth("signup")}
+              onClick={() => openAuth('signup')}
               className="text-gray-700 font-bold hover:underline cursor-pointer"
             >
               Cadastrar-se
@@ -196,11 +204,7 @@ export function LandingScreen({ onSelect }: LandingScreenProps) {
         </div>
       </section>
 
-      <AuthModal
-        isOpen={isAuthOpen}
-        onClose={() => setIsAuthOpen(false)}
-        defaultMode={authMode}
-      />
+      <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} defaultMode={authMode} />
     </div>
-  );
+  )
 }

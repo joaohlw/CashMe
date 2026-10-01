@@ -2,13 +2,13 @@
 
 Este documento registra os épicos e o backlog de telas e funcionalidades futuras do aplicativo do consumidor na plataforma **Cash Me**.
 
-
 ---
 
 ## 📌 Diretrizes de Escopo & Critérios de Aceite
 
 > [!IMPORTANT]
 > **Critérios de Isolamento do Escopo:**
+>
 > 1. **Independência do MVP:** O escopo do consumidor está completamente isolado e não bloqueia nem compete com o desenvolvimento do MVP do Comerciante.
 > 2. **Status de Backlog:** Todas as tarefas e épicos listados abaixo estão com status **`Backlog (Post-MVP)`**, sem prioridade de execução imediata.
 > 3. **Gatilho de Início:** O desenvolvimento deste módulo só será iniciado após a validação e estabilização do MVP do Comerciante.
@@ -18,6 +18,7 @@ Este documento registra os épicos e o backlog de telas e funcionalidades futura
 ## 📦 Mapeamento de Épicos & Histórias de Usuário
 
 ### 🏷️ [EP01] Autenticação & Acesso
+
 - **Status:** `Backlog` | **Prioridade:** `Post-MVP`
 - **Descrição:** Permitir que o consumidor realize login seguro e recupere o acesso à sua conta.
 - **Itens executáveis:**
@@ -29,6 +30,7 @@ Este documento registra os épicos e o backlog de telas e funcionalidades futura
 ---
 
 ### 🏷️ [EP02] Cadastro & Onboarding
+
 - **Status:** `Backlog` | **Prioridade:** `Post-MVP`
 - **Descrição:** Fluxo de entrada para novos usuários com coleta de dados essenciais e concessão de bônus de boas-vindas.
 - **Itens executáveis:**
@@ -40,6 +42,7 @@ Este documento registra os épicos e o backlog de telas e funcionalidades futura
 ---
 
 ### 🏷️ [EP03] Home & Feed Principal
+
 - **Status:** `Backlog` | **Prioridade:** `Post-MVP`
 - **Descrição:** Visão inicial centralizada com resumo de saldo, campanhas ativas e atalhos de navegação.
 - **Itens executáveis:**
@@ -51,6 +54,7 @@ Este documento registra os épicos e o backlog de telas e funcionalidades futura
 ---
 
 ### 🏷️ [EP04] Categorias & Descoberta
+
 - **Status:** `Backlog` | **Prioridade:** `Post-MVP`
 - **Descrição:** Segmentação dos estabelecimentos parceiros por nicho de mercado para facilitar a busca.
 - **Itens executáveis:**
@@ -61,16 +65,18 @@ Este documento registra os épicos e o backlog de telas e funcionalidades futura
 ---
 
 ### 🏷️ [EP05] Lojas Parceiras
+
 - **Status:** `Backlog` | **Prioridade:** `Post-MVP`
 - **Descrição:** Catálogo completo de lojas locais credenciadas na rede Cash Me.
 - **Itens executáveis:**
   - [ ] Lista de lojas com busca por texto (nome do estabelecimento, bairro ou produto).
   - [ ] Ordenação por proximidade geográfica (distância em km) e avaliação.
-  - [ ] Exibição rápida da regra de pontuação no card da loja (ex: *1 pt a cada R$ 1,00*).
+  - [ ] Exibição rápida da regra de pontuação no card da loja (ex: _1 pt a cada R$ 1,00_).
 
 ---
 
 ### 🏷️ [EP06] Detalhes da Loja
+
 - **Status:** `Backlog` | **Prioridade:** `Post-MVP`
 - **Descrição:** Tela completa do estabelecimento parceiro com todas as informações e regras locais.
 - **Itens executáveis:**
@@ -82,6 +88,7 @@ Este documento registra os épicos e o backlog de telas e funcionalidades futura
 ---
 
 ### 🏷️ [EP07] Vitrine de Ofertas & Detalhes
+
 - **Status:** `Backlog` | **Prioridade:** `Post-MVP`
 - **Descrição:** Catálogo de cupons, descontos e recompensas disponíveis para troca por pontos.
 - **Itens executáveis:**
@@ -93,6 +100,7 @@ Este documento registra os épicos e o backlog de telas e funcionalidades futura
 ---
 
 ### 🏷️ [EP08] Carteira Digital (Wallet)
+
 - **Status:** `Backlog` | **Prioridade:** `Post-MVP`
 - **Descrição:** Painel de controle financeiro dos pontos do usuário.
 - **Itens executáveis:**
@@ -103,6 +111,7 @@ Este documento registra os épicos e o backlog de telas e funcionalidades futura
 ---
 
 ### 🏷️ [EP09] Extrato & Histórico de Transações
+
 - **Status:** `Backlog` | **Prioridade:** `Post-MVP`
 - **Descrição:** Registro cronológico e auditável de todas as movimentações de pontos.
 - **Itens executáveis:**
@@ -113,6 +122,7 @@ Este documento registra os épicos e o backlog de telas e funcionalidades futura
 ---
 
 ### 🏷️ [EP10] QR Code de Identificação
+
 - **Status:** `Backlog` | **Prioridade:** `Post-MVP`
 - **Descrição:** Mecanismo de identificação ágil e seguro do consumidor no momento do pagamento.
 - **Itens executáveis:**
@@ -123,6 +133,7 @@ Este documento registra os épicos e o backlog de telas e funcionalidades futura
 ---
 
 ### 🏷️ [EP11] Motor de Acúmulo de Pontos
+
 - **Status:** `Backlog` | **Prioridade:** `Post-MVP`
 - **Descrição:** Processamento de pontuação gerada a partir de compras no caixa do comerciante.
 - **Itens executáveis:**
@@ -133,6 +144,7 @@ Este documento registra os épicos e o backlog de telas e funcionalidades futura
 ---
 
 ### 🏷️ [EP12] Motor de Resgate de Benefícios
+
 - **Status:** `Backlog` | **Prioridade:** `Post-MVP`
 - **Descrição:** Fluxo de débito de pontos para obtenção de descontos no ato da compra.
 - **Itens executáveis:**
@@ -143,6 +155,7 @@ Este documento registra os épicos e o backlog de telas e funcionalidades futura
 ---
 
 ### 🏷️ [EP13] Perfil & Preferências
+
 - **Status:** `Backlog` | **Prioridade:** `Post-MVP`
 - **Descrição:** Gestão dos dados pessoais e configurações de privacidade do usuário.
 - **Itens executáveis:**
@@ -154,6 +167,7 @@ Este documento registra os épicos e o backlog de telas e funcionalidades futura
 ---
 
 ### 🏷️ [EP14] Central de Notificações
+
 - **Status:** `Backlog` | **Prioridade:** `Post-MVP`
 - **Descrição:** Comunicação direta e relevante para retenção e engajamento do consumidor.
 - **Itens executáveis:**

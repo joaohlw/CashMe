@@ -1,40 +1,40 @@
-﻿import { Plus, Star, Calendar, CheckCircle2, Clock, Sparkles } from "lucide-react";
-import type { MerchantScreen } from "@/types/navigation";
+﻿import { Plus, Star, Calendar, CheckCircle2, Clock, Sparkles } from 'lucide-react'
+import type { MerchantScreen } from '@/types/navigation'
 
 interface CampaignsScreenProps {
-  go: (s: MerchantScreen) => void;
+  go: (s: MerchantScreen) => void
 }
 
 export function CampaignsScreen({ go }: CampaignsScreenProps) {
   const campaigns = [
     {
       id: 1,
-      name: "Campanha Padrão de Fidelidade",
-      desc: "Pontuação contínua para todas as notas fiscais emitidas no balcão.",
-      period: "Permanente",
-      rule: "1 pt a cada R$ 1,00",
+      name: 'Campanha Padrão de Fidelidade',
+      desc: 'Pontuação contínua para todas as notas fiscais emitidas no balcão.',
+      period: 'Permanente',
+      rule: '1 pt a cada R$ 1,00',
       active: true,
-      totalEmitted: "8.450 pts",
+      totalEmitted: '8.450 pts',
     },
     {
       id: 2,
-      name: "Bônus Aniversário do Estabelecimento",
-      desc: "Pontuação em dobro para incentivar vendas de celebração da loja.",
-      period: "01/07 – 31/07/2026",
-      rule: "2 pts a cada R$ 1,00",
+      name: 'Bônus Aniversário do Estabelecimento',
+      desc: 'Pontuação em dobro para incentivar vendas de celebração da loja.',
+      period: '01/07 – 31/07/2026',
+      rule: '2 pts a cada R$ 1,00',
       active: false,
-      totalEmitted: "3.200 pts",
+      totalEmitted: '3.200 pts',
     },
     {
       id: 3,
-      name: "Festival de Inverno",
-      desc: "Campanha sazonal com cupons exclusivos de bebidas quentes e sopas.",
-      period: "01/06 – 30/06/2026",
-      rule: "1.5 pts a cada R$ 1,00",
+      name: 'Festival de Inverno',
+      desc: 'Campanha sazonal com cupons exclusivos de bebidas quentes e sopas.',
+      period: '01/06 – 30/06/2026',
+      rule: '1.5 pts a cada R$ 1,00',
       active: false,
-      totalEmitted: "1.800 pts",
+      totalEmitted: '1.800 pts',
     },
-  ];
+  ]
 
   return (
     <div className="space-y-8 animate-fade-in">
@@ -48,12 +48,13 @@ export function CampaignsScreen({ go }: CampaignsScreenProps) {
             Campanhas Promocionais
           </h1>
           <p className="text-sm text-gray-500 mt-0.5">
-            Crie incentivos temporários de pontos em dobro ou bônus sazonais para aumentar seu ticket médio.
+            Crie incentivos temporários de pontos em dobro ou bônus sazonais para aumentar seu
+            ticket médio.
           </p>
         </div>
 
         <button
-          onClick={() => go("new-campaign")}
+          onClick={() => go('new-campaign')}
           className="flex items-center gap-2 bg-purple-800 hover:bg-purple-900 text-white text-xs sm:text-sm font-bold px-5 py-3 rounded-xl shadow-md shadow-purple-800/20 transition-all cursor-pointer hover:scale-[1.02]"
         >
           <Plus size={18} />
@@ -73,12 +74,12 @@ export function CampaignsScreen({ go }: CampaignsScreenProps) {
                 <span
                   className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 ${
                     c.active
-                      ? "bg-emerald-100 text-emerald-800 border border-emerald-200"
-                      : "bg-gray-100 text-gray-600"
+                      ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                      : 'bg-gray-100 text-gray-600'
                   }`}
                 >
                   {c.active ? <CheckCircle2 size={13} /> : <Clock size={13} />}
-                  {c.active ? "Ativa" : "Pausada / Encerrada"}
+                  {c.active ? 'Ativa' : 'Pausada / Encerrada'}
                 </span>
 
                 <span className="text-xs text-gray-400 font-medium">{c.totalEmitted} emitidos</span>
@@ -101,19 +102,19 @@ export function CampaignsScreen({ go }: CampaignsScreenProps) {
 
             <div className="pt-4 border-t border-gray-100 flex items-center gap-2">
               <button
-                onClick={() => go("scoring-rules")}
+                onClick={() => go('scoring-rules')}
                 className="flex-1 py-2 px-3 bg-purple-50 hover:bg-purple-100 text-purple-900 rounded-xl text-xs font-bold transition-colors cursor-pointer text-center"
               >
                 Regras
               </button>
               <button
-                onClick={() => go("points-conversion")}
+                onClick={() => go('points-conversion')}
                 className="flex-1 py-2 px-3 bg-purple-50 hover:bg-purple-100 text-purple-900 rounded-xl text-xs font-bold transition-colors cursor-pointer text-center"
               >
                 Conversão
               </button>
               <button
-                onClick={() => go("new-campaign")}
+                onClick={() => go('new-campaign')}
                 className="py-2 px-4 bg-purple-800 hover:bg-purple-900 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer text-center"
               >
                 Editar
@@ -123,5 +124,5 @@ export function CampaignsScreen({ go }: CampaignsScreenProps) {
         ))}
       </div>
     </div>
-  );
+  )
 }

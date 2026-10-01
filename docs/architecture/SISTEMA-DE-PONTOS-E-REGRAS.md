@@ -27,45 +27,45 @@ erDiagram
     ESTABELECIMENTOS ||--o{ RESGATES_PONTOS : "processa"
     ESTABELECIMENTOS ||--o{ LOTES_PONTOS : "controla"
     ESTABELECIMENTOS ||--o{ NFCES : "emite notas"
- 
+
     PROGRAMAS_FIDELIDADE ||--o{ REGRAS_PONTOS : "versiona"
     MODELOS_REGRAS_PONTOS o|--o{ REGRAS_PONTOS : "origina template"
     USERS o|--o{ REGRAS_PONTOS : "cria"
     REGRAS_PONTOS o|--o{ CAMPANHAS_PONTOS : "e aplicada em"
     REGRAS_PONTOS o|--o{ EXTRATOS_PONTOS : "calcula"
     CAMPANHAS_PONTOS o|--o{ EXTRATOS_PONTOS : "bonifica"
- 
+
     CONSUMIDORES ||--o{ SALDOS_PONTOS : "possui por loja"
     CONSUMIDORES ||--o{ EXTRATOS_PONTOS : "tem historico"
     CONSUMIDORES ||--o{ RESGATES_PONTOS : "solicita"
     CONSUMIDORES ||--o{ LOTES_PONTOS : "acumula"
     CONSUMIDORES ||--o{ NFCES : "escaneia"
- 
+
     NFCES ||--o{ NFCE_ITENS : "contem"
     NFCES ||--o| EXTRATOS_PONTOS : "origina credito"
     EXTRATOS_PONTOS ||--o| LOTES_PONTOS : "gera lote de credito"
     RECOMPENSAS ||--o{ RESGATES_PONTOS : "e resgatada em"
     RESGATES_PONTOS o|--o{ EXTRATOS_PONTOS : "gera debito"
- 
+
     ESTABELECIMENTOS {
         bigint id PK
         string cnpj_emitente UK
         string status
         decimal fator_conversao "legado temporario"
     }
- 
+
     USERS {
         bigint id PK
         bigint estabelecimento_id FK
         string role
     }
- 
+
     CONSUMIDORES {
         bigint id PK
         string email UK
         string status
     }
- 
+
     NFCES {
         bigint id PK
         bigint consumidor_id FK
@@ -76,7 +76,7 @@ erDiagram
         timestamp data_emissao
         string status
     }
- 
+
     NFCE_ITENS {
         bigint id PK
         bigint nfce_id FK
@@ -85,7 +85,7 @@ erDiagram
         decimal valor_unitario
         decimal valor_total
     }
- 
+
     PROGRAMAS_FIDELIDADE {
         bigint id PK
         bigint estabelecimento_id FK
@@ -94,7 +94,7 @@ erDiagram
         string status
         string moeda_pontos
     }
- 
+
     MODELOS_REGRAS_PONTOS {
         bigint id PK
         string codigo UK
@@ -103,7 +103,7 @@ erDiagram
         json configuracao_padrao_json
         boolean ativo
     }
- 
+
     REGRAS_PONTOS {
         bigint id PK
         bigint programa_id FK
@@ -117,7 +117,7 @@ erDiagram
         timestamp vigente_ate
         json configuracao_json
     }
- 
+
     CAMPANHAS_PONTOS {
         bigint id PK
         bigint estabelecimento_id FK
@@ -128,7 +128,7 @@ erDiagram
         timestamp inicio_em
         timestamp fim_em
     }
- 
+
     RECOMPENSAS {
         bigint id PK
         bigint estabelecimento_id FK
@@ -141,7 +141,7 @@ erDiagram
         timestamp inicio_em
         timestamp fim_em
     }
- 
+
     RESGATES_PONTOS {
         bigint id PK
         bigint recompensa_id FK
@@ -153,7 +153,7 @@ erDiagram
         timestamp expira_em
         timestamp utilizado_em
     }
- 
+
     SALDOS_PONTOS {
         bigint id PK
         bigint consumidor_id FK
@@ -163,7 +163,7 @@ erDiagram
         decimal pontos_a_expirar
         timestamp proxima_expiracao_em
     }
- 
+
     EXTRATOS_PONTOS {
         bigint id PK
         bigint consumidor_id FK
@@ -178,7 +178,7 @@ erDiagram
         json metadados_json
         timestamp created_at
     }
- 
+
     LOTES_PONTOS {
         bigint id PK
         bigint extrato_credito_id FK, UK
@@ -193,15 +193,15 @@ erDiagram
 
 As tabelas existentes `saldos_pontos`, `extratos_pontos`, `nfces` e `nfce_itens` continuam sendo a base. A evolução abaixo substitui gradualmente a configuração única `estabelecimentos.fator_conversao` por uma configuração versionada.
 
-| Entidade | Campos principais | Responsabilidade |
-| --- | --- | --- |
-| `programas_fidelidade` | `id`, `estabelecimento_id`, `nome`, `status`, `moeda_pontos`, `regra_ativa_id` | Programa do estabelecimento. No MVP, um programa ativo por loja. |
-| `modelos_regras_pontos` | `id`, `codigo`, `nome`, `descricao`, `categoria`, `configuracao_padrao_json`, `ativo` | Catálogo global de templates, mantido pela plataforma. Não pertence a um tenant. |
-| `regras_pontos` | `id`, `programa_id`, `modelo_regra_id` opcional, `versao`, `nome`, `prioridade`, `status`, `vigente_de`, `vigente_ate`, `configuracao_json`, `criada_por` | Instância editável de uma regra/template em uma loja e sua vigência. |
-| `campanhas_pontos` | `id`, `estabelecimento_id`, `nome`, `status`, `inicio_em`, `fim_em`, `prioridade`, `regra_pontos_id` | Agrupa uma ou mais regras promocionais em um período. |
-| `recompensas` | `id`, `estabelecimento_id`, `titulo`, `tipo`, `custo_pontos`, `valor_beneficio`, `status`, `inicio_em`, `fim_em`, `estoque` | Opções de troca exibidas na vitrine, como desconto ou produto. |
-| `resgates_pontos` | `id`, `recompensa_id`, `consumidor_id`, `estabelecimento_id`, `custo_pontos`, `status`, `codigo_validacao`, `expira_em`, `utilizado_em` | Reserva e consumo de recompensa no caixa. |
-| `lotes_pontos` | `id`, `extrato_credito_id`, `consumidor_id`, `estabelecimento_id`, `pontos_originais`, `pontos_disponiveis`, `expira_em`, `status` | Necessário quando houver expiração ou resgate parcial. Permite debitar primeiro os pontos que vencem antes. |
+| Entidade                | Campos principais                                                                                                                                         | Responsabilidade                                                                                            |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `programas_fidelidade`  | `id`, `estabelecimento_id`, `nome`, `status`, `moeda_pontos`, `regra_ativa_id`                                                                            | Programa do estabelecimento. No MVP, um programa ativo por loja.                                            |
+| `modelos_regras_pontos` | `id`, `codigo`, `nome`, `descricao`, `categoria`, `configuracao_padrao_json`, `ativo`                                                                     | Catálogo global de templates, mantido pela plataforma. Não pertence a um tenant.                            |
+| `regras_pontos`         | `id`, `programa_id`, `modelo_regra_id` opcional, `versao`, `nome`, `prioridade`, `status`, `vigente_de`, `vigente_ate`, `configuracao_json`, `criada_por` | Instância editável de uma regra/template em uma loja e sua vigência.                                        |
+| `campanhas_pontos`      | `id`, `estabelecimento_id`, `nome`, `status`, `inicio_em`, `fim_em`, `prioridade`, `regra_pontos_id`                                                      | Agrupa uma ou mais regras promocionais em um período.                                                       |
+| `recompensas`           | `id`, `estabelecimento_id`, `titulo`, `tipo`, `custo_pontos`, `valor_beneficio`, `status`, `inicio_em`, `fim_em`, `estoque`                               | Opções de troca exibidas na vitrine, como desconto ou produto.                                              |
+| `resgates_pontos`       | `id`, `recompensa_id`, `consumidor_id`, `estabelecimento_id`, `custo_pontos`, `status`, `codigo_validacao`, `expira_em`, `utilizado_em`                   | Reserva e consumo de recompensa no caixa.                                                                   |
+| `lotes_pontos`          | `id`, `extrato_credito_id`, `consumidor_id`, `estabelecimento_id`, `pontos_originais`, `pontos_disponiveis`, `expira_em`, `status`                        | Necessário quando houver expiração ou resgate parcial. Permite debitar primeiro os pontos que vencem antes. |
 
 ### Ajustes às entidades já documentadas
 
@@ -227,10 +227,10 @@ Usar uma estrutura JSON validada por tipo de template, em vez de uma linguagem l
 ```json
 {
   "tipo": "POR_VALOR",
-  "reais_base": 1.00,
+  "reais_base": 1.0,
   "pontos_por_base": 1,
   "arredondamento": "PARA_BAIXO",
-  "valor_minimo_compra": 0.00,
+  "valor_minimo_compra": 0.0,
   "limite_pontos_por_compra": 500,
   "expiracao": { "modo": "MESES_APOS_CREDITO", "meses": 12 },
   "acumula_com_campanhas": true
@@ -245,16 +245,16 @@ O campo `metadados_json` do extrato guarda uma cópia normalizada dos parâmetro
 
 Os templates são ponto de partida: ao selecionar um, o sistema cria uma cópia em `regras_pontos` daquele estabelecimento. Alterar a cópia não modifica o template global nem as regras de outras lojas.
 
-| Template | Configuração sugerida | Caso de uso |
-| --- | --- | --- |
-| `BASICO_1_POR_REAL` | 1 ponto a cada R$ 1; sem expiração; teto opcional | Lojas que querem uma oferta simples e fácil de comunicar. |
-| `ECONOMICO_1_A_CADA_10` | 1 ponto a cada R$ 10; arredonda para baixo | Margem menor ou tíquete médio maior. |
-| `BONUS_DE_BOAS_VINDAS` | crédito fixo único após primeira compra elegível | Incentiva cadastro e primeira recorrência. |
-| `DOBRO_EM_DATA_ESPECIAL` | multiplicador 2x, período definido, com teto por compra | Aniversário da loja, Black Friday ou aniversário do cliente. |
-| `HORA_FELIZ` | multiplicador definido por dias da semana e faixa de horário | Restaurantes, cafés e serviços com horários ociosos. |
-| `COMPRE_E_GANHE` | crédito fixo quando a compra atinge valor mínimo | Campanhas como “a partir de R$ 50, ganhe 20 pontos”. |
-| `POR_ITEM_ELEGIVEL` | pontos por SKU/categoria ou por descrição normalizada | Fase posterior, depois de melhorar a qualidade dos itens da NFC-e. |
-| `PONTOS_COM_VALIDADE` | regra base + expiração em 3, 6 ou 12 meses | Operações que desejam estimular retorno. |
+| Template                 | Configuração sugerida                                        | Caso de uso                                                        |
+| ------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------------ |
+| `BASICO_1_POR_REAL`      | 1 ponto a cada R$ 1; sem expiração; teto opcional            | Lojas que querem uma oferta simples e fácil de comunicar.          |
+| `ECONOMICO_1_A_CADA_10`  | 1 ponto a cada R$ 10; arredonda para baixo                   | Margem menor ou tíquete médio maior.                               |
+| `BONUS_DE_BOAS_VINDAS`   | crédito fixo único após primeira compra elegível             | Incentiva cadastro e primeira recorrência.                         |
+| `DOBRO_EM_DATA_ESPECIAL` | multiplicador 2x, período definido, com teto por compra      | Aniversário da loja, Black Friday ou aniversário do cliente.       |
+| `HORA_FELIZ`             | multiplicador definido por dias da semana e faixa de horário | Restaurantes, cafés e serviços com horários ociosos.               |
+| `COMPRE_E_GANHE`         | crédito fixo quando a compra atinge valor mínimo             | Campanhas como “a partir de R$ 50, ganhe 20 pontos”.               |
+| `POR_ITEM_ELEGIVEL`      | pontos por SKU/categoria ou por descrição normalizada        | Fase posterior, depois de melhorar a qualidade dos itens da NFC-e. |
+| `PONTOS_COM_VALIDADE`    | regra base + expiração em 3, 6 ou 12 meses                   | Operações que desejam estimular retorno.                           |
 
 Para o MVP, implementar e expor apenas os quatro primeiros templates. Os demais podem existir no catálogo como indisponíveis até que o motor suporte suas condições; isso evita prometer no painel uma regra que ainda não pode ser apurada pela NFC-e.
 

@@ -1,5 +1,5 @@
-﻿import { ShoppingBag, ShieldCheck } from "lucide-react";
-import { G, GD } from "@/constants/theme";
+﻿import { ShoppingBag, ShieldCheck } from 'lucide-react'
+import { G, GD } from '@/constants/theme'
 
 export function WebFooter() {
   return (
@@ -29,7 +29,9 @@ export function WebFooter() {
         {/* Right: Quick Links */}
         <div className="flex items-center gap-4 text-[11px] text-gray-400">
           <span className="hover:text-gray-600 cursor-pointer transition-colors">Privacidade</span>
-          <span className="hover:text-gray-600 cursor-pointer transition-colors">Termos de Uso</span>
+          <span className="hover:text-gray-600 cursor-pointer transition-colors">
+            Termos de Uso
+          </span>
           <span className="inline-flex items-center gap-1 text-emerald-700 font-medium">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
             API v1 Online
@@ -37,5 +39,5 @@ export function WebFooter() {
         </div>
       </div>
     </footer>
-  );
+  )
 }

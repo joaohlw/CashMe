@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+﻿import { useState } from 'react'
 import {
   Star,
   ArrowUpRight,
@@ -8,23 +8,23 @@ import {
   Wallet as WalletIcon,
   CheckCircle2,
   TrendingUp,
-} from "lucide-react";
-import { G, GD, GOLD } from "@/constants/theme";
-import { stores, history } from "@/data/mocks";
-import { useApp } from "@/context/AppContext";
+} from 'lucide-react'
+import { G, GD, GOLD } from '@/constants/theme'
+import { stores, history } from '@/data/mocks'
+import { useApp } from '@/context/AppContext'
 
 interface WalletScreenProps {
-  back: () => void;
+  back: () => void
 }
 
 export function WalletScreen({ back }: WalletScreenProps) {
-  const { userPoints } = useApp();
-  const [viewTab, setViewTab] = useState<"stores" | "history">("stores");
+  const { userPoints } = useApp()
+  const [viewTab, setViewTab] = useState<'stores' | 'history'>('stores')
 
-  const estimatedValue = (userPoints * 0.02).toLocaleString("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  });
+  const estimatedValue = (userPoints * 0.02).toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  })
 
   return (
     <div className="space-y-8 animate-fade-in">
@@ -45,21 +45,21 @@ export function WalletScreen({ back }: WalletScreenProps) {
         {/* Tab Switcher */}
         <div className="flex bg-gray-100 p-1.5 rounded-2xl">
           <button
-            onClick={() => setViewTab("stores")}
+            onClick={() => setViewTab('stores')}
             className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-              viewTab === "stores"
-                ? "bg-white text-emerald-800 shadow-xs"
-                : "text-gray-500 hover:text-gray-900"
+              viewTab === 'stores'
+                ? 'bg-white text-emerald-800 shadow-xs'
+                : 'text-gray-500 hover:text-gray-900'
             }`}
           >
             Saldos por Estabelecimento
           </button>
           <button
-            onClick={() => setViewTab("history")}
+            onClick={() => setViewTab('history')}
             className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-              viewTab === "history"
-                ? "bg-white text-emerald-800 shadow-xs"
-                : "text-gray-500 hover:text-gray-900"
+              viewTab === 'history'
+                ? 'bg-white text-emerald-800 shadow-xs'
+                : 'text-gray-500 hover:text-gray-900'
             }`}
           >
             Extrato de Movimentações
@@ -85,12 +85,13 @@ export function WalletScreen({ back }: WalletScreenProps) {
             </div>
             <div className="flex items-baseline gap-3">
               <span className="text-5xl sm:text-6xl font-black tracking-tight">
-                {userPoints.toLocaleString("pt-BR")}
+                {userPoints.toLocaleString('pt-BR')}
               </span>
               <span className="text-2xl font-bold text-emerald-200">pts</span>
             </div>
             <p className="text-sm text-emerald-100/90 mt-2">
-              Equivale a <strong className="text-white text-base">{estimatedValue}</strong> em cupons e vantagens diretas
+              Equivale a <strong className="text-white text-base">{estimatedValue}</strong> em
+              cupons e vantagens diretas
             </p>
           </div>
 
@@ -108,18 +109,20 @@ export function WalletScreen({ back }: WalletScreenProps) {
       </div>
 
       {/* Content based on Tab */}
-      {viewTab === "stores" ? (
+      {viewTab === 'stores' ? (
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-bold text-gray-900">
               Pontuação Segregada por Loja (Isolamento Multi-Tenant)
             </h2>
-            <span className="text-xs text-gray-400">Regra oficial: cada loja mantém seu próprio saldo</span>
+            <span className="text-xs text-gray-400">
+              Regra oficial: cada loja mantém seu próprio saldo
+            </span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {stores.map((s) => {
-              const progress = Math.min((s.pts / 1000) * 100, 100);
+              const progress = Math.min((s.pts / 1000) * 100, 100)
               return (
                 <div
                   key={s.id}
@@ -156,7 +159,7 @@ export function WalletScreen({ back }: WalletScreenProps) {
                     <span className="text-[11px] text-gray-400">
                       {1000 - s.pts > 0
                         ? `Faltam ${1000 - s.pts} pts para o próximo voucher de R$ 20,00`
-                        : "Pronto para resgatar voucher!"}
+                        : 'Pronto para resgatar voucher!'}
                     </span>
                   </div>
 
@@ -164,7 +167,7 @@ export function WalletScreen({ back }: WalletScreenProps) {
                     <span className="text-emerald-700">{s.rule}</span>
                   </div>
                 </div>
-              );
+              )
             })}
           </div>
         </div>
@@ -197,22 +200,28 @@ export function WalletScreen({ back }: WalletScreenProps) {
                       <div className="flex items-center gap-2 font-bold">
                         <div
                           className={`w-8 h-8 rounded-xl flex items-center justify-center ${
-                            h.type === "earn"
-                              ? "bg-emerald-100 text-emerald-800"
-                              : "bg-red-100 text-red-800"
+                            h.type === 'earn'
+                              ? 'bg-emerald-100 text-emerald-800'
+                              : 'bg-red-100 text-red-800'
                           }`}
                         >
-                          {h.type === "earn" ? <ArrowUpRight size={16} /> : <ArrowDownLeft size={16} />}
+                          {h.type === 'earn' ? (
+                            <ArrowUpRight size={16} />
+                          ) : (
+                            <ArrowDownLeft size={16} />
+                          )}
                         </div>
-                        <span className={h.type === "earn" ? "text-emerald-800" : "text-red-800"}>
-                          {h.type === "earn" ? "Acúmulo NFC-e" : "Resgate Cupom"}
+                        <span className={h.type === 'earn' ? 'text-emerald-800' : 'text-red-800'}>
+                          {h.type === 'earn' ? 'Acúmulo NFC-e' : 'Resgate Cupom'}
                         </span>
                       </div>
                     </td>
                     <td className="py-4 font-bold text-gray-900">{h.store}</td>
                     <td className="py-4 text-gray-500">{h.date}</td>
                     <td className="py-4 font-semibold text-gray-800">{h.value}</td>
-                    <td className={`py-4 font-black text-sm ${h.type === "earn" ? "text-emerald-700" : "text-red-600"}`}>
+                    <td
+                      className={`py-4 font-black text-sm ${h.type === 'earn' ? 'text-emerald-700' : 'text-red-600'}`}
+                    >
                       {h.pts}
                     </td>
                     <td className="py-4 text-right font-bold text-gray-900">{h.balance}</td>
@@ -224,5 +233,5 @@ export function WalletScreen({ back }: WalletScreenProps) {
         </div>
       )}
     </div>
-  );
+  )
 }

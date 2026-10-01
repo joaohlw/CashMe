@@ -26,5 +26,5 @@
       "#config/*": ["./config/*"]
     }
   },
-  "exclude": ["src/**/*", "dist/**/*", "scratch/**/*", "node_modules"]
+  "exclude": ["src/**/*", "dist/**/*", "scratch/**/*", "node_modules", "mobile/**/*"]
 }

@@ -1,12 +1,12 @@
 export interface IconeLojaProps {
   /** Nome do estabelecimento para extração da inicial */
-  nome: string;
+  nome: string
   /** Cor da letra */
-  cor: string;
+  cor: string
   /** Cor de fundo */
-  fundo: string;
+  fundo: string
   /** Tamanho em pixels (padrão: 48) */
-  tamanho?: number;
+  tamanho?: number
 }
 
 /**
@@ -25,7 +25,7 @@ export function IconeLoja({ nome, cor, fundo, tamanho = 48 }: IconeLojaProps) {
     >
       <span style={{ fontSize: tamanho * 0.38, color: cor }}>{nome[0]}</span>
     </div>
-  );
+  )
 }
 
 // Alias para compatibilidade
@@ -35,8 +35,8 @@ export const StoreIcon = ({
   bg,
   size = 48,
 }: {
-  name: string;
-  color: string;
-  bg: string;
-  size?: number;
-}) => <IconeLoja nome={name} cor={color} fundo={bg} tamanho={size} />;
+  name: string
+  color: string
+  bg: string
+  size?: number
+}) => <IconeLoja nome={name} cor={color} fundo={bg} tamanho={size} />

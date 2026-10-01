@@ -1,10 +1,10 @@
-import { T1 } from "@/constants/theme";
+import { T1 } from '@/constants/theme'
 
 export interface QRCodeVetorialProps {
   /** Tamanho em pixels (largura e altura) */
-  tamanho?: number;
+  tamanho?: number
   /** Cor dos módulos do QR Code */
-  cor?: string;
+  cor?: string
 }
 
 /**
@@ -33,10 +33,15 @@ export function QRCodeVetorial({ tamanho = 180, cor = T1 }: QRCodeVetorialProps)
     [1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1],
     [1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1],
     [1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0],
-  ];
-  const cs = tamanho / M.length;
+  ]
+  const cs = tamanho / M.length
   return (
-    <svg width={tamanho} height={tamanho} viewBox={`0 0 ${tamanho} ${tamanho}`} style={{ display: "block" }}>
+    <svg
+      width={tamanho}
+      height={tamanho}
+      viewBox={`0 0 ${tamanho} ${tamanho}`}
+      style={{ display: 'block' }}
+    >
       {M.map((linha, r) =>
         linha.map((celula, c) =>
           celula ? (
@@ -45,10 +50,10 @@ export function QRCodeVetorial({ tamanho = 180, cor = T1 }: QRCodeVetorialProps)
         )
       )}
     </svg>
-  );
+  )
 }
 
 // Alias para compatibilidade
 export const QRCodeSVG = ({ size = 180, color = T1 }: { size?: number; color?: string }) => (
   <QRCodeVetorial tamanho={size} cor={color} />
-);
+)

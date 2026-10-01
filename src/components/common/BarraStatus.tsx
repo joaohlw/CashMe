@@ -1,15 +1,15 @@
-import { T1 } from "@/constants/theme";
+import { T1 } from '@/constants/theme'
 
 export interface BarraStatusProps {
   /** Modo claro (texto escuro) ou escuro (texto branco) */
-  claro?: boolean;
+  claro?: boolean
 }
 
 /**
  * Barra superior de status do celular (Hora, Sinal de Rede, Wi-Fi e Bateria)
  */
 export function BarraStatus({ claro = true }: BarraStatusProps) {
-  const cor = claro ? T1 : "#fff";
+  const cor = claro ? T1 : '#fff'
   return (
     <div className="h-11 flex items-center justify-between px-5 shrink-0 select-none">
       <span className="text-sm font-semibold tracking-tight" style={{ color: cor }}>
@@ -48,8 +48,8 @@ export function BarraStatus({ claro = true }: BarraStatusProps) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 // Alias para compatibilidade
-export const StatusBar = ({ light = true }: { light?: boolean }) => <BarraStatus claro={light} />;
+export const StatusBar = ({ light = true }: { light?: boolean }) => <BarraStatus claro={light} />

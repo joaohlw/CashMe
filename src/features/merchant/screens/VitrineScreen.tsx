@@ -1,20 +1,20 @@
-﻿import { useState } from "react";
-import { Tag, Plus, CheckCircle2, AlertCircle, Sparkles } from "lucide-react";
-import { merchantOffers } from "@/data/mocks";
-import type { MerchantScreen } from "@/types/navigation";
+﻿import { useState } from 'react'
+import { Tag, Plus, CheckCircle2, AlertCircle, Sparkles } from 'lucide-react'
+import { merchantOffers } from '@/data/mocks'
+import type { MerchantScreen } from '@/types/navigation'
 
 interface VitrineScreenProps {
-  go: (s: MerchantScreen) => void;
+  go: (s: MerchantScreen) => void
 }
 
 export function VitrineScreen({ go }: VitrineScreenProps) {
-  const [items, setItems] = useState(merchantOffers.map((o) => ({ ...o })));
+  const [items, setItems] = useState(merchantOffers.map((o) => ({ ...o })))
 
   const toggleActive = (id: number) => {
     setItems((prev) =>
       prev.map((item) => (item.id === id ? { ...item, active: !item.active } : item))
-    );
-  };
+    )
+  }
 
   return (
     <div className="space-y-8 animate-fade-in">
@@ -28,12 +28,13 @@ export function VitrineScreen({ go }: VitrineScreenProps) {
             Vitrine de Cupons & Prêmios
           </h1>
           <p className="text-sm text-gray-500 mt-0.5">
-            Configure quais produtos ou descontos os consumidores podem resgatar usando os pontos da sua loja.
+            Configure quais produtos ou descontos os consumidores podem resgatar usando os pontos da
+            sua loja.
           </p>
         </div>
 
         <button
-          onClick={() => go("new-offer")}
+          onClick={() => go('new-offer')}
           className="flex items-center gap-2 bg-purple-800 hover:bg-purple-900 text-white text-xs sm:text-sm font-bold px-5 py-3 rounded-xl shadow-md shadow-purple-800/20 transition-all cursor-pointer hover:scale-[1.02]"
         >
           <Plus size={18} />
@@ -59,11 +60,11 @@ export function VitrineScreen({ go }: VitrineScreenProps) {
                   onClick={() => toggleActive(o.id)}
                   className={`px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer ${
                     o.active
-                      ? "bg-emerald-100 text-emerald-800 border border-emerald-200"
-                      : "bg-gray-100 text-gray-500"
+                      ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                      : 'bg-gray-100 text-gray-500'
                   }`}
                 >
-                  {o.active ? "Visível na Vitrine" : "Pausada"}
+                  {o.active ? 'Visível na Vitrine' : 'Pausada'}
                 </button>
               </div>
 
@@ -73,7 +74,9 @@ export function VitrineScreen({ go }: VitrineScreenProps) {
               <div className="p-3 bg-purple-50/70 rounded-2xl border border-purple-100 mb-4">
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-purple-700 font-semibold">Custo em Pontos:</span>
-                  <span className="font-black text-purple-950 text-sm">{o.name.includes("500") ? "500 pts" : "350 pts"}</span>
+                  <span className="font-black text-purple-950 text-sm">
+                    {o.name.includes('500') ? '500 pts' : '350 pts'}
+                  </span>
                 </div>
                 <span className="text-[11px] text-gray-400 block mt-1">Validade: {o.valid}</span>
               </div>
@@ -87,12 +90,12 @@ export function VitrineScreen({ go }: VitrineScreenProps) {
                 onClick={() => toggleActive(o.id)}
                 className="text-xs text-gray-500 hover:text-gray-900 cursor-pointer"
               >
-                {o.active ? "Pausar Oferta" : "Ativar Oferta"}
+                {o.active ? 'Pausar Oferta' : 'Ativar Oferta'}
               </button>
             </div>
           </div>
         ))}
       </div>
     </div>
-  );
+  )
 }

@@ -1,8 +1,8 @@
-import { BD, T1 } from "@/constants/theme";
+import { BD, T1 } from '@/constants/theme'
 
 export interface CampoFormularioProps {
-  rotulo: string;
-  marcador: string;
+  rotulo: string
+  marcador: string
 }
 
 /**
@@ -16,10 +16,10 @@ export function CampoFormulario({ rotulo, marcador }: CampoFormularioProps) {
         <span className="text-sm text-gray-400">{marcador}</span>
       </div>
     </div>
-  );
+  )
 }
 
 // Alias para compatibilidade
 export const FormField = ({ label, placeholder }: { label: string; placeholder: string }) => (
   <CampoFormulario rotulo={label} marcador={placeholder} />
-);
+)

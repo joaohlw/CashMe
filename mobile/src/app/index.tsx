@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react'
 import {
   StyleSheet,
   View,
@@ -10,24 +10,20 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { WebView, WebViewMessageEvent } from 'react-native-webview';
-import * as Haptics from 'expo-haptics';
-import { useLocalSearchParams } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
-import { QrScannerModal } from '@/components/qr-scanner-modal';
-import { NfceResultView } from '@/components/nfce-result-view';
-import {
-  isValidSefazUrl,
-  parseNfceHtml,
-  NfceData,
-} from '@/utils/nfce-parser';
-import { mobileApi } from '@/services/api';
+} from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { WebView, WebViewMessageEvent } from 'react-native-webview'
+import * as Haptics from 'expo-haptics'
+import { useLocalSearchParams } from 'expo-router'
+import { Ionicons } from '@expo/vector-icons'
+import { QrScannerModal } from '@/components/qr-scanner-modal'
+import { NfceResultView } from '@/components/nfce-result-view'
+import { isValidSefazUrl, parseNfceHtml, NfceData } from '@/utils/nfce-parser'
+import { mobileApi } from '@/services/api'
 
-type AppStep = 'INPUT' | 'CAPTCHA_WEBVIEW' | 'RESULT';
+type AppStep = 'INPUT' | 'CAPTCHA_WEBVIEW' | 'RESULT'
 
-const DEFAULT_SEFAZ_SC_URL = 'https://sat.sef.sc.gov.br/nfce/consulta';
+const DEFAULT_SEFAZ_SC_URL = 'https://sat.sef.sc.gov.br/nfce/consulta'
 
 const DOM_EXTRACTION_SCRIPT = `
   (function() {
@@ -51,43 +47,43 @@ const DOM_EXTRACTION_SCRIPT = `
     }
   })();
   true;
-`;
+`
 
 export default function NfceScraperScreen() {
-  const params = useLocalSearchParams<{ url?: string }>();
+  const params = useLocalSearchParams<{ url?: string }>()
 
-  const [step, setStep] = useState<AppStep>('INPUT');
-  const [inputUrl, setInputUrl] = useState(DEFAULT_SEFAZ_SC_URL);
-  const [activeUrl, setActiveUrl] = useState<string | null>(null);
-  const [webViewLoading, setWebViewLoading] = useState(false);
-  const [extracting, setExtracting] = useState(false);
-  const [parsedData, setParsedData] = useState<NfceData | null>(null);
-  const [isScannerOpen, setIsScannerOpen] = useState(false);
-  const [pageTitle, setPageTitle] = useState('');
+  const [step, setStep] = useState<AppStep>('INPUT')
+  const [inputUrl, setInputUrl] = useState(DEFAULT_SEFAZ_SC_URL)
+  const [activeUrl, setActiveUrl] = useState<string | null>(null)
+  const [webViewLoading, setWebViewLoading] = useState(false)
+  const [extracting, setExtracting] = useState(false)
+  const [parsedData, setParsedData] = useState<NfceData | null>(null)
+  const [isScannerOpen, setIsScannerOpen] = useState(false)
+  const [pageTitle, setPageTitle] = useState('')
 
-  const webViewRef = useRef<any>(null);
+  const webViewRef = useRef<any>(null)
 
   const normalizeUrl = useCallback((url: string) => {
-    let trimmed = url.trim();
-    if (!trimmed) return '';
+    let trimmed = url.trim()
+    if (!trimmed) return ''
     if (!/^https?:\/\//i.test(trimmed)) {
-      trimmed = 'https://' + trimmed;
+      trimmed = 'https://' + trimmed
     }
-    return trimmed;
-  }, []);
+    return trimmed
+  }, [])
 
   const handleStartFlow = useCallback(
     (targetUrl?: string) => {
-      const raw = targetUrl ?? inputUrl;
-      const normalized = normalizeUrl(raw);
+      const raw = targetUrl ?? inputUrl
+      const normalized = normalizeUrl(raw)
 
       if (!normalized) {
-        Alert.alert('Entrada Vazia', 'Por favor, insira ou escaneie uma URL ou chave da NFC-e.');
-        return;
+        Alert.alert('Entrada Vazia', 'Por favor, insira ou escaneie uma URL ou chave da NFC-e.')
+        return
       }
 
       // Se for apenas uma chave de 44 dígitos
-      const isOnlyDigitsKey = /^\d{44}$/.test(raw.replace(/[^\d]/g, ''));
+      const isOnlyDigitsKey = /^\d{44}$/.test(raw.replace(/[^\d]/g, ''))
       if (isOnlyDigitsKey) {
         // Envia direto para a API validar
         mobileApi
@@ -95,100 +91,115 @@ export default function NfceScraperScreen() {
           .then((res) => {
             if (res?.data?.isEligible) {
               const fakeData: NfceData = {
-                emitente: { razaoSocial: 'Estabelecimento Credenciado SC', cnpj: '12.345.678/0001-90' },
+                emitente: {
+                  razaoSocial: 'Estabelecimento Credenciado SC',
+                  cnpj: '12.345.678/0001-90',
+                },
                 info: { chaveAcesso: raw.replace(/[^\d]/g, ''), uf: 'SC' },
-                itens: [{ codigo: '1', descricao: 'Compra em Estabelecimento Parceiro', quantidade: 1, unidade: 'UN', valorUnitario: 50, valorTotal: 50 }],
+                itens: [
+                  {
+                    codigo: '1',
+                    descricao: 'Compra em Estabelecimento Parceiro',
+                    quantidade: 1,
+                    unidade: 'UN',
+                    valorUnitario: 50,
+                    valorTotal: 50,
+                  },
+                ],
                 totais: { qtdItens: 1, valorTotal: 50, valorPagar: 50 },
                 consumidor: {},
                 pontosCalculados: 50,
                 url: raw,
                 scrapedAt: new Date(),
                 rawHtmlLength: 0,
-              };
-              setParsedData(fakeData);
-              setStep('RESULT');
+              }
+              setParsedData(fakeData)
+              setStep('RESULT')
             } else {
-              Alert.alert('Chave Inelegível', res?.message || 'Chave rejeitada pela regra de negócio.');
+              Alert.alert(
+                'Chave Inelegível',
+                res?.message || 'Chave rejeitada pela regra de negócio.'
+              )
             }
           })
           .catch(() => {
-            Alert.alert('Erro', 'Não foi possível validar a chave na API.');
-          });
-        return;
+            Alert.alert('Erro', 'Não foi possível validar a chave na API.')
+          })
+        return
       }
 
-      const validation = isValidSefazUrl(normalized);
+      const validation = isValidSefazUrl(normalized)
       if (!validation.isValid) {
-        Alert.alert('URL Incompatível', validation.reason ?? 'A URL informada não é aceita.');
-        return;
+        Alert.alert('URL Incompatível', validation.reason ?? 'A URL informada não é aceita.')
+        return
       }
 
       if (!validation.isAllowed) {
         Alert.alert(
           'Estado Não Suportado no MVP',
           validation.reason ?? 'Apenas notas de SC e PR são suportadas no piloto do Cash Me.'
-        );
-        return;
+        )
+        return
       }
 
-      setActiveUrl(normalized);
-      setStep('CAPTCHA_WEBVIEW');
+      setActiveUrl(normalized)
+      setStep('CAPTCHA_WEBVIEW')
     },
     [inputUrl, normalizeUrl]
-  );
+  )
 
   useEffect(() => {
     if (params.url) {
-      setInputUrl(params.url);
-      handleStartFlow(params.url);
+      setInputUrl(params.url)
+      handleStartFlow(params.url)
     }
-  }, [params.url, handleStartFlow]);
+  }, [params.url, handleStartFlow])
 
   const handleScanSuccess = (scannedUrl: string) => {
-    setInputUrl(scannedUrl);
-    handleStartFlow(scannedUrl);
-  };
+    setInputUrl(scannedUrl)
+    handleStartFlow(scannedUrl)
+  }
 
   const handleTriggerExtraction = () => {
-    if (!webViewRef.current) return;
-    setExtracting(true);
-    webViewRef.current.injectJavaScript(DOM_EXTRACTION_SCRIPT);
-  };
+    if (!webViewRef.current) return
+    setExtracting(true)
+    webViewRef.current.injectJavaScript(DOM_EXTRACTION_SCRIPT)
+  }
 
   const handleWebViewMessage = (event: WebViewMessageEvent) => {
     try {
-      const msg = JSON.parse(event.nativeEvent.data);
+      const msg = JSON.parse(event.nativeEvent.data)
 
       if (msg.type === 'NFCE_DOM_EXTRACTED') {
-        const { html, url } = msg.payload;
+        const { html, url } = msg.payload
 
         try {
-          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
         } catch {
           // ignore
         }
 
-        const data = parseNfceHtml(html, url || activeUrl || '', 1.0);
-        setParsedData(data);
-        setStep('RESULT');
-        setExtracting(false);
+        const data = parseNfceHtml(html, url || activeUrl || '', 1.0)
+        setParsedData(data)
+        setStep('RESULT')
+        setExtracting(false)
       } else if (msg.type === 'NFCE_EXTRACT_ERROR') {
-        setExtracting(false);
-        Alert.alert('Erro de Extração', 'Não foi possível ler os dados da página da SEFAZ.');
+        setExtracting(false)
+        Alert.alert('Erro de Extração', 'Não foi possível ler os dados da página da SEFAZ.')
       }
     } catch (e: any) {
-      setExtracting(false);
-      Alert.alert('Erro', 'Falha ao interpretar resposta da página.');
+      setExtracting(false)
+      Alert.alert('Erro', 'Falha ao interpretar resposta da página.')
     }
-  };
+  }
 
   const handleReset = () => {
-    setParsedData(null);
-    setActiveUrl(null);
-    setStep('INPUT');
-    setExtracting(false);
-    setWebViewLoading(false);
-  };
+    setParsedData(null)
+    setActiveUrl(null)
+    setStep('INPUT')
+    setExtracting(false)
+    setWebViewLoading(false)
+  }
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
@@ -196,7 +207,8 @@ export default function NfceScraperScreen() {
       {step === 'INPUT' && (
         <KeyboardAvoidingView
           style={styles.keyboardContainer}
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        >
           <ScrollView contentContainerStyle={styles.scrollContent}>
             {/* Header da Marca Cash Me */}
             <View style={styles.brandHeader}>
@@ -214,7 +226,8 @@ export default function NfceScraperScreen() {
             <TouchableOpacity
               style={styles.bigScanBtn}
               activeOpacity={0.85}
-              onPress={() => setIsScannerOpen(true)}>
+              onPress={() => setIsScannerOpen(true)}
+            >
               <View style={styles.bigScanIconCircle}>
                 <Ionicons name="qr-code-outline" size={36} color="#FFFFFF" />
               </View>
@@ -243,9 +256,7 @@ export default function NfceScraperScreen() {
                 clearButtonMode="while-editing"
               />
 
-              <TouchableOpacity
-                style={styles.actionBtn}
-                onPress={() => handleStartFlow()}>
+              <TouchableOpacity style={styles.actionBtn} onPress={() => handleStartFlow()}>
                 <Ionicons name="flash-outline" size={18} color="#FFFFFF" />
                 <Text style={styles.actionBtnText}>Processar NFC-e</Text>
               </TouchableOpacity>
@@ -256,13 +267,15 @@ export default function NfceScraperScreen() {
               <Text style={styles.demoSectionTitle}>Portais Oficiais Homologados (RN07):</Text>
               <TouchableOpacity
                 style={styles.demoChip}
-                onPress={() => setInputUrl('https://sat.sef.sc.gov.br/nfce/consulta')}>
+                onPress={() => setInputUrl('https://sat.sef.sc.gov.br/nfce/consulta')}
+              >
                 <Ionicons name="shield-checkmark" size={14} color="#008D4C" />
                 <Text style={styles.demoChipText}>SEFAZ Santa Catarina (SC)</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.demoChip}
-                onPress={() => setInputUrl('http://www.fazenda.pr.gov.br/nfce/consulta')}>
+                onPress={() => setInputUrl('http://www.fazenda.pr.gov.br/nfce/consulta')}
+              >
                 <Ionicons name="shield-checkmark" size={14} color="#008D4C" />
                 <Text style={styles.demoChipText}>SEFAZ Paraná (PR)</Text>
               </TouchableOpacity>
@@ -292,7 +305,8 @@ export default function NfceScraperScreen() {
             <TouchableOpacity
               style={[styles.extractBtn, extracting && styles.extractBtnDisabled]}
               disabled={extracting}
-              onPress={handleTriggerExtraction}>
+              onPress={handleTriggerExtraction}
+            >
               {extracting ? (
                 <ActivityIndicator size="small" color="#FFFFFF" />
               ) : (
@@ -308,7 +322,8 @@ export default function NfceScraperScreen() {
           <View style={styles.floatingTip}>
             <Ionicons name="information-circle-outline" size={18} color="#008D4C" />
             <Text style={styles.floatingTipText}>
-              Resolva o Captcha na tela abaixo se solicitado e toque em "Extrair" quando a nota carregar.
+              Resolva o Captcha na tela abaixo se solicitado e toque em "Extrair" quando a nota
+              carregar.
             </Text>
           </View>
 
@@ -346,7 +361,7 @@ export default function NfceScraperScreen() {
         onScan={handleScanSuccess}
       />
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -581,4 +596,4 @@ const styles = StyleSheet.create({
     color: '#4B5563',
     fontWeight: '500',
   },
-});
+})

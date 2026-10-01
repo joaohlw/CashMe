@@ -12,12 +12,12 @@ erDiagram
     ESTABELECIMENTOS ||--o{ NFCES : "emite notas"
     ESTABELECIMENTOS ||--o{ SALDOS_PONTOS : "mantém saldos dos clientes"
     ESTABELECIMENTOS ||--o{ EXTRATOS_PONTOS : "gera extrato de pontos"
-    
+
     CONSUMIDORES ||--o{ NFCES : "escaneia notas"
     CONSUMIDORES ||--o{ SALDOS_PONTOS : "acumula pontos por lojista"
     CONSUMIDORES ||--o{ EXTRATOS_PONTOS : "histórico transacional"
     CONSUMIDORES ||--o{ NOTIFICACOES_PUSH : "recebe notificações"
-    
+
     NFCES ||--o{ NFC_E_ITENS : "contém itens"
     NFCES ||--o| EXTRATOS_PONTOS : "origina crédito"
     NFCES ||--o| NOTIFICACOES_PUSH : "dispara notificação"
@@ -125,7 +125,9 @@ erDiagram
 ## 2. Detalhamento das Tabelas e Estruturas
 
 ### 2.1 `estabelecimentos` (Tenants / Lojistas)
+
 Representa as empresas jurídicas parceiras do ecossistema.
+
 - `id` (PK, Serial)
 - `cnpj_emitente` (VARCHAR(14), UNIQUE, NOT NULL): CNPJ limpo sem formatação. Índice único para vinculo rápido (RN03).
 - `razao_social` (VARCHAR(255), NOT NULL)
@@ -135,7 +137,9 @@ Representa as empresas jurídicas parceiras do ecossistema.
 - `created_at` / `updated_at` (TIMESTAMPTZ)
 
 ### 2.2 `users` (Usuários do Painel Admin)
+
 Usuários administrativos do sistema (Super Admin e operadores do Lojista).
+
 - `id` (PK, Serial)
 - `estabelecimento_id` (FK -> `estabelecimentos.id`, NULLABLE): `NULL` para usuários da plataforma (`SUPER_ADMIN`). Preenchido para lojistas.
 - `full_name` (VARCHAR(255), NULLABLE)
@@ -145,7 +149,9 @@ Usuários administrativos do sistema (Super Admin e operadores do Lojista).
 - `created_at` / `updated_at` (TIMESTAMPTZ)
 
 ### 2.3 `consumidores` (Conta Global do Consumidor)
+
 Conta unificada dos clientes finais no App Mobile (Glossário: Conta Global / Task #2).
+
 - `id` (PK, Serial)
 - `nome` (VARCHAR(255), NOT NULL)
 - `email` (VARCHAR(255), UNIQUE, NOT NULL)
@@ -157,7 +163,9 @@ Conta unificada dos clientes finais no App Mobile (Glossário: Conta Global / Ta
 - `created_at` / `updated_at` (TIMESTAMPTZ)
 
 ### 2.4 `nfces` (Notas Fiscais Processadas)
+
 Armazena a tentativa e o resultado da leitura da NFC-e (Tasks #3 e #4).
+
 - `id` (PK, Serial)
 - `consumidor_id` (FK -> `consumidores.id`, NOT NULL)
 - `estabelecimento_id` (FK -> `estabelecimentos.id`, NULLABLE): Preenchido após identificação do lojista via CNPJ.
@@ -173,7 +181,9 @@ Armazena a tentativa e o resultado da leitura da NFC-e (Tasks #3 e #4).
 - `created_at` / `updated_at` (TIMESTAMPTZ)
 
 ### 2.5 `nfce_itens` (Itens Extraídos da Nota)
+
 Itens individuais extraídos da NFC-e durante o scraping.
+
 - `id` (PK, Serial)
 - `nfce_id` (FK -> `nfces.id` ON DELETE CASCADE, NOT NULL)
 - `descricao_bruta` (VARCHAR(255), NOT NULL): String bruta do produto (Glossário).
@@ -183,7 +193,9 @@ Itens individuais extraídos da NFC-e durante o scraping.
 - `created_at` (TIMESTAMPTZ)
 
 ### 2.6 `saldos_pontos` (Saldo Histórico Multi-Tenant por Estabelecimento)
+
 Saldo consolidado de um consumidor em um lojista específico (ADR-002 & RN05 & RN08).
+
 - `id` (PK, Serial)
 - `consumidor_id` (FK -> `consumidores.id`, NOT NULL)
 - `estabelecimento_id` (FK -> `estabelecimentos.id`, NOT NULL)
@@ -193,7 +205,9 @@ Saldo consolidado de um consumidor em um lojista específico (ADR-002 & RN05 & R
 - **Constraint Única:** `UNIQUE (consumidor_id, estabelecimento_id)` — Garante apenas 1 registro de saldo por cliente/tenant.
 
 ### 2.7 `extratos_pontos` (Ledger / Histórico de Transações)
+
 Log imutável de movimentações de pontos (Task #5 & RN05).
+
 - `id` (PK, Serial)
 - `consumidor_id` (FK -> `consumidores.id`, NOT NULL)
 - `estabelecimento_id` (FK -> `estabelecimentos.id`, NOT NULL)
@@ -206,7 +220,9 @@ Log imutável de movimentações de pontos (Task #5 & RN05).
 - `created_at` (TIMESTAMPTZ)
 
 ### 2.8 `notificacoes_push` (Registro de Notificações Transacionais)
+
 Histórico de notificações push via FCM (Task #9).
+
 - `id` (PK, Serial)
 - `consumidor_id` (FK -> `consumidores.id`, NOT NULL)
 - `nfce_id` (FK -> `nfces.id`, NULLABLE)
@@ -221,17 +237,17 @@ Histórico de notificações push via FCM (Task #9).
 
 ## 3. Mapeamento das Regras de Negócio e Tasks
 
-| Código | Descrição da Regra / Task | Solução de Modelagem de Banco |
-| :--- | :--- | :--- |
-| **Task #1 & RN06** | Onboarding de Lojistas | `estabelecimentos.status` inicia em `'PENDENTE'`. Rota super-admin altera para `'ATIVO'`. |
-| **Task #2** | Cadastro Global Consumidor | Tabela `consumidores` desacoplada de lojistas com `termos_aceitos_em`. |
-| **Task #3 & RN01 & RN02 & RN07** | QR Code, 48h, SC/PR, Anti-fraude | `nfces.chave_acesso` possui `UNIQUE INDEX`. `nfces.data_emissao` e `uf_emitente` validados. |
-| **Task #4** | Scraping Assíncrono SEFAZ | Status da `nfces` em ciclo de vida (`PENDENTE` -> `EM_PROCESSAMENTO` -> `PROCESSADA`). Itens em `nfce_itens`. |
-| **Task #5 & ADR-002** | Motor de Pontos & Multi-Tenant | `saldos_pontos` e `extratos_pontos` isolados obrigatoriamente por `estabelecimento_id` + `consumidor_id`. |
-| **Task #6 & RN04** | Regra de Cômputo Personalizável | `estabelecimentos.fator_conversao` armazena a regra do lojista; `extratos_pontos.fator_conversao_aplicado` registra o fator no momento da transação. |
-| **Task #7 & RN05** | Inadimplência e Direito Adquirido | Se `estabelecimentos.status = 'INATIVO'`, cômputo na `nfces` é rejeitado (`motivo_rejeicao = 'LOJISTA_INATIVO'`), mas `saldos_pontos` permanece intocado. |
-| **Task #8 & RN08** | Dashboard Lojista & Privacidade | Consultas do lojista filtram `consumidores` via `JOIN saldos_pontos WHERE saldos_pontos.estabelecimento_id = :tenantId`. |
-| **Task #9 & ADR-001** | Push Notification FCM | `consumidores.device_token` armazena o token e `notificacoes_push` armazena o histórico do disparo. |
+| Código                           | Descrição da Regra / Task         | Solução de Modelagem de Banco                                                                                                                             |
+| :------------------------------- | :-------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Task #1 & RN06**               | Onboarding de Lojistas            | `estabelecimentos.status` inicia em `'PENDENTE'`. Rota super-admin altera para `'ATIVO'`.                                                                 |
+| **Task #2**                      | Cadastro Global Consumidor        | Tabela `consumidores` desacoplada de lojistas com `termos_aceitos_em`.                                                                                    |
+| **Task #3 & RN01 & RN02 & RN07** | QR Code, 48h, SC/PR, Anti-fraude  | `nfces.chave_acesso` possui `UNIQUE INDEX`. `nfces.data_emissao` e `uf_emitente` validados.                                                               |
+| **Task #4**                      | Scraping Assíncrono SEFAZ         | Status da `nfces` em ciclo de vida (`PENDENTE` -> `EM_PROCESSAMENTO` -> `PROCESSADA`). Itens em `nfce_itens`.                                             |
+| **Task #5 & ADR-002**            | Motor de Pontos & Multi-Tenant    | `saldos_pontos` e `extratos_pontos` isolados obrigatoriamente por `estabelecimento_id` + `consumidor_id`.                                                 |
+| **Task #6 & RN04**               | Regra de Cômputo Personalizável   | `estabelecimentos.fator_conversao` armazena a regra do lojista; `extratos_pontos.fator_conversao_aplicado` registra o fator no momento da transação.      |
+| **Task #7 & RN05**               | Inadimplência e Direito Adquirido | Se `estabelecimentos.status = 'INATIVO'`, cômputo na `nfces` é rejeitado (`motivo_rejeicao = 'LOJISTA_INATIVO'`), mas `saldos_pontos` permanece intocado. |
+| **Task #8 & RN08**               | Dashboard Lojista & Privacidade   | Consultas do lojista filtram `consumidores` via `JOIN saldos_pontos WHERE saldos_pontos.estabelecimento_id = :tenantId`.                                  |
+| **Task #9 & ADR-001**            | Push Notification FCM             | `consumidores.device_token` armazena o token e `notificacoes_push` armazena o histórico do disparo.                                                       |
 
 ---
 

@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+﻿import { useState } from 'react'
 import {
   TrendingUp,
   Users,
@@ -10,7 +10,7 @@ import {
   DollarSign,
   ArrowUpRight,
   CheckCircle2,
-} from "lucide-react";
+} from 'lucide-react'
 import {
   AreaChart,
   Area,
@@ -19,26 +19,54 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-} from "recharts";
-import { P } from "@/constants/theme";
-import { chartData } from "@/data/mocks";
-import { useApp } from "@/context/AppContext";
-import type { MerchantScreen } from "@/types/navigation";
+} from 'recharts'
+import { P } from '@/constants/theme'
+import { chartData } from '@/data/mocks'
+import { useApp } from '@/context/AppContext'
+import type { MerchantScreen } from '@/types/navigation'
 
 interface DashboardScreenProps {
-  go: (s: MerchantScreen) => void;
+  go: (s: MerchantScreen) => void
 }
 
 export function DashboardScreen({ go }: DashboardScreenProps) {
-  const { merchantStoreName } = useApp();
-  const [period, setPeriod] = useState<"7D" | "30D" | "90D">("7D");
+  const { merchantStoreName } = useApp()
+  const [period, setPeriod] = useState<'7D' | '30D' | '90D'>('7D')
 
   const recentTransactions = [
-    { id: 1, client: "Mariana Souza", time: "Há 12 min", value: "R$ 84,50", pts: "+84 pts", status: "Confirmado" },
-    { id: 2, client: "Lucas Almeida", time: "Há 45 min", value: "R$ 152,00", pts: "+152 pts", status: "Confirmado" },
-    { id: 3, client: "Carla Mendes", time: "Há 2h", value: "R$ 38,00", pts: "-500 pts", status: "Resgate Cupom" },
-    { id: 4, client: "Roberto Dias", time: "Há 3h", value: "R$ 210,00", pts: "+210 pts", status: "Confirmado" },
-  ];
+    {
+      id: 1,
+      client: 'Mariana Souza',
+      time: 'Há 12 min',
+      value: 'R$ 84,50',
+      pts: '+84 pts',
+      status: 'Confirmado',
+    },
+    {
+      id: 2,
+      client: 'Lucas Almeida',
+      time: 'Há 45 min',
+      value: 'R$ 152,00',
+      pts: '+152 pts',
+      status: 'Confirmado',
+    },
+    {
+      id: 3,
+      client: 'Carla Mendes',
+      time: 'Há 2h',
+      value: 'R$ 38,00',
+      pts: '-500 pts',
+      status: 'Resgate Cupom',
+    },
+    {
+      id: 4,
+      client: 'Roberto Dias',
+      time: 'Há 3h',
+      value: 'R$ 210,00',
+      pts: '+210 pts',
+      status: 'Confirmado',
+    },
+  ]
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -62,14 +90,14 @@ export function DashboardScreen({ go }: DashboardScreenProps) {
 
         <div className="flex items-center gap-2">
           <button
-            onClick={() => go("new-campaign")}
+            onClick={() => go('new-campaign')}
             className="flex items-center gap-1.5 bg-purple-800 hover:bg-purple-900 text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow-xs transition-all cursor-pointer"
           >
             <Megaphone size={14} />
             <span>Criar Campanha</span>
           </button>
           <button
-            onClick={() => go("qr-store")}
+            onClick={() => go('qr-store')}
             className="flex items-center gap-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold px-3.5 py-2 rounded-xl transition-all cursor-pointer"
           >
             <QrCode size={14} />
@@ -112,9 +140,7 @@ export function DashboardScreen({ go }: DashboardScreenProps) {
             <span className="text-2xl sm:text-3xl font-black text-gray-900">12.450</span>
             <span className="text-xs font-semibold text-gray-400">pts</span>
           </div>
-          <div className="mt-2 text-[11px] text-gray-400 font-medium">
-            Regra: R$ 1,00 = 1 pt
-          </div>
+          <div className="mt-2 text-[11px] text-gray-400 font-medium">Regra: R$ 1,00 = 1 pt</div>
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-gray-200/70 shadow-2xs hover:border-purple-300 transition-colors">
@@ -149,9 +175,7 @@ export function DashboardScreen({ go }: DashboardScreenProps) {
             <span className="text-2xl sm:text-3xl font-black text-gray-900">320</span>
             <span className="text-xs font-semibold text-gray-400">resgates</span>
           </div>
-          <div className="mt-2 text-[11px] text-purple-700 font-semibold">
-            Taxa de retorno: 68%
-          </div>
+          <div className="mt-2 text-[11px] text-purple-700 font-semibold">Taxa de retorno: 68%</div>
         </div>
       </div>
 
@@ -159,24 +183,24 @@ export function DashboardScreen({ go }: DashboardScreenProps) {
       <section className="bg-white p-5 sm:p-6 rounded-2xl border border-gray-200/70 shadow-2xs">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
           <div>
-            <h2 className="text-base font-bold text-gray-900">
-              Evolução de Faturamento e Pontos
-            </h2>
+            <h2 className="text-base font-bold text-gray-900">Evolução de Faturamento e Pontos</h2>
             <p className="text-[11px] text-gray-400">
               Curva de pontuação gerada pelos consumidores da sua loja
             </p>
           </div>
 
           <div className="flex items-center bg-gray-100 p-0.5 rounded-lg">
-            {(["7D", "30D", "90D"] as const).map((p) => (
+            {(['7D', '30D', '90D'] as const).map((p) => (
               <button
                 key={p}
                 onClick={() => setPeriod(p)}
                 className={`px-2.5 py-1 text-xs font-semibold rounded-md transition-all cursor-pointer ${
-                  period === p ? "bg-white text-gray-900 shadow-2xs" : "text-gray-500 hover:text-gray-900"
+                  period === p
+                    ? 'bg-white text-gray-900 shadow-2xs'
+                    : 'text-gray-500 hover:text-gray-900'
                 }`}
               >
-                {p === "7D" ? "7 dias" : p === "30D" ? "30 dias" : "3 meses"}
+                {p === '7D' ? '7 dias' : p === '30D' ? '30 dias' : '3 meses'}
               </button>
             ))}
           </div>
@@ -196,25 +220,25 @@ export function DashboardScreen({ go }: DashboardScreenProps) {
                 dataKey="d"
                 axisLine={false}
                 tickLine={false}
-                tick={{ fill: "#9CA3AF", fontSize: 11 }}
+                tick={{ fill: '#9CA3AF', fontSize: 11 }}
               />
               <YAxis
                 axisLine={false}
                 tickLine={false}
-                tick={{ fill: "#9CA3AF", fontSize: 11 }}
+                tick={{ fill: '#9CA3AF', fontSize: 11 }}
                 tickFormatter={(val) => `${val} pts`}
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "#1F2937",
-                  border: "none",
-                  borderRadius: "10px",
-                  color: "#fff",
-                  fontSize: "11px",
+                  backgroundColor: '#1F2937',
+                  border: 'none',
+                  borderRadius: '10px',
+                  color: '#fff',
+                  fontSize: '11px',
                   fontWeight: 600,
-                  boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
                 }}
-                formatter={(value: any) => [`${value} pontos`, "Desempenho"]}
+                formatter={(value: any) => [`${value} pontos`, 'Desempenho']}
               />
               <Area
                 type="monotone"
@@ -222,7 +246,7 @@ export function DashboardScreen({ go }: DashboardScreenProps) {
                 stroke={P}
                 strokeWidth={2.5}
                 fill="url(#purpleGradient)"
-                activeDot={{ r: 5, fill: P, stroke: "#fff", strokeWidth: 2 }}
+                activeDot={{ r: 5, fill: P, stroke: '#fff', strokeWidth: 2 }}
               />
             </AreaChart>
           </ResponsiveContainer>
@@ -239,7 +263,7 @@ export function DashboardScreen({ go }: DashboardScreenProps) {
 
             <div className="space-y-2.5">
               <button
-                onClick={() => go("scoring-rules")}
+                onClick={() => go('scoring-rules')}
                 className="w-full p-3 rounded-xl border border-gray-100 hover:border-purple-300 hover:bg-purple-50/40 transition-all flex items-center justify-between text-left cursor-pointer group"
               >
                 <div className="flex items-center gap-2.5">
@@ -257,7 +281,7 @@ export function DashboardScreen({ go }: DashboardScreenProps) {
               </button>
 
               <button
-                onClick={() => go("vitrine")}
+                onClick={() => go('vitrine')}
                 className="w-full p-3 rounded-xl border border-gray-100 hover:border-purple-300 hover:bg-purple-50/40 transition-all flex items-center justify-between text-left cursor-pointer group"
               >
                 <div className="flex items-center gap-2.5">
@@ -275,7 +299,7 @@ export function DashboardScreen({ go }: DashboardScreenProps) {
               </button>
 
               <button
-                onClick={() => go("customers")}
+                onClick={() => go('customers')}
                 className="w-full p-3 rounded-xl border border-gray-100 hover:border-purple-300 hover:bg-purple-50/40 transition-all flex items-center justify-between text-left cursor-pointer group"
               >
                 <div className="flex items-center gap-2.5">
@@ -329,15 +353,19 @@ export function DashboardScreen({ go }: DashboardScreenProps) {
                     </td>
                     <td className="py-2.5 text-gray-400">{tx.time}</td>
                     <td className="py-2.5 font-semibold text-gray-800">{tx.value}</td>
-                    <td className={`py-2.5 font-bold ${tx.pts.includes("-") ? "text-red-600" : "text-emerald-700"}`}>
+                    <td
+                      className={`py-2.5 font-bold ${tx.pts.includes('-') ? 'text-red-600' : 'text-emerald-700'}`}
+                    >
                       {tx.pts}
                     </td>
                     <td className="py-2.5 text-right">
-                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${
-                        tx.status.includes("Resgate")
-                          ? "bg-amber-100 text-amber-800"
-                          : "bg-emerald-100 text-emerald-800"
-                      }`}>
+                      <span
+                        className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${
+                          tx.status.includes('Resgate')
+                            ? 'bg-amber-100 text-amber-800'
+                            : 'bg-emerald-100 text-emerald-800'
+                        }`}
+                      >
                         {tx.status}
                       </span>
                     </td>
@@ -349,5 +377,5 @@ export function DashboardScreen({ go }: DashboardScreenProps) {
         </div>
       </div>
     </div>
-  );
+  )
 }

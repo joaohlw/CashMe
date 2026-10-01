@@ -1,6 +1,6 @@
-﻿import { useState } from "react";
-import { Home, Store, Wallet, Tag, QrCode, User } from "lucide-react";
-import type { ConsumerScreen } from "@/types/navigation";
+﻿import { useState } from 'react'
+import { Home, Store, Wallet, Tag, QrCode, User } from 'lucide-react'
+import type { ConsumerScreen } from '@/types/navigation'
 import {
   HomeScreen,
   CategoriesScreen,
@@ -11,32 +11,32 @@ import {
   WalletScreen,
   QRCodeScreen,
   ProfileScreen,
-} from "./screens";
+} from './screens'
 
 const cTabs = [
-  { id: "home", label: "Início", Icon: Home },
-  { id: "stores", label: "Lojas", Icon: Store },
-  { id: "offers", label: "Ofertas", Icon: Tag },
-  { id: "wallet", label: "Carteira", Icon: Wallet },
-  { id: "qr-code", label: "NFC-e & QR", Icon: QrCode },
-  { id: "profile", label: "Perfil", Icon: User },
-];
+  { id: 'home', label: 'Início', Icon: Home },
+  { id: 'stores', label: 'Lojas', Icon: Store },
+  { id: 'offers', label: 'Ofertas', Icon: Tag },
+  { id: 'wallet', label: 'Carteira', Icon: Wallet },
+  { id: 'qr-code', label: 'NFC-e & QR', Icon: QrCode },
+  { id: 'profile', label: 'Perfil', Icon: User },
+]
 
 export function ConsumerApp() {
-  const [tab, setTab] = useState<string>("home");
-  const [screen, setScreen] = useState<ConsumerScreen>("home");
+  const [tab, setTab] = useState<string>('home')
+  const [screen, setScreen] = useState<ConsumerScreen>('home')
 
   function changeTab(t: string) {
-    setTab(t);
-    setScreen(t as ConsumerScreen);
+    setTab(t)
+    setScreen(t as ConsumerScreen)
   }
 
   function go(s: ConsumerScreen) {
-    setScreen(s);
+    setScreen(s)
   }
 
   function back() {
-    setScreen(tab as ConsumerScreen);
+    setScreen(tab as ConsumerScreen)
   }
 
   return (
@@ -49,22 +49,22 @@ export function ConsumerApp() {
               const isActive =
                 screen === item.id ||
                 (tab === item.id &&
-                  ["home", "stores", "offers", "wallet", "qr-code", "profile"].includes(screen));
-              const Icon = item.Icon;
+                  ['home', 'stores', 'offers', 'wallet', 'qr-code', 'profile'].includes(screen))
+              const Icon = item.Icon
               return (
                 <button
                   key={item.id}
                   onClick={() => changeTab(item.id)}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                     isActive
-                      ? "bg-emerald-600 text-white shadow-xs"
-                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                      ? 'bg-emerald-600 text-white shadow-xs'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
                   }`}
                 >
                   <Icon size={14} />
                   <span>{item.label}</span>
                 </button>
-              );
+              )
             })}
           </nav>
         </div>
@@ -73,17 +73,17 @@ export function ConsumerApp() {
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6">
         <div className="w-full">
-          {screen === "home" && <HomeScreen go={go} />}
-          {screen === "categories" && <CategoriesScreen back={back} go={go} />}
-          {screen === "stores" && <StoresScreen back={back} go={go} />}
-          {screen === "store-detail" && <StoreDetailScreen back={back} go={go} />}
-          {screen === "offers" && <OffersScreen back={back} go={go} />}
-          {screen === "offer-detail" && <OfferDetailScreen back={back} go={go} />}
-          {screen === "wallet" && <WalletScreen back={back} />}
-          {screen === "qr-code" && <QRCodeScreen back={back} />}
-          {screen === "profile" && <ProfileScreen back={back} />}
+          {screen === 'home' && <HomeScreen go={go} />}
+          {screen === 'categories' && <CategoriesScreen back={back} go={go} />}
+          {screen === 'stores' && <StoresScreen back={back} go={go} />}
+          {screen === 'store-detail' && <StoreDetailScreen back={back} go={go} />}
+          {screen === 'offers' && <OffersScreen back={back} go={go} />}
+          {screen === 'offer-detail' && <OfferDetailScreen back={back} go={go} />}
+          {screen === 'wallet' && <WalletScreen back={back} />}
+          {screen === 'qr-code' && <QRCodeScreen back={back} />}
+          {screen === 'profile' && <ProfileScreen back={back} />}
         </div>
       </main>
     </div>
-  );
+  )
 }
