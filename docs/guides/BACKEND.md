@@ -24,38 +24,48 @@
 cash-me/
 ├── app/
 │   ├── controllers/
-│   │   ├── access_tokens_controller.ts  # POST /auth/login e POST /account/logout
-│   │   ├── new_account_controller.ts    # POST /auth/signup
-│   │   └── profile_controller.ts        # GET /account/profile
+│   │   ├── access_tokens_controller.ts       # POST /auth/login e POST /account/logout
+│   │   ├── new_account_controller.ts         # POST /auth/signup
+│   │   ├── profile_controller.ts             # GET /account/profile
+│   │   ├── customer_profile_controller.ts    # POST /auth/customer/signup, GET e PUT /customer/profile
+│   │   ├── establishment_profile_controller.ts # POST /auth/establishment/signup, GET e PUT /establishment/profile
+│   │   ├── establishments_controller.ts      # Onboarding, listagem, aprovação e endereços
+│   │   ├── establishment_rules_controller.ts # Regras customizadas de fidelidade e simulação
+│   │   ├── customer_invoices_controller.ts   # Processamento de faturas com motor de regras
+│   │   ├── customer_points_controller.ts     # Saldos e extratos do consumidor
+│   │   └── nfce_controller.ts                # Validação, parse de QR Code SEFAZ e submissão transacional
 │   ├── models/
-│   │   └── user.ts                      # Model Lucid com integração de hash e tokens
-│   ├── transformers/
-│   │   └── user_transformer.ts         # Serializador de saída com campos seguros e iniciais
-│   ├── validators/
-│   │   └── user.ts                      # Validação de signup e login (VineJS)
-│   └── middleware/                      # Middlewares de autenticação e autorização
+│   │   ├── user.ts                           # Model Lucid com hash de senhas e tokens
+│   │   ├── user_customer.ts                  # Perfil especializado de consumidor (CPF, etc.)
+│   │   ├── user_establishment.ts             # Perfil especializado de comerciante (vínculo de loja)
+│   │   ├── establishment.ts                  # Cadastro de lojas parceiras e fator de conversão
+│   │   ├── establishment_address.ts          # Endereço comercial do lojista
+│   │   ├── establishment_rule.ts             # Regras versionadas de pontuação
+│   │   ├── loyalty_program.ts                # Programa de fidelidade do lojista
+│   │   ├── invoice.ts & invoice_item.ts      # Faturas e itens de compra
+│   │   ├── nfce.ts & nfce_item.ts            # Notas fiscais com chave de 44 dígitos UNIQUE
+│   │   ├── point_balance.ts                  # Saldo multi-tenant por lojista
+│   │   └── point_transaction.ts              # Ledger imutável de transações (crédito/débito)
+│   ├── services/
+│   │   ├── nfce_service.ts                   # Parsing de HTML SEFAZ SC/PR e validação fiscal
+│   │   ├── points_engine_service.ts          # Motor de cálculo e isolamento multi-tenant
+│   │   └── loyalty_rule_engine.ts            # Motor de avaliação e versionamento de regras
+│   ├── transformers/                         # Serializadores seguros de resposta
+│   └── validators/                           # Esquemas VineJS (auth, establishment, invoices, etc.)
 │
-├── config/                              # Configurações do framework
-│   ├── app.ts · auth.ts · cors.ts · database.ts · hash.ts · session.ts · shield.ts
-│
-├── database/
-│   ├── migrations/
-│   │   ├── ..._create_users_table.ts           # Tabela de usuários
-│   │   └── ..._create_access_tokens_table.ts   # Tabela de tokens de acesso
-│   └── schema.ts                               # Schemas tipados gerados automaticamente
-│
+├── config/                                   # Configurações do framework (app, auth, cors, database, etc.)
+├── database/                                 # Migrations relacionais SQLite e schema
 ├── start/
-│   ├── routes.ts                        # Definição dos endpoints REST
-│   └── kernel.ts                        # Middlewares registrados no ciclo de vida HTTP
+│   ├── routes.ts                             # Definição dos endpoints RESTful v1 e Swagger
+│   └── kernel.ts                             # Middlewares registrados no ciclo de vida HTTP
 │
 ├── tests/
-│   ├── bootstrap.ts                     # Configuração do runner Japa com plugins Adonis
-│   └── functional/
-│       └── auth.spec.ts                 # Testes funcionais automatizados da API
+│   ├── unit/                                 # Testes unitários (PointsEngine, LoyaltyRuleEngine, User)
+│   └── functional/                           # Testes funcionais (auth, establishment, invoices, nfce, swagger)
 │
-├── ace.js                               # CLI do AdonisJS (comandos make, migration, etc.)
-├── adonisrc.ts                          # Manifesto de providers, preloads e hooks
-└── .env                                 # Variáveis de ambiente da API
+├── ace.js                                    # CLI do AdonisJS
+├── adonisrc.ts                               # Manifesto de providers e preloads
+└── .env                                      # Variáveis de ambiente da API
 ```
 
 ---
@@ -321,7 +331,7 @@ O backend foi arquitetado com base nas especificações oficiais documentadas em
 
 ## 🧪 Testes Automatizados com Japa
 
-A suíte cobre autenticação, perfis de consumidor e lojista, motor de pontuação relacional em banco, validação anti-fraude, saldos, resgates e validações fiscais de SC e PR:
+A suíte cobre autenticação, perfis especializados, onboarding de lojista, regras customizadas de fidelidade, motor de cômputo com isolamento multi-tenant, processamento de faturas, submissão de NFC-e com regras anti-fraude, saldos, resgates e validações fiscais de SC e PR:
 
 ```bash
 npm test
@@ -330,22 +340,51 @@ npm test
 Saída:
 
 ```text
-functional / Auth API — Testes Exploratórios (tests/functional/auth.spec.ts)
-  ✔ 7 testes passando
-
-functional / Functional | Customer Auth & Profile (tests/functional/customer.spec.ts)
+unit / Unit | Loyalty Rule Engine
   ✔ 3 testes passando
 
-functional / Functional | Establishment Auth & Profile (tests/functional/establishment.spec.ts)
+unit / Unit | Points Engine
+  ✔ 6 testes passando
+
+unit / Unit | User Model Identity & Relations
   ✔ 3 testes passando
 
-functional / NFC-e Submission & Multi-Tenant Loyalty Ledger API (tests/functional/nfce_submit.spec.ts)
-  ✔ 4 testes passando
+functional / Functional | Customer Auth & Profile
+  ✔ 3 testes passando
 
-functional / NFC-e Validation & Parsing API (tests/functional/nfce.spec.ts)
+functional / Functional | Establishment Auth & Profile
+  ✔ 3 testes passando
+
+functional / Functional | Auth Login
+  ✔ 3 testes passando
+
+functional / Functional | Profile & Logout
+  ✔ 3 testes passando
+
+functional / Functional | Auth Signup
+  ✔ 3 testes passando
+
+functional / Functional | Swagger Documentation
+  ✔ 1 teste passando
+
+functional / Functional | Establishment Onboarding & Management
   ✔ 5 testes passando
 
- PASSED: 22 testes passando (100% de sucesso)
+functional / Functional | Establishment Loyalty Rules
+  ✔ 6 testes passando
+
+functional / Functional | Customer Invoices & Points Engine
+  ✔ 6 testes passando
+
+functional / NFC-e Submission & Multi-Tenant Loyalty Ledger API
+  ✔ 4 testes passando
+
+functional / NFC-e Validation & Parsing API
+  ✔ 5 testes passando
+
+=======================================================
+PASSED: 56 testes passando (100% de sucesso)
+=======================================================
 ```
 
 ---

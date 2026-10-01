@@ -1,19 +1,18 @@
 # 📊 Relatório de Análise Exploratória — CashMe Front
 
-> Gerado em: 01/09/2026 · Modelo: Claude Sonnet 4.6 (Thinking)
+> **Status Atual:** 🟢 **INTEGRADO E EM PRODUÇÃO LOCAL** (Atualizado em Outubro/2026 por Vitor Camargo [@vitto2099])  
+> *Nota Histórica:* Este documento registra o diagnóstico inicial do protótipo estático do frontend. Desde então, o projeto evoluiu para um **monorepo full-stack integrado**: a API AdonisJS v7 foi totalmente conectada, banco de dados SQLite relacional implantado, autenticação real com Bearer Token OAT ativada, aplicativo nativo Expo SDK 57 adicionado e 56 testes automatizados implementados com 100% de sucesso. Para a documentação viva e atualizada, consulte o [README.md](../README.md) e [docs/README.md](./README.md).
 
 ---
 
-## 1. Visão Geral do Projeto
+## 1. Visão Geral do Projeto (Contexto Inicial)
 
-**Cash Me** é uma plataforma de fidelidade e cashback para comércios locais. O produto atual é um **protótipo de alta fidelidade** — um app mobile simulado rodando no browser, com frame de smartphone (390×844px) e duas visões de usuário:
+**Cash Me** é uma plataforma de fidelidade e cashback para comércios locais. O design original concebeu um app mobile simulado rodando no browser com duas visões de usuário:
 
 | Visão              | Cor de marca    | Função                                                     |
 | ------------------ | --------------- | ---------------------------------------------------------- |
 | 🟢 **Consumidor**  | Verde `#008D4C` | Acumular pontos, descobrir lojas/ofertas, carteira digital |
 | 🟣 **Comerciante** | Roxo `#6F35B5`  | Dashboard, campanhas, clientes, vitrine de ofertas         |
-
-O projeto **não consome nenhuma API real** — toda a data layer é composta por mocks estáticos.
 
 ---
 

@@ -200,7 +200,7 @@ npm run start
 | `npm run dev`        | Inicia o Backend Adonis e o Frontend Vite simultaneamente |
 | `npm run dev:server` | Inicia apenas a API backend (`node ace serve --hmr`)      |
 | `npm run dev:client` | Inicia apenas o frontend web (`vite`)                     |
-| `npm run test`       | Executa todos os 22 testes automatizados com Japa         |
+| `npm run test`       | Executa todos os 56 testes automatizados com Japa         |
 | `npm run db:migrate` | Executa as migrations do banco de dados SQLite            |
 | `npm run build`      | Compila o backend e o frontend para produção              |
 | `npm run typecheck`  | Validação de tipos TypeScript ponta a ponta               |
