@@ -1,6 +1,7 @@
 # 🔧 Cash Me — Backend (API REST AdonisJS v7 + TypeScript)
 
-> API RESTful robusta, desenvolvida em **AdonisJS v7** com **Lucid ORM**, banco de dados **SQLite** e validação com **VineJS**, projetada para atender ao ecossistema de fidelidade e processamento de notas fiscais (NFC-e).
+> API RESTful robusta, desenvolvida em **AdonisJS v7** com **Lucid ORM**, banco de dados **SQLite** e validação com **VineJS**, projetada para atender ao ecossistema de fidelidade e processamento de notas fiscais (NFC-e).  
+> **Squad Backend & Arquitetura:** Concepção e desenvolvimento por **Hugo Batista** (API base, requisitos e motor de cômputo), **Stela Oliveira & Nayara** (sistema de pontos, regras e autenticação OAT) e **Vitor Camargo** (integração full-stack, persistência relacional e suíte de testes automatizados).
 
 ---
 

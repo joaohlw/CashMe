@@ -1,32 +1,38 @@
 # 👥 Matriz de Contribuições & Atribuições de Código — Cash Me
 
-Este documento registra a divisão de papéis, responsabilidades e entregas técnicas realizadas pelos desenvolvedores e contribuidores do ecossistema **Cash Me**:
+Este documento registra a divisão de papéis, responsabilidades e entregas técnicas realizadas pelos desenvolvedores e colaboradores do ecossistema **Cash Me**:
 
-- 👤 **Hugo Batista** ([@hugobatista27](https://github.com/hugobatista27)) — Arquiteto de Requisitos/Tarefas e criador do [hugobatista27/web-scrap-app](https://github.com/hugobatista27/web-scrap-app) e [hugobatista27/cash-me-api](https://github.com/hugobatista27/cash-me-api)
-- 👤 **Stela Oliveira** ([@stela-oliveira](https://github.com/stela-oliveira)) — Contribuidora da modelagem do sistema de pontos e regras, e da API base de autenticação [stela-oliveira/cash-me-api](https://github.com/stela-oliveira/cash-me-api)
-- 👤 **Vitor Camargo** ([@vitto2099](https://github.com/vitto2099)) — Integração dos módulos, testes automatizados, organização e documentação no repositório unificado [vitto2099/CashMe](https://github.com/vitto2099/CashMe)
+- ⚙️ **Squad Backend, Arquitetura & Domínio Fiscal:**
+  - 👤 **Hugo Batista** ([@hugobatista27](https://github.com/hugobatista27)) — Arquiteto de Requisitos/Tarefas e criador do [hugobatista27/cash-me-api](https://github.com/hugobatista27/cash-me-api) e [hugobatista27/web-scrap-app](https://github.com/hugobatista27/web-scrap-app)
+  - 👤 **Stela Oliveira** ([@stela-oliveira](https://github.com/stela-oliveira)) & **Nayara** — Trabalho em conjunto na modelagem e arquitetura de fidelidade (`SISTEMA-DE-PONTOS-E-REGRAS.md`) e no núcleo de autenticação e contas da API base [stela-oliveira/cash-me-api](https://github.com/stela-oliveira/cash-me-api)
+- 🎨 **Squad Frontend, Mobile, Integração & Testes:**
+  - 👤 **Wesley** — Desenvolvimento e aprimoramento da interface do Módulo Consumidor (Home, Lojas, Ofertas, Carteira, QR Code)
+  - 👤 **João Pedro** — Desenvolvimento e aprimoramento da interface do Módulo Lojista (Dashboard com Recharts, Gestão de Clientes, Vitrine, Configurações)
+  - 👤 **João** — Telas de gestão de campanhas promocionais, parametrização de regras de pontuação/conversão e componentes do Design System
+  - 👤 **Vitor Camargo** ([@vitto2099](https://github.com/vitto2099)) — Integração geral dos módulos (Backend, Frontend e Mobile), suíte de testes automatizados (56 testes no Japa), organização do repositório e consolidação da documentação
 
 ---
 
 ## 📊 Quadro Sinóptico de Entregas
 
-| Área / Módulo                   | Hugo Batista (@hugobatista27)                                                           | Stela Oliveira (@stela-oliveira)                                                                                                       | Vitor Camargo (@vitto2099)                                                                                                    |
-| ------------------------------- | --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| **Arquitetura & ADRs**          | Elaborou ADR-001 (Scraping Event-Driven) e ADR-002 (Multi-Tenant)                       | Desenvolveu `SISTEMA-DE-PONTOS-E-REGRAS.md` (PR #10), com ERD Mermaid, princípios de domínio, versionamento de regras e ciclo de lotes | Implementou a orquestração e integração no monorepo                                                                           |
-| **Backlog & Requisitos**        | Criou as 9 Tasks e Critérios de Aceite originais (#1 a #9)                              | —                                                                                                                                      | Criou planejamento do Consumidor (14 épicos) e alinhamento das RNs                                                            |
-| **Backend Base (API)**          | Repositório original `cash-me-api`, controllers de faturas, pontos e regras             | Estrutura base de Auth (Signup, Login, Logout, Tokens OAT) e fork colaborativo                                                         | Consolidação, unificação full-stack, Swagger UI, SQLite e proxy reverso                                                       |
-| **Perfis de Usuário**           | Especificação teórica                                                                   | Model `User` e autenticação básica                                                                                                     | Migrations e Controllers de `UserCustomer` e `UserEstablishment`                                                              |
-| **Modelagem de Dados**          | Migrations de `establishments`, `invoices`, `points`, `loyalty_rules` e endereços       | Modelagem conceitual completa de pontos/regras, tabela `users` e `auth_access_tokens`                                                  | Consolidação relacional, schemas tipados e modelos Lucid integrados                                                           |
-| **Motor Fiscal & Pontos**       | Criou `PointsEngineService`, `CustomerInvoicesController` e `DuplicateInvoiceException` | Especificou regras de cálculo base, tetos, arredondamento e lotes de expiração                                                         | Port para API backend (`NfceService`/`NfceController`), endpoint `submit`, anti-fraude RN02 e regras RN01/RN03/RN04/RN05/RN07 |
-| **Gestão de Pontos & Carteira** | `CustomerPointsController` e regras por estabelecimento                                 | Arquitetura de saldo rápido vs extrato imutável de transações                                                                          | Controllers e rotas de saldo `/points/balance`, extrato `/points/transactions` e resgate `/points/redeem`                     |
-| **Frontend Web**                | Protótipos HTML em `example/establishment/`                                             | —                                                                                                                                      | Criação de 21 telas, Tailwind v4, Design System, Contexts, sincronização real com backend e Services                          |
-| **Mobile (Expo / RN)**          | Protótipo independente `web-scrap-app` (WebView Captcha e parser inicial)               | —                                                                                                                                      | Port para Expo SDK 57, TypeScript estrito, câmera, WebView de Captcha e conexão de submissão com a API                        |
-| **Testes Automatizados**        | Teste `customer_invoice_process.spec.ts`, onboarding, regras e unitários                | 6 testes funcionais iniciais de autenticação                                                                                           | Consolidação e expansão da suíte para 56 testes automatizados no Japa (100% aprovados)                                        |
-| **Documentação Técnica**        | Issues, ADRs e especificações técnicas de negócio                                       | Documentação arquitetural do sistema de pontos e regras, e docs de autenticação                                                        | READMEs unificados, Swagger OpenAPI, relatórios de diagnóstico e guias                                                        |
+| Área / Módulo                     | Hugo Batista (@hugobatista27)                                                           | Stela Oliveira (@stela-oliveira) & Nayara                                                                                           | Wesley, João Pedro & João (Frontend)                                                         | Vitor Camargo (@vitto2099) (Integração & Testes)                                                               |
+| :-------------------------------- | :-------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------- |
+| **Arquitetura & ADRs**            | Elaborou ADR-001 (Scraping Event-Driven) e ADR-002 (Multi-Tenant)                       | Desenvolveram `SISTEMA-DE-PONTOS-E-REGRAS.md` (PR #10), ERD Mermaid com 12 entidades, versionamento de regras e ciclo de lotes FIFO | Estruturação de componentes e padrões visuais da interface web                               | Orquestração do monorepo, suporte de integração e alinhamento arquitetural                                     |
+| **Backlog & Requisitos**          | Criou as 9 Tasks e Critérios de Aceite originais (#1 a #9)                              | Especificação das regras de integridade e constraints de dados                                                                      | Refinamento dos fluxos de tela e usabilidade para Consumidor e Lojista                       | Mapeamento do planejamento do Consumidor (14 épicos) e regras RN01-RN08                                        |
+| **Backend Base (API)**            | Repositório original `cash-me-api`, controllers de faturas, pontos e regras             | Estrutura base de Auth (Signup, Login, Logout, Tokens OAT) e fork colaborativo                                                      | Consumo da API via services e contextos do frontend                                          | Unificação full-stack, proxy reverso, Swagger OpenAPI e banco SQLite                                           |
+| **Perfis de Usuário**             | Especificação teórica dos papéis                                                        | Model `User`, autenticação OAT e ciclo de vida de tokens                                                                            | Telas de perfil do cliente (`ProfileScreen`) e da loja (`SettingsScreen`)                    | Migrations e controllers de `UserCustomer` e `UserEstablishment`                                               |
+| **Modelagem de Dados**            | Migrations de `establishments`, `invoices`, `points`, `loyalty_rules` e endereços       | Modelagem conceitual completa de pontos/regras, tabela `users` e `auth_access_tokens`                                               | Tipos TypeScript espelhando contratos de domínio (`types/`)                                  | Consolidação relacional, schemas tipados e modelos Lucid integrados                                            |
+| **Motor Fiscal & Pontos**         | Criou `PointsEngineService`, `CustomerInvoicesController` e `DuplicateInvoiceException` | Especificaram regras de cálculo base, tetos, arredondamento e lotes de expiração                                                    | Visualização de pontos e extrato em tempo real no frontend                                   | Port para API backend (`NfceService`/`NfceController`), endpoint `submit`, anti-fraude RN02 e regras RN01-RN07 |
+| **Frontend — Consumidor**         | —                                                                                       | —                                                                                                                                   | **Wesley**: 9 telas do Consumidor (Home, Lojas, Ofertas, Detalhes, Carteira e QR Code)       | Integração com `pointsService`, `storesService` e autenticação real                                            |
+| **Frontend — Lojista**            | Protótipos HTML em `example/establishment/`                                             | —                                                                                                                                   | **João Pedro**: Dashboard com gráficos Recharts, Clientes e Vitrine                          | Integração de dados reais de faturamento e clientes                                                            |
+| **Frontend — Campanhas & Regras** | —                                                                                       | —                                                                                                                                   | **João**: Telas de Nova Campanha, Regras de Pontuação, Conversão em Desconto e Design System | Validação e sincronização das regras com a API                                                                 |
+| **Mobile (Expo / RN)**            | Protótipo independente `web-scrap-app` (WebView Captcha e parser inicial)               | —                                                                                                                                   | Revisão de interface e feedback de usabilidade móvel                                         | Port para Expo SDK 57, TypeScript estrito, câmera, WebView Captcha e submissão à API                           |
+| **Testes Automatizados**          | Teste `customer_invoice_process.spec.ts`, onboarding, regras e unitários                | Testes funcionais iniciais de autenticação                                                                                          | Testes manuais de usabilidade nas 21 telas web                                               | Execução e garantia da suíte completa com **56 testes automatizados no Japa (100% aprovados)**                 |
+| **Documentação Técnica**          | Issues, ADRs e especificações técnicas de negócio                                       | Documentação arquitetural do sistema de pontos e regras, e docs de autenticação                                                     | Documentação visual e guias das telas do frontend                                            | Consolidação do README central, Swagger OpenAPI, guias de Backend/Frontend e relatórios                        |
 
 ---
 
-## 🛠️ Detalhamento por Contribuidor
+## 🛠️ Detalhamento por Contribuidor e Squad
 
 ---
 
@@ -71,26 +77,26 @@ Hugo atuou fortemente como **arquiteto técnico de software, autor dos requisito
 
 ---
 
-### 2. Stela Oliveira ([@stela-oliveira](https://github.com/stela-oliveira)) — Repositório [stela-oliveira/cash-me-api](https://github.com/stela-oliveira/cash-me-api)
+### 2. Stela Oliveira ([@stela-oliveira](https://github.com/stela-oliveira)) & Nayara — Repositório [stela-oliveira/cash-me-api](https://github.com/stela-oliveira/cash-me-api)
 
-Stela foi responsável pela **arquitetura do sistema de pontos e regras personalizáveis** (incorporada ao repositório upstream via Pull Request #10) e pela **fundação do núcleo de autenticação e contas da API**:
+Stela e Nayara trabalharam em conjunto na **arquitetura do sistema de pontos e regras personalizáveis** (incorporada ao repositório upstream via Pull Request #10) e na **fundação do núcleo de autenticação e contas da API**:
 
 1. **Arquitetura e Modelagem do Sistema de Pontos (`docs/architecture/SISTEMA-DE-PONTOS-E-REGRAS.md` — PR #10):**
    - **Concepção do Domínio de Fidelidade:**
-     - Estabeleceu o princípio do **extrato de pontos como razão imutável (ledger auditável)** e o saldo por consumidor/estabelecimento como uma projeção rápida atualizada na mesma transação.
-     - Desenhou o mecanismo de **versionamento de regras**: congelamento da versão da regra no momento do lançamento, impedindo recálculo retroativo de compras passadas.
-     - Definiu o isolamento multi-tenant lógico (pontos pertencentes estritamente ao par `consumidor + estabelecimento`, sem compartilhamento entre lojas).
-     - Estabeleceu o princípio de cálculo executado **exclusivamente no backend**, garantindo segurança e integridade das pontuações.
+     - Estabeleceram o princípio do **extrato de pontos como razão imutável (ledger auditável)** e o saldo por consumidor/estabelecimento como uma projeção rápida atualizada na mesma transação.
+     - Desenharam o mecanismo de **versionamento de regras**: congelamento da versão da regra no momento do lançamento, impedindo recálculo retroativo de compras passadas.
+     - Definiram o isolamento multi-tenant lógico (pontos pertencentes estritamente ao par `consumidor + estabelecimento`, sem compartilhamento entre lojas).
+     - Estabeleceram o princípio de cálculo executado **exclusivamente no backend**, garantindo segurança e integridade das pontuações.
    - **Diagrama de Entidade-Relacionamento Completo (Mermaid ERD):**
-     - Mapeou 12 entidades essenciais para o ecossistema de fidelidade: `ESTABELECIMENTOS`, `PROGRAMAS_FIDELIDADE`, `CAMPANHAS_PONTOS`, `RECOMPENSAS`, `SALDOS_PONTOS`, `EXTRATOS_PONTOS`, `RESGATES_PONTOS`, `LOTES_PONTOS`, `NFCES`, `NFCE_ITENS`, `MODELOS_REGRAS_PONTOS` e `REGRAS_PONTOS`.
+     - Mapearam 12 entidades essenciais para o ecossistema de fidelidade: `ESTABELECIMENTOS`, `PROGRAMAS_FIDELIDADE`, `CAMPANHAS_PONTOS`, `RECOMPENSAS`, `SALDOS_PONTOS`, `EXTRATOS_PONTOS`, `RESGATES_PONTOS`, `LOTES_PONTOS`, `NFCES`, `NFCE_ITENS`, `MODELOS_REGRAS_PONTOS` e `REGRAS_PONTOS`.
    - **Estrutura de Regras Configuráveis em JSON:**
-     - Especificou o formato padronizado de regras (`tipo: "POR_VALOR"`, `reais_base`, `pontos_por_base`, `arredondamento`, `valor_minimo_compra`, `limite_pontos_por_compra`, `expiracao`, `acumula_com_campanhas`).
-     - Criou o catálogo de templates para lojistas (`BASICO_1_POR_REAL`, etc.).
+     - Especificaram o formato padronizado de regras (`tipo: "POR_VALOR"`, `reais_base`, `pontos_por_base`, `arredondamento`, `valor_minimo_compra`, `limite_pontos_por_compra`, `expiracao`, `acumula_com_campanhas`).
+     - Criaram o catálogo de templates para lojistas (`BASICO_1_POR_REAL`, etc.).
    - **Gestão de Lotes e Expiração de Pontos:**
-     - Modelou a entidade `lotes_pontos` para suporte a expiração cronológica e débito prioritário por vencimento (estratégia FIFO).
+     - Modelaram a entidade `lotes_pontos` para suporte a expiração cronológica e débito prioritário por vencimento (estratégia FIFO).
    - **Índices de Performance e Regras de Integridade:**
-     - Mapeou chaves únicas compostas (`UNIQUE(estabelecimento_id, nome)`, `UNIQUE(programa_id, versao)`, `UNIQUE(extrato_credito_id)`).
-     - Mapeou índices de busca rápida para vigência, saldos e extratos.
+     - Mapearam chaves únicas compostas (`UNIQUE(estabelecimento_id, nome)`, `UNIQUE(programa_id, versao)`, `UNIQUE(extrato_credito_id)`).
+     - Mapearam índices de busca rápida para vigência, saldos e extratos.
 2. **Módulo de Autenticação Segura com AdonisJS v7:**
    - Configuração de `@adonisjs/auth` com estratégia OAT (Access Tokens / Bearer Token).
    - Implementação do model `User` e tabela `users` com hash seguro de senhas (Argon2 / Scrypt).
@@ -104,44 +110,64 @@ Stela foi responsável pela **arquitetura do sistema de pontos e regras personal
    - Esquemas de validação de entrada de dados com VineJS (`app/validators/user.ts`).
    - Serializador seguro de resposta (`app/transformers/user_transformer.ts`) mascarando senhas e gerando iniciais de avatar.
 5. **Testes Funcionais Iniciais:**
-   - Criou a primeira suíte de 6 testes funcionais com o framework Japa (`tests/functional/auth.spec.ts`).
+   - Criação da suíte funcional inicial de autenticação com o framework Japa (`tests/functional/auth.spec.ts`).
 
 ---
 
-### 3. Vitor Camargo ([@vitto2099](https://github.com/vitto2099)) — Repositório Integrado [vitto2099/CashMe](https://github.com/vitto2099/CashMe)
+### 3. Squad Frontend Web — Wesley, João Pedro & João
 
-Vitor Camargo atuou com foco em **integração dos módulos, testes automatizados, organização da estrutura e documentação**, unificando o trabalho de Hugo e Stela com as camadas de frontend web e mobile, garantindo que o sistema funcione de forma integrada e validada:
+O squad de frontend foi responsável pelo desenvolvimento, melhorias e polimento da interface do usuário em **React 18 + Vite + Tailwind CSS v4**, dividindo responsabilidades entre as personas e jornadas do sistema:
 
-1. **Consolidação e Arquitetura Monorepo Full-Stack:**
+#### 👤 Wesley — Módulo Consumidor
+
+- Desenvolvimento e refinamento das **9 telas do Consumidor**:
+  - `HomeScreen`: Dashboard do cliente com saldo consolidado de pontos, banners promocionais e categorias rápidas.
+  - `StoresScreen` & `StoreDetailScreen`: Catálogo de lojas parceiras com busca, filtros e detalhes do estabelecimento (regras de pontuação, telefone e endereço).
+  - `OffersScreen` & `OfferDetailScreen`: Vitrine de cupons e benefícios disponíveis para resgate.
+  - `WalletScreen`: Carteira digital com extrato auditável de transações (créditos e resgates).
+  - `QRCodeScreen`: QR Code pessoal do cliente para identificação rápida no caixa.
+  - `ProfileScreen`: Perfil do consumidor com dados cadastrais e preferências.
+- Responsividade e usabilidade mobile-first no navegador.
+
+#### 👤 João Pedro — Módulo Lojista / Comerciante
+
+- Desenvolvimento e refinamento das **telas principais do Comerciante**:
+  - `DashboardScreen`: Painel gerencial com gráficos analíticos (Recharts) de volume de faturamento e pontos distribuídos.
+  - `CustomersScreen` & `CustomerDetailScreen`: Gestão de clientes fidelizados com histórico individual de pontuação e compras.
+  - `VitrineScreen`: Gestão da vitrine de ofertas da loja e visualização de cupons ativos.
+  - `SettingsScreen`: Configurações cadastrais da loja, dados de contato e parâmetros operacionais.
+
+#### 👤 João — Campanhas, Regras de Fidelidade & Design System
+
+- Desenvolvimento e refinamento das telas de engajamento e regras:
+  - `CampaignsScreen` & `NewCampaignScreen`: Gestão e cadastro de novas campanhas promocionais e cupons de recompensa.
+  - `ScoringRulesScreen`: Configuração visual das regras de conversão de pontos (ex: R$ 1,00 = 1 Ponto).
+  - `PointsConversionScreen`: Definição de regras para troca de pontos por desconto e vouchers.
+- Criação e padronização dos componentes reutilizáveis de UI (`components/common/`), formulários (`CampoFormulario`), botões (`BotaoVoltar`), controles segmentados e variáveis visuais do Design System (`src/styles/theme.css`).
+
+---
+
+### 4. Vitor Camargo ([@vitto2099](https://github.com/vitto2099)) — Integração, Testes & Documentação
+
+Vitor Camargo atuou com foco em **integração dos módulos, testes automatizados, organização da estrutura e documentação**, unificando o trabalho de Hugo, Stela, Nayara, Wesley, João Pedro e João em uma plataforma única e testada:
+
+1. **Consolidação e Integração Monorepo Full-Stack:**
    - Unificou a API AdonisJS v7, o Frontend React 18 e o Mobile Expo em uma raiz única e organizada.
    - Criou o script integrado de desenvolvimento `scripts/dev.mjs` (`npm run dev`) que executa Backend (`:3333`) e Frontend (`:5173`) simultaneamente com cores no terminal e proxy reverso `/api` configurado no Vite.
-2. **Desenvolvimento Completo do Frontend Web (`React 18` + `Vite` + `Tailwind v4`):**
-   - Criou e organizou **21 telas completas**:
-     - **9 telas do Consumidor:** Home com saldo e banners, Lojas, Detalhe da Loja, Ofertas, Detalhe da Oferta, Carteira com extrato, Leitor/Simulador de NFC-e com tabela de itens, QR Code pessoal e Perfil.
-     - **11 telas do Comerciante:** Dashboard com gráficos Recharts de faturamento, Gestão de Campanhas, Nova Campanha, Regras de Pontuação (R$ para Pontos), Conversão de Pontos em Desconto, QR da Loja, Clientes fidelizados, Detalhe do Cliente, Vitrine de Ofertas, Nova Oferta e Configurações da Loja.
-     - **Landing Page:** Entrada com seleção de perfil e modal de autenticação.
-   - Construiu a barra de navegação superior (`WebNavbar`) e rodapé corporativo (`WebFooter`) transformando o protótipo móvel em um web app responsivo para desktop e dispositivos móveis.
+2. **Conexão Frontend-Backend:**
    - Implementou `AuthContext` conectando o frontend à API real (cadastro, login, logout e persistência do Bearer token).
    - Conectou `AppContext`, `pointsService`, `storesService` e `transactionsService` ao backend relacional, eliminando dados mockados quando autenticado.
-3. **Persistência Relacional Core & Motor de Pontuação Backend:**
-   - **Modelagem Relacional de Fidelidade:**
-     - Criou migrations e models para `establishments` (tenants comerciais, CNPJ, fator de conversão e status), `nfces` (notas fiscais com chave de 44 dígitos `UNIQUE` no banco), `nfce_items` (linhas de produtos comprados), `point_balances` (saldo por loja multi-tenant) e `point_transactions` (ledger imutável de extrato).
-   - **Segmentação de Perfis (RN04 e RN06):**
-     - Criou migrations e models para `user_customers` (Consumidor: CPF, telefone, termos de aceite, device_token) e `user_establishments` (Lojista: cargo, vínculo de estabelecimento).
-     - Criou controllers e rotas completas para `/customer/signup`, `/customer/profile`, `/establishment/signup` e `/establishment/profile`.
-   - **Motor de Submissão e Crédito Fiscal de NFC-e:**
-     - Implementou o endpoint transacional `POST /api/v1/nfce/submit`, validando emissão < 48h (**RN01**), unicidade anti-fraude no SQLite (**RN02**), match de CNPJ da loja (**RN03**), cômputo dinâmico de pontos (**RN04**), status do lojista (**RN05**) e aceitação geográfica SC/PR (**RN07**).
-     - Criou endpoints de saldo `/account/points/balance`, extrato `/account/points/transactions`, resgate de pontos `/account/points/redeem` e listagem de estabelecimentos parceiros `/establishments`.
-   - **Documentação Swagger/OpenAPI:**
-     - Configurou o Adonis AutoSwagger gerando especificação OpenAPI em `/swagger` e interface interativa visual em `/docs`.
-   - **Garantia de Qualidade e Testes Automatizados:**
-     - Expandiu a cobertura de testes funcionais no Japa para **56 testes automatizados no Japa com 100% de aprovação**, cobrindo autenticação, perfis especializados, submissão de NFC-e com cômputo real em banco, rejeição de notas duplicadas (anti-fraude), consulta de saldo/extrato e resgate com débito.
+3. **Persistência Relacional Core & Motor de Submissão:**
+   - Criou migrations e models para `establishments`, `nfces`, `nfce_items`, `point_balances` e `point_transactions`.
+   - Implementou o endpoint transacional `POST /api/v1/nfce/submit`, validando emissão < 48h (**RN01**), unicidade anti-fraude no SQLite (**RN02**), match de CNPJ da loja (**RN03**), cômputo dinâmico de pontos (**RN04**), status do lojista (**RN05**) e aceitação geográfica SC/PR (**RN07**).
+   - Criou endpoints de saldo `/account/points/balance`, extrato `/account/points/transactions`, resgate de pontos `/account/points/redeem` e listagem de lojas `/establishments`.
 4. **Integração do Módulo Mobile Nativo (`mobile/`):**
    - Portou e atualizou a solução do `hugobatista27/web-scrap-app` para o ecossistema moderno do Expo (SDK 57, React Native 0.86, React 19 e TypeScript estrito).
-   - Implementou os componentes `QrScannerModal` (com `expo-camera`, lanterna e haptics), `NfceResultView` (resumo de itens, total e pontos com sincronização na API via `submitNfce`), WebView para contornar Captchas da SEFAZ e aba dedicada de scanner com histórico de leituras.
-   - Criou o cliente de comunicação mobile em `mobile/src/services/api.ts` com suporte automático ao Android Emulator e iOS.
-5. **Documentação e Guias Técnicos:**
-   - Elaborou os documentos de especificação [README.md](../README.md), [FRONTEND.md](guides/FRONTEND.md), [BACKEND.md](guides/BACKEND.md) e [PLANEJAMENTO-CONSUMIDOR.md](product/PLANEJAMENTO-CONSUMIDOR.md).
+   - Implementou componentes `QrScannerModal` (com `expo-camera`, lanterna e haptics), `NfceResultView` (resumo de itens, total e pontos com sincronização na API via `submitNfce`), WebView para contornar Captchas da SEFAZ e aba dedicada de scanner com histórico de leituras.
+5. **Garantia de Qualidade & Testes Automatizados:**
+   - Orquestrou e expandiu a cobertura de testes no Japa para **56 testes automatizados (unitários e funcionais) com 100% de aprovação**, cobrindo autenticação, perfis, onboarding, regras versionadas, motor de pontos, faturas e parsing SEFAZ.
+6. **Documentação Técnica & Governança:**
+   - Elaborou e centralizou os documentos de especificação [README.md](../README.md), [FRONTEND.md](guides/FRONTEND.md), [BACKEND.md](guides/BACKEND.md), [PLANEJAMENTO-CONSUMIDOR.md](product/PLANEJAMENTO-CONSUMIDOR.md) e Swagger OpenAPI interativo em `/docs`.
 
 ---
 

@@ -1,6 +1,7 @@
-﻿# ⚛️ Cash Me — Frontend (React 18 + Vite + Tailwind CSS v4)
+# ⚛️ Cash Me — Frontend (React 18 + Vite + Tailwind CSS v4)
 
-> Aplicativo web mobile-first de fidelidade e cashback, conectando consumidores a estabelecimentos parceiros através de uma interface intuitiva, moderna e responsiva.
+> Aplicativo web mobile-first de fidelidade e cashback, conectando consumidores a estabelecimentos parceiros através de uma interface intuitiva, moderna e responsiva.  
+> **Squad Frontend:** Desenvolvido colaborativamente por **Wesley** (Consumidor), **João Pedro** (Lojista), **João** (Campanhas, Regras e Design System) e **Vitor Camargo** (Integração e Testes).
 
 ---
 

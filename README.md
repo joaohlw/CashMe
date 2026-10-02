@@ -26,13 +26,21 @@ O **Cash Me** é uma solução tecnológica full-stack desenvolvida para transfo
 
 ## 👥 Equipe & Divisão de Tarefas
 
-Este projeto é desenvolvido colaborativamente pela equipe:
+O ecossistema **Cash Me** é desenvolvido colaborativamente em squads especializados:
 
-- 👤 **Hugo Batista ([@hugobatista27](https://github.com/hugobatista27))** — Requisitos técnicos, ADRs de arquitetura (ADR-001 e ADR-002), concepção da API base, motor `PointsEngineService` e prova de conceito do scraping fiscal (`web-scrap-app`).
-- 👤 **Stela Oliveira ([@stela-oliveira](https://github.com/stela-oliveira))** — Arquitetura do sistema de pontos e regras personalizáveis (`SISTEMA-DE-PONTOS-E-REGRAS.md`), modelagem do ledger imutável e desenvolvimento da base de autenticação OAT na API (`cash-me-api`).
-- 👤 **Vitor Camargo ([@vitto2099](https://github.com/vitto2099))** — **Integração, Testes e Documentação**: responsável por unir as bases de Hugo e Stela com as interfaces web e mobile, organizar a estrutura do projeto, validar e expandir os testes automatizados (56 testes no Japa) e consolidar toda a documentação técnica.
+### ⚙️ Backend, Arquitetura & Domínio Fiscal
 
-Consulte os detalhes em **[docs/CONTRIBUICOES.md](./docs/CONTRIBUICOES.md)** e **[docs/ATTRIBUTIONS.md](./docs/ATTRIBUTIONS.md)**.
+- 👤 **Hugo Batista ([@hugobatista27](https://github.com/hugobatista27))** — Requisitos técnicos originais (#1 a #9), ADRs de arquitetura (ADR-001 e ADR-002), concepção da API base em AdonisJS, motor `PointsEngineService` e prova de conceito do scraping fiscal (`web-scrap-app`).
+- 👤 **Stela Oliveira ([@stela-oliveira](https://github.com/stela-oliveira)) & Nayara** — Trabalho em conjunto na arquitetura do sistema de pontos e regras personalizáveis (`SISTEMA-DE-PONTOS-E-REGRAS.md`), modelagem do extrato como ledger imutável, versionamento de regras congeladas, modelagem de dados e desenvolvimento da base de autenticação OAT e contas da API (`cash-me-api`).
+
+### 🎨 Frontend Web, Mobile, Integração & Testes
+
+- 👤 **Wesley** — Desenvolvimento e aprimoramento da interface do **Módulo Consumidor** (Home com saldo e carrosséis, catálogo de Lojas parceiras, Vitrine de Ofertas, Carteira digital e QR Code do cliente).
+- 👤 **João Pedro** — Desenvolvimento e aprimoramento da interface do **Módulo Lojista/Comerciante** (Dashboard de métricas com gráficos Recharts de faturamento, Gestão de Clientes fidelizados, Vitrine de Ofertas e Configurações da Loja).
+- 👤 **João** — Desenvolvimento e refinamento das telas de gestão de campanhas promocionais, telas de parametrização de regras de pontuação (R$ para Pontos), conversão em descontos e componentes compartilhados de UI (Design System).
+- 👤 **Vitor Camargo ([@vitto2099](https://github.com/vitto2099))** — **Integração, Testes e Documentação**: unificação das camadas (Backend, Frontend Web e Mobile Expo), integração das APIs com o frontend, execução e validação da suíte de 56 testes automatizados no Japa (100% aprovados), organização do repositório e consolidação de toda a documentação técnica.
+
+Consulte o detalhamento completo em **[docs/CONTRIBUICOES.md](./docs/CONTRIBUICOES.md)** e **[docs/ATTRIBUTIONS.md](./docs/ATTRIBUTIONS.md)**.
 
 ---
 
@@ -202,11 +210,14 @@ npm run start
 
 ## 👥 Equipe & Contribuições
 
-Este projeto é fruto do trabalho colaborativo da equipe:
+Este projeto é fruto do trabalho colaborativo de toda a equipe:
 
 - 👤 **Hugo Batista ([@hugobatista27](https://github.com/hugobatista27))**: Autor dos requisitos e tarefas originais (#1 a #9), autor dos ADRs (ADR-001 e ADR-002), desenvolvedor da API original ([`cash-me-api`](https://github.com/hugobatista27/cash-me-api)) com o motor `PointsEngineService`, `CustomerInvoicesController`, controllers de pontos e regras de fidelidade, migrations de faturas/pontos/regras/endereços, protótipos de tela para lojistas (`example/establishment/`) e criador da prova de conceito de scraping fiscal de NFC-e ([`web-scrap-app`](https://github.com/hugobatista27/web-scrap-app)).
-- 👤 **Stela Oliveira ([@stela-oliveira](https://github.com/stela-oliveira))**: Autora da arquitetura do sistema de pontos e regras personalizáveis ([`docs/architecture/SISTEMA-DE-PONTOS-E-REGRAS.md`](./docs/architecture/SISTEMA-DE-PONTOS-E-REGRAS.md)), modelando o extrato como ledger imutável, versionamento de regras congeladas, ERD Mermaid completo com 12 entidades e templates JSON. Também responsável pela fundação do módulo de autenticação e contas na API ([`stela-oliveira/cash-me-api`](https://github.com/stela-oliveira/cash-me-api)), configurando `@adonisjs/auth`, tokens OAT, model `User` e testes funcionais iniciais.
-- 👤 **Vitor Camargo ([@vitto2099](https://github.com/vitto2099))**: Responsável pela integração geral, organização do repositório, execução e garantia da suíte de 56 testes automatizados no Japa (100% aprovados), conexão entre as camadas (Backend, Frontend e Mobile) e consolidação da documentação técnica e guias de uso.
+- 👤 **Stela Oliveira ([@stela-oliveira](https://github.com/stela-oliveira)) & Nayara**: Autoras em conjunto da arquitetura do sistema de pontos e regras personalizáveis ([`docs/architecture/SISTEMA-DE-PONTOS-E-REGRAS.md`](./docs/architecture/SISTEMA-DE-PONTOS-E-REGRAS.md)), modelando o extrato como ledger imutável, versionamento de regras congeladas, ERD Mermaid completo com 12 entidades e templates JSON. Também responsáveis pela fundação do módulo de autenticação e contas na API ([`stela-oliveira/cash-me-api`](https://github.com/stela-oliveira/cash-me-api)), configurando `@adonisjs/auth`, tokens OAT, model `User` e testes funcionais de acesso.
+- 👤 **Wesley**: Desenvolvimento e melhorias no frontend do módulo Consumidor (telas de Home, Lojas, Ofertas, Carteira e visualização de QR Code).
+- 👤 **João Pedro**: Desenvolvimento e melhorias no frontend do módulo Lojista (telas de Dashboard com gráficos Recharts de faturamento, Gestão de Clientes fidelizados, Vitrine de Ofertas e Configurações).
+- 👤 **João**: Telas de gestão de campanhas promocionais, telas de configuração de regras de pontuação (R$ para Pontos), conversão em descontos e componentes compartilhados de UI (Design System).
+- 👤 **Vitor Camargo ([@vitto2099](https://github.com/vitto2099))**: Responsável pela integração geral dos módulos (Backend, Frontend e Mobile), organização do repositório, execução e garantia da suíte de 56 testes automatizados no Japa (100% aprovados) e consolidação da documentação técnica e guias de uso.
 
 > 📖 Para conferir o quadro comparativo completo e a divisão detalhada de commits, arquivos e responsabilidades, consulte **[docs/CONTRIBUICOES.md](./docs/CONTRIBUICOES.md)** e **[docs/ATTRIBUTIONS.md](./docs/ATTRIBUTIONS.md)**.
 
