@@ -2,9 +2,9 @@
 
 Este documento registra a divisão de papéis, responsabilidades e entregas técnicas realizadas pelos desenvolvedores e contribuidores do ecossistema **Cash Me**:
 
-- 👤 **Vitor Camargo** ([@vitto2099](https://github.com/vitto2099)) — Mantenedor do repositório integrado [vitto2099/CashMe](https://github.com/vitto2099/CashMe)
-- 👤 **Stela Oliveira** ([@stela-oliveira](https://github.com/stela-oliveira)) — Contribuidora inicial da API base [stela-oliveira/cash-me-api](https://github.com/stela-oliveira/cash-me-api)
 - 👤 **Hugo Batista** ([@hugobatista27](https://github.com/hugobatista27)) — Arquiteto de Requisitos/Tarefas e criador do [hugobatista27/web-scrap-app](https://github.com/hugobatista27/web-scrap-app) e [hugobatista27/cash-me-api](https://github.com/hugobatista27/cash-me-api)
+- 👤 **Stela Oliveira** ([@stela-oliveira](https://github.com/stela-oliveira)) — Contribuidora da modelagem do sistema de pontos e regras, e da API base de autenticação [stela-oliveira/cash-me-api](https://github.com/stela-oliveira/cash-me-api)
+- 👤 **Vitor Camargo** ([@vitto2099](https://github.com/vitto2099)) — Integração dos módulos, testes automatizados, organização e documentação no repositório unificado [vitto2099/CashMe](https://github.com/vitto2099/CashMe)
 
 ---
 
@@ -110,7 +110,7 @@ Stela foi responsável pela **arquitetura do sistema de pontos e regras personal
 
 ### 3. Vitor Camargo ([@vitto2099](https://github.com/vitto2099)) — Repositório Integrado [vitto2099/CashMe](https://github.com/vitto2099/CashMe)
 
-Vitor Camargo assumiu o papel de **engenheiro full-stack e mantenedor da plataforma consolidada**, unificando todas as frentes (Backend, Frontend Web e Mobile Nativo), implementando a camada de persistência relacional do core de fidelidade, desenvolvendo as regras de negócio em banco e estabilizando a suíte de testes automatizados:
+Vitor Camargo atuou com foco em **integração dos módulos, testes automatizados, organização da estrutura e documentação**, unificando o trabalho de Hugo e Stela com as camadas de frontend web e mobile, garantindo que o sistema funcione de forma integrada e validada:
 
 1. **Consolidação e Arquitetura Monorepo Full-Stack:**
    - Unificou a API AdonisJS v7, o Frontend React 18 e o Mobile Expo em uma raiz única e organizada.

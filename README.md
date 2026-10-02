@@ -24,22 +24,15 @@ O **Cash Me** é uma solução tecnológica full-stack desenvolvida para transfo
 
 ---
 
-## 👥 Autoria e Matriz de Contribuições
+## 👥 Equipe & Divisão de Tarefas
 
-Este repositório consolidado foi projetado, arquitetado e mantido por:
+Este projeto é desenvolvido colaborativamente pela equipe:
 
-- 👤 **Vitor Camargo ([@vitto2099](https://github.com/vitto2099))** — **Engenheiro Full-Stack e Mantenedor da Plataforma**:
-  - Consolidação e arquitetura do monorepo full-stack integrado.
-  - Desenvolvimento completo do Frontend Web (21 telas responsivas, Tailwind CSS v4, Contexts e Services).
-  - Port e atualização do aplicativo nativo Mobile no Expo SDK 57 / React Native 0.86 (leitor com câmera, WebView de Captcha da SEFAZ e sincronização com a API).
-  - Arquitetura e implementação de toda a camada de **persistência relacional do core de fidelidade** (`establishments`, `nfces`, `nfce_items`, `point_balances` e `point_transactions`).
-  - Implementação do motor de submissão fiscal com regras anti-fraude (`POST /api/v1/nfce/submit`), carteira digital de pontos (`/points/balance`, `/points/transactions`) e resgate de recompensas (`/points/redeem`).
-  - Expansão e garantia de qualidade com **56 testes automatizados no Japa (100% aprovados)**.
-  - Documentação central, Swagger OpenAPI interativo e guias técnicos.
-- 👤 **Stela Oliveira ([@stela-oliveira](https://github.com/stela-oliveira))**: Desenvolvimento da estrutura inicial de autenticação OAT e contas da API (`stela-oliveira/cash-me-api`).
-- 👤 **Hugo Batista ([@hugobatista27](https://github.com/hugobatista27))**: Elaboração dos requisitos originais (Issues #1 a #9), ADRs (ADR-001 e ADR-002) e protótipo inicial de scraping (`hugobatista27/web-scrap-app`).
+- 👤 **Hugo Batista ([@hugobatista27](https://github.com/hugobatista27))** — Requisitos técnicos, ADRs de arquitetura (ADR-001 e ADR-002), concepção da API base, motor `PointsEngineService` e prova de conceito do scraping fiscal (`web-scrap-app`).
+- 👤 **Stela Oliveira ([@stela-oliveira](https://github.com/stela-oliveira))** — Arquitetura do sistema de pontos e regras personalizáveis (`SISTEMA-DE-PONTOS-E-REGRAS.md`), modelagem do ledger imutável e desenvolvimento da base de autenticação OAT na API (`cash-me-api`).
+- 👤 **Vitor Camargo ([@vitto2099](https://github.com/vitto2099))** — **Integração, Testes e Documentação**: responsável por unir as bases de Hugo e Stela com as interfaces web e mobile, organizar a estrutura do projeto, validar e expandir os testes automatizados (56 testes no Japa) e consolidar toda a documentação técnica.
 
-Consulte a matriz detalhada em **[docs/CONTRIBUICOES.md](./docs/CONTRIBUICOES.md)** e **[docs/ATTRIBUTIONS.md](./docs/ATTRIBUTIONS.md)**.
+Consulte os detalhes em **[docs/CONTRIBUICOES.md](./docs/CONTRIBUICOES.md)** e **[docs/ATTRIBUTIONS.md](./docs/ATTRIBUTIONS.md)**.
 
 ---
 
@@ -209,11 +202,11 @@ npm run start
 
 ## 👥 Equipe & Contribuições
 
-Este projeto é fruto da evolução e integração de trabalhos desenvolvidos pela equipe:
+Este projeto é fruto do trabalho colaborativo da equipe:
 
-- 👤 **Vitor Camargo ([@vitto2099](https://github.com/vitto2099))**: Engenheiro e mantenedor da plataforma unificada full-stack. Responsável pela consolidação do monorepo, desenvolvimento completo do frontend web (21 telas em React + Vite + Tailwind), aplicativo mobile Expo SDK 57, integração e unificação dos módulos de Hugo e Stela, arquitetura e implementação da persistência relacional do core de fidelidade (estabelecimentos, faturas NFC-e, saldos multi-tenant e ledger de transações), motor de submissão fiscal com regras anti-fraude (RN01 a RN08), documentação técnica central e expansão da suíte para 56 testes automatizados com 100% de sucesso.
-- 👤 **Hugo Batista ([@hugobatista27](https://github.com/hugobatista27))**: Arquiteto técnico, autor dos requisitos e tarefas originais (#1 a #9), autor dos ADRs (ADR-001 e ADR-002), desenvolvedor da API original ([`cash-me-api`](https://github.com/hugobatista27/cash-me-api)) com o motor `PointsEngineService`, `CustomerInvoicesController`, controllers de pontos e regras de fidelidade, migrations originais de faturas/pontos/regras/endereços, protótipos de tela para lojistas (`example/establishment/`) e criador da prova de conceito de scraping fiscal de NFC-e ([`web-scrap-app`](https://github.com/hugobatista27/web-scrap-app)).
-- 👤 **Stela Oliveira ([@stela-oliveira](https://github.com/stela-oliveira))**: Autora da arquitetura do sistema de pontos e regras personalizáveis ([`docs/architecture/SISTEMA-DE-PONTOS-E-REGRAS.md`](./docs/architecture/SISTEMA-DE-PONTOS-E-REGRAS.md)), modelando o extrato como ledger imutável, versionamento de regras congeladas, ERD Mermaid completo com 12 entidades e templates JSON. Também responsável pela fundação do módulo de autenticação e contas na API ([`stela-oliveira/cash-me-api`](https://github.com/stela-oliveira/cash-me-api)), configurando `@adonisjs/auth`, tokens OAT, model `User` e a primeira suíte de testes funcionais.
+- 👤 **Hugo Batista ([@hugobatista27](https://github.com/hugobatista27))**: Autor dos requisitos e tarefas originais (#1 a #9), autor dos ADRs (ADR-001 e ADR-002), desenvolvedor da API original ([`cash-me-api`](https://github.com/hugobatista27/cash-me-api)) com o motor `PointsEngineService`, `CustomerInvoicesController`, controllers de pontos e regras de fidelidade, migrations de faturas/pontos/regras/endereços, protótipos de tela para lojistas (`example/establishment/`) e criador da prova de conceito de scraping fiscal de NFC-e ([`web-scrap-app`](https://github.com/hugobatista27/web-scrap-app)).
+- 👤 **Stela Oliveira ([@stela-oliveira](https://github.com/stela-oliveira))**: Autora da arquitetura do sistema de pontos e regras personalizáveis ([`docs/architecture/SISTEMA-DE-PONTOS-E-REGRAS.md`](./docs/architecture/SISTEMA-DE-PONTOS-E-REGRAS.md)), modelando o extrato como ledger imutável, versionamento de regras congeladas, ERD Mermaid completo com 12 entidades e templates JSON. Também responsável pela fundação do módulo de autenticação e contas na API ([`stela-oliveira/cash-me-api`](https://github.com/stela-oliveira/cash-me-api)), configurando `@adonisjs/auth`, tokens OAT, model `User` e testes funcionais iniciais.
+- 👤 **Vitor Camargo ([@vitto2099](https://github.com/vitto2099))**: Responsável pela integração geral, organização do repositório, execução e garantia da suíte de 56 testes automatizados no Japa (100% aprovados), conexão entre as camadas (Backend, Frontend e Mobile) e consolidação da documentação técnica e guias de uso.
 
 > 📖 Para conferir o quadro comparativo completo e a divisão detalhada de commits, arquivos e responsabilidades, consulte **[docs/CONTRIBUICOES.md](./docs/CONTRIBUICOES.md)** e **[docs/ATTRIBUTIONS.md](./docs/ATTRIBUTIONS.md)**.
 
