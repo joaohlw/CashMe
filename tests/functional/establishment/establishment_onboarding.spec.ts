@@ -126,7 +126,7 @@ test.group('Functional | Establishment Onboarding & Management', (group) => {
       },
     }
 
-    const response = await client.post('/api/v1/auth/establishment/signup').json(payload)
+    const response = await client.post('/api/v1/auth/establishment/signup').json(payload as any)
 
     response.assertStatus(201)
     response.assertBodyContains({
